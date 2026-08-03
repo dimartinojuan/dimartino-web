@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Di Martino Propiedades | Luján, Buenos Aires</title>
+<style>
+:root{
+  --azul:#0a2f42;--azul-mid:#0e3d56;--azul-light:#155c7a;
+  --rojo:#c0392b;--rojo-h:#a93226;
+  --blanco:#fff;--gris-bg:#f2f4f7;--gris-borde:#dde2e8;
+  --gris-txt:#6b7a8d;--negro:#1a2332;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--negro);background:var(--blanco)}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+.vista{display:none}
+.vista.activa{display:block}
+
+/* ══ NAVBAR ══ */
+.navbar{
+  position:fixed;inset:0 0 auto 0;z-index:900;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;background:var(--azul);box-shadow:0 2px 16px rgba(0,0,0,.25);
+}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.brand-mark{width:38px;height:38px;background:var(--blanco);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.brand-mark svg{width:22px;height:22px}
+.brand-name b{display:block;font-size:15px;font-weight:800;color:var(--blanco)}
+.brand-name span{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1.8px;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.8);font-size:14px;font-weight:500;transition:color .2s;cursor:pointer}
+.nav-links a:hover{color:var(--blanco)}
+.nav-wsp{display:flex;align-items:center;gap:6px;background:var(--rojo);color:var(--blanco)!important;padding:9px 17px;border-radius:6px;font-weight:700!important;font-size:13px!important;transition:background .2s}
+.nav-wsp:hover{background:var(--rojo-h)!important}
+
+/* ══ HERO ══ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:120px 5% 80px;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(10,47,66,.92) 0%,rgba(10,47,66,.72) 55%,rgba(10,47,66,.88) 100%),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
+}
+.hero-content{position:relative;z-index:1;max-width:740px}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid rgba(255,255,255,.25);border-radius:30px;
+  padding:6px 18px;color:rgba(255,255,255,.85);font-size:12px;
+  font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px;
+}
+.hero-eyebrow span{color:var(--rojo)}
+.hero h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:900;color:var(--blanco);line-height:1.08;margin-bottom:18px;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:rgba(255,255,255,.45);font-weight:400}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.7);margin-bottom:44px;max-width:460px;margin-inline:auto}
+
+.hero-search{background:var(--blanco);border-radius:14px;padding:22px 22px 18px;width:100%;max-width:780px;box-shadow:0 24px 64px rgba(0,0,0,.4);text-align:left}
+.hero-search-top{display:flex;gap:8px;margin-bottom:14px;border-bottom:1.5px solid var(--gris-borde);padding-bottom:14px}
+.bus-tab{background:none;border:none;padding:7px 18px;border-radius:6px;font-size:13px;font-weight:600;color:var(--gris-txt);cursor:pointer;transition:all .18s}
+.bus-tab.active,.bus-tab:hover{background:var(--azul);color:var(--blanco)}
+.hero-search-bottom{display:grid;grid-template-columns:1fr 130px;gap:10px}
+.search-input-wrap{position:relative}
+.search-input-wrap input{width:100%;padding:12px 14px;border:1.5px solid var(--gris-borde);border-radius:8px;font-size:14px;color:var(--negro);outline:none;transition:border .18s}
+.search-input-wrap input:focus{border-color:var(--azul)}
+.search-input-wrap input::placeholder{color:var(--gris-txt)}
+.btn-buscar{background:var(--azul);color:var(--blanco);border:none;padding:12px 14px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .18s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-buscar:hover{background:var(--azul-light)}
+.hero-kpis{position:relative;z-index:1;display:flex;gap:48px;margin-top:36px}
+.kpi{text-align:center}
+.kpi b{display:block;font-size:2rem;font-weight:900;color:var(--blanco);line-height:1;margin-bottom:4px}
+.kpi small{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1.2px;text-transform:uppercase}
+
+/* ══ SECCIONES ══ */
+.seccion{padding:80px 5%}
+.seccion--gris{background:var(--gris-bg)}
+.seccion--azul{background:var(--azul)}
+.sec-label{display:inline-block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--rojo);margin-bottom:8px}
+.sec-titulo{font-size:clamp(1.7rem,2.8vw,2.3rem);font-weight:900;color:var(--azul);line-height:1.1;letter-spacing:-.3px}
+.sec-titulo--blanco{color:var(--blanco)}
+.sec-sub{color:var(--gris-txt);font-size:15px;margin-top:6px}
+.sec-sub--blanco{color:rgba(255,255,255,.55)}
+.sec-cabecera{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.cat-card{background:var(--blanco);border:1.5px solid var(--gris-borde);border-radius:14px;padding:28px 18px 24px;text-align:center;cursor:pointer;transition:all .22s;display:block}
+.cat-card:hover{border-color:var(--azul);transform:translateY(-4px);box-shadow:0 12px 32px rgba(10,47,66,.12)}
+.cat-card:hover .cat-ico{background:var(--azul)}
+.cat-ico{width:54px;height:54px;background:var(--gris-bg);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;transition:background .22s}
+.cat-card h3{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:2px}
+.cat-card p{font-size:12px;color:var(--gris-txt)}
+
+/* ══ PROP CARD ══ */
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.prop-card{background:var(--blanco);border:1px solid var(--gris-borde);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:all .22s;cursor:pointer}
+.prop-card:hover{border-color:var(--azul);transform:translateY(-4px);box-shadow:0 14px 36px rgba(10,47,66,.13)}
+.prop-foto{position:relative;height:200px;overflow:hidden;flex-shrink:0}
+.prop-foto img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.prop-card:hover .prop-foto img{transform:scale(1.07)}
+.prop-tipo{position:absolute;top:12px;left:12px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 11px;border-radius:20px}
+.prop-tipo.venta{background:var(--azul);color:var(--blanco)}
+.prop-tipo.alquiler{background:var(--rojo);color:var(--blanco)}
+.prop-precio{position:absolute;bottom:10px;right:10px;background:rgba(10,47,66,.92);color:var(--blanco);font-size:13px;font-weight:800;padding:5px 12px;border-radius:7px}
+.prop-body{padding:16px 16px 14px;flex:1;display:flex;flex-direction:column}
+.prop-titulo{font-size:15px;font-weight:700;color:var(--azul);margin-bottom:4px;line-height:1.3}
+.prop-ubicacion{font-size:12px;color:var(--gris-txt);margin-bottom:12px}
+.prop-features{display:flex;gap:12px;padding-top:12px;border-top:1px solid var(--gris-bg);margin-top:auto}
+.prop-feat{font-size:12px;color:var(--gris-txt)}
+.prop-cta{display:block;text-align:center;background:var(--azul);color:var(--blanco);font-size:13px;font-weight:700;padding:10px;margin-top:12px;border-radius:0 0 6px 6px;transition:background .18s}
+.prop-cta:hover{background:var(--azul-light)}
+
+/* ══ VISTA BUSCADOR ══ */
+#vista-busqueda{padding-top:68px;min-height:100vh;background:var(--gris-bg)}
+
+/* HEADER STICKY */
+.busq-header{
+  position:sticky;top:68px;z-index:800;
+  background:var(--azul);padding:14px 5%;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  box-shadow:0 3px 16px rgba(0,0,0,.3);
+}
+.busq-volver{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--blanco);padding:9px 16px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .18s}
+.busq-volver:hover{background:rgba(255,255,255,.22)}
+.busq-header-input{flex:1;max-width:560px;display:flex;gap:0}
+.busq-header-input input{flex:1;padding:10px 14px;border-radius:8px 0 0 8px;border:none;font-size:14px;color:var(--negro);outline:none}
+.busq-header-input button{background:var(--rojo);border:none;padding:0 18px;border-radius:0 8px 8px 0;color:var(--blanco);cursor:pointer;font-size:15px;font-weight:700;white-space:nowrap;transition:background .18s}
+.busq-header-input button:hover{background:var(--rojo-h)}
+.busq-tabs{display:flex;gap:4px;margin-left:8px}
+.busq-tab{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s}
+.busq-tab.active{background:var(--blanco);color:var(--azul)}
+
+.busq-body{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 136px)}
+
+/* Sidebar */
+.filtros-sidebar{background:var(--blanco);border-right:1px solid var(--gris-borde);padding:22px 18px;position:sticky;top:136px;height:fit-content;max-height:calc(100vh - 136px);overflow-y:auto}
+.filtro-grupo{margin-bottom:22px;border-bottom:1px solid var(--gris-bg);padding-bottom:18px}
+.filtro-grupo:last-of-type{border-bottom:none}
+.filtro-grupo h4{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gris-txt);margin-bottom:11px}
+.filtro-radio,.filtro-check{display:flex;flex-direction:column;gap:9px}
+.filtro-radio label,.filtro-check label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--negro);cursor:pointer;user-select:none}
+.filtro-radio input,.filtro-check input{accent-color:var(--azul);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.filtro-precio{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.filtro-precio input{width:100%;padding:9px 10px;border:1.5px solid var(--gris-borde);border-radius:7px;font-size:13px;color:var(--negro);outline:none}
+.filtro-precio input:focus{border-color:var(--azul)}
+.btn-aplicar{width:100%;background:var(--azul);color:var(--blanco);border:none;padding:11px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;transition:background .18s}
+.btn-aplicar:hover{background:var(--azul-light)}
+.btn-limpiar{width:100%;background:none;color:var(--gris-txt);border:1px solid var(--gris-borde);padding:9px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:6px;transition:all .18s}
+.btn-limpiar:hover{border-color:var(--azul);color:var(--azul)}
+
+/* Resultados */
+.resultados-panel{padding:22px 22px 40px}
+.resultados-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px}
+.res-count{font-size:15px;color:var(--gris-txt)}
+.res-count b{color:var(--azul);font-weight:700}
+.res-orden{padding:8px 12px;border:1.5px solid var(--gris-borde);border-radius:7px;font-size:13px;color:var(--negro);outline:none;cursor:pointer}
+.prop-grid-busq{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+/* Loading/error */
+.estado-carga{text-align:center;padding:60px 0;color:var(--gris-txt)}
+.estado-carga p{margin-top:14px;font-size:15px}
+.spinner{width:42px;height:42px;border:3px solid var(--gris-borde);border-top-color:var(--azul);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.estado-vacio{background:var(--blanco);border:1.5px solid var(--gris-borde);border-radius:12px;padding:40px;text-align:center;color:var(--gris-txt)}
+.estado-vacio h3{color:var(--azul);font-size:18px;margin-bottom:8px}
+
+/* Paginación */
+.paginacion{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:28px}
+.btn-pag{background:var(--blanco);border:1.5px solid var(--gris-borde);color:var(--azul);padding:9px 18px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s}
+.btn-pag:hover:not(:disabled){background:var(--azul);color:var(--blanco);border-color:var(--azul)}
+.btn-pag:disabled{opacity:.35;cursor:not-allowed}
+.pag-info{font-size:13px;color:var(--gris-txt);padding:0 8px}
+
+/* ══ VISTA DETALLE ══ */
+#vista-detalle{padding-top:68px;min-height:100vh;background:var(--gris-bg)}
+.det-header{background:var(--azul);padding:14px 5%;display:flex;align-items:center;gap:14px;position:sticky;top:68px;z-index:800;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.det-volver{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--blanco);padding:8px 15px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background .18s;white-space:nowrap}
+.det-volver:hover{background:rgba(255,255,255,.22)}
+.det-breadcrumb{color:rgba(255,255,255,.55);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.det-breadcrumb b{color:var(--blanco)}
+
+/* Layout principal detalle */
+.det-wrap{max-width:1240px;margin:0 auto;padding:24px 5% 60px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+
+/* ── Galería ── */
+.det-galeria{background:var(--blanco);border-radius:14px;overflow:hidden;border:1px solid var(--gris-borde);margin-bottom:20px}
+.galeria-main{position:relative;height:430px;background:#000;overflow:hidden}
+.galeria-track{display:flex;height:100%;transition:transform .32s ease}
+.galeria-img{flex:none;width:100%;height:100%;object-fit:cover}
+.galeria-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;color:var(--blanco);width:46px;height:46px;border-radius:50%;font-size:24px;cursor:pointer;transition:background .18s;display:flex;align-items:center;justify-content:center}
+.galeria-btn:hover{background:rgba(0,0,0,.85)}
+.galeria-btn.prev{left:14px}
+.galeria-btn.next{right:14px}
+.galeria-counter{position:absolute;top:14px;left:14px;background:rgba(0,0,0,.6);color:var(--blanco);font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px}
+.galeria-acciones{position:absolute;top:14px;right:14px;display:flex;gap:8px}
+.gal-btn-accion{background:rgba(0,0,0,.6);border:none;color:var(--blanco);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s}
+.gal-btn-accion:hover{background:rgba(0,0,0,.85)}
+.galeria-thumbs{display:flex;gap:7px;padding:10px;overflow-x:auto;scrollbar-width:thin;background:var(--gris-bg)}
+.galeria-thumb{flex:none;width:72px;height:54px;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border .18s;flex-shrink:0}
+.galeria-thumb.activo{border-color:var(--azul)}
+.galeria-thumb img{width:100%;height:100%;object-fit:cover}
+
+/* ── Secciones de detalle ── */
+.det-card{background:var(--blanco);border-radius:14px;padding:22px 24px;border:1px solid var(--gris-borde);margin-bottom:18px}
+.det-card:last-child{margin-bottom:0}
+.det-card-titulo{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gris-txt);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--gris-bg)}
+
+/* Badge operación */
+.det-tipo-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.det-tipo-badge.venta{background:rgba(10,47,66,.1);color:var(--azul)}
+.det-tipo-badge.alquiler{background:rgba(192,57,43,.1);color:var(--rojo)}
+.det-status{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;margin-left:6px;background:rgba(39,174,96,.12);color:#1e8449}
+
+/* Título / precio */
+.det-titulo{font-size:21px;font-weight:900;color:var(--azul);line-height:1.25;margin-bottom:7px}
+.det-ubic{font-size:13px;color:var(--gris-txt);margin-bottom:18px;display:flex;align-items:center;gap:5px}
+.det-precio-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.det-precio{font-size:30px;font-weight:900;color:var(--azul);line-height:1}
+.det-precio-m2{font-size:13px;color:var(--gris-txt);margin-top:4px}
+.det-gastos{font-size:13px;color:var(--gris-txt);margin-top:3px}
+
+/* Características clave (bar horizontal) */
+.det-key-feats{display:flex;gap:0;border:1px solid var(--gris-borde);border-radius:10px;overflow:hidden;margin-top:18px}
+.det-kf{flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--gris-borde)}
+.det-kf:last-child{border-right:none}
+.det-kf-ico{font-size:20px;display:block;margin-bottom:4px}
+.det-kf-val{font-size:15px;font-weight:800;color:var(--azul);display:block}
+.det-kf-lab{font-size:10px;color:var(--gris-txt);letter-spacing:.5px;text-transform:uppercase}
+
+/* Características completas */
+.det-feats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.det-feat-item{display:flex;align-items:center;gap:9px;padding:10px 13px;background:var(--gris-bg);border-radius:8px;font-size:13px;color:var(--negro)}
+.det-feat-item span:first-child{font-size:17px;width:22px;text-align:center;flex-shrink:0}
+.det-feat-label{color:var(--gris-txt);font-size:11px;display:block}
+.det-feat-val{font-weight:600;color:var(--negro)}
+
+/* Amenidades / tags */
+.det-tags{display:flex;flex-wrap:wrap;gap:8px}
+.det-tag{display:inline-flex;align-items:center;gap:5px;background:var(--gris-bg);border:1px solid var(--gris-borde);color:var(--negro);font-size:13px;padding:6px 12px;border-radius:30px}
+.det-tag::before{content:'✓';color:#27ae60;font-weight:700;font-size:11px}
+
+/* Descripción */
+.det-desc-txt{font-size:14px;color:var(--gris-txt);line-height:1.8;white-space:pre-wrap}
+.det-desc-ver-mas{background:none;border:none;color:var(--azul);font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;padding:0}
+
+/* Video */
+.det-video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden}
+.det-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+/* Tour virtual */
+.det-tour-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;background:#000}
+.det-tour-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.det-tour-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:200px;background:linear-gradient(135deg,#0a2f42,#155c7a);border-radius:10px;color:var(--blanco);text-align:center;padding:20px}
+.det-tour-placeholder h4{font-size:16px;font-weight:700}
+.det-tour-placeholder p{font-size:13px;opacity:.7}
+.btn-tour{display:inline-flex;align-items:center;gap:8px;background:var(--blanco);color:var(--azul);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;transition:opacity .18s}
+.btn-tour:hover{opacity:.85}
+
+/* Agente */
+.det-agente{display:flex;align-items:center;gap:14px}
+.det-agente-avatar{width:52px;height:52px;border-radius:50%;background:var(--azul);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--blanco);font-weight:700;flex-shrink:0}
+.det-agente-nombre{font-size:15px;font-weight:700;color:var(--azul);margin-bottom:2px}
+.det-agente-cargo{font-size:12px;color:var(--gris-txt)}
+.det-agente-contactos{display:flex;gap:8px;margin-top:10px}
+.btn-agente{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;transition:all .18s;cursor:pointer;border:none}
+.btn-agente-tel{background:var(--gris-bg);color:var(--negro)}
+.btn-agente-tel:hover{background:var(--gris-borde)}
+.btn-agente-wsp{background:#25d366;color:var(--blanco)}
+.btn-agente-wsp:hover{background:#1eb358}
+
+/* Sidebar sticky */
+.det-sidebar{position:sticky;top:136px;display:flex;flex-direction:column;gap:16px}
+.det-sidebar .det-card{margin-bottom:0}
+
+/* Botones contacto */
+.btn-det-wsp{display:flex;align-items:center;justify-content:center;gap:9px;background:#25d366;color:var(--blanco);padding:14px;border-radius:10px;font-size:15px;font-weight:700;transition:background .18s;text-decoration:none;margin-bottom:8px}
+.btn-det-wsp:hover{background:#1eb358}
+.btn-det-tel{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--blanco);padding:12px;border-radius:10px;font-size:14px;font-weight:600;transition:background .18s;text-decoration:none;margin-bottom:8px}
+.btn-det-tel:hover{background:var(--azul-light)}
+
+/* Formulario contacto */
+.campo{margin-bottom:12px}
+.campo label{display:block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--azul);margin-bottom:5px}
+.campo input,.campo select,.campo textarea{width:100%;padding:10px 12px;border:1.5px solid var(--gris-borde);border-radius:7px;font-size:14px;color:var(--negro);outline:none;transition:border .18s;background:var(--blanco)}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--azul)}
+.campo textarea{height:72px;resize:none}
+.btn-form{width:100%;background:var(--rojo);color:var(--blanco);border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .18s}
+.btn-form:hover{background:var(--rojo-h)}
+
+/* Mapa link */
+.det-mapa-link{display:flex;align-items:center;gap:10px;padding:13px 16px;background:var(--gris-bg);border-radius:9px;color:var(--azul);font-size:14px;font-weight:600;transition:background .18s}
+.det-mapa-link:hover{background:var(--gris-borde)}
+
+/* ══ HOME SECCIONES ══ */
+.btn-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--azul);border:1.5px solid var(--azul);padding:9px 18px;border-radius:7px;transition:all .18s;white-space:nowrap;cursor:pointer;background:none}
+.btn-link:hover{background:var(--azul);color:var(--blanco)}
+.btn-link--blanco{color:var(--blanco);border-color:rgba(255,255,255,.35)}
+.btn-link--blanco:hover{background:var(--blanco);color:var(--azul)}
+.des-grid{display:grid;grid-template-columns:3fr 2fr;grid-template-rows:280px 280px;gap:20px}
+.des-card{position:relative;border-radius:14px;overflow:hidden;display:block;cursor:pointer}
+.des-card--grande{grid-row:span 2}
+.des-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.des-card:hover img{transform:scale(1.06)}
+.des-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,47,66,.9) 0%,rgba(10,47,66,.05) 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px}
+.des-tag{display:inline-block;background:var(--rojo);color:var(--blanco);font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:10px;align-self:flex-start}
+.des-nombre{color:var(--blanco);font-size:18px;font-weight:800;margin-bottom:4px}
+.des-desc{color:rgba(255,255,255,.7);font-size:13px}
+.tas-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.tas-texto h2{font-size:clamp(1.7rem,2.8vw,2.3rem);font-weight:900;color:var(--azul);line-height:1.1;margin-bottom:14px}
+.tas-texto p{color:var(--gris-txt);font-size:15px;line-height:1.75;margin-bottom:28px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--azul);color:var(--blanco);padding:13px 26px;border-radius:8px;font-size:15px;font-weight:700;transition:background .18s}
+.btn-primary:hover{background:var(--azul-light)}
+.tas-nums{display:flex;gap:32px;margin-top:32px}
+.tas-num b{display:block;font-size:1.7rem;font-weight:900;color:var(--azul)}
+.tas-num small{font-size:12px;color:var(--gris-txt)}
+.formulario{background:var(--blanco);border-radius:16px;padding:28px 24px;box-shadow:0 6px 36px rgba(10,47,66,.1);border:1px solid var(--gris-borde)}
+.formulario h3{font-size:18px;font-weight:800;color:var(--azul);margin-bottom:4px}
+.formulario>p{font-size:13px;color:var(--gris-txt);margin-bottom:20px}
+.formulario--dark{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04);box-shadow:none}
+.formulario--dark h3{color:var(--blanco)}
+.formulario--dark>p{color:rgba(255,255,255,.5)}
+.formulario--dark .campo label{color:rgba(255,255,255,.65)}
+.formulario--dark .campo input,.formulario--dark .campo select,.formulario--dark .campo textarea{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:var(--blanco)}
+.formulario--dark .campo input::placeholder,.formulario--dark .campo textarea::placeholder{color:rgba(255,255,255,.3)}
+.formulario--dark .campo input:focus,.formulario--dark .campo select:focus,.formulario--dark .campo textarea:focus{border-color:rgba(255,255,255,.45)}
+.formulario--dark .btn-form{background:var(--rojo)}
+.formulario--dark .btn-form:hover{background:var(--rojo-h)}
+.contacto-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contacto-info h2{font-size:clamp(1.7rem,2.8vw,2.3rem);font-weight:900;color:var(--blanco);line-height:1.1;margin-bottom:14px}
+.contacto-info>p{color:rgba(255,255,255,.6);font-size:15px;line-height:1.75;margin-bottom:32px}
+.datos{display:flex;flex-direction:column;gap:16px}
+.dato{display:flex;align-items:center;gap:13px}
+.dato-ico{width:42px;height:42px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dato-texto b{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.45);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.dato-texto a,.dato-texto span{font-size:14px;color:var(--blanco)}
+.dato-texto a:hover{color:rgba(255,255,255,.75)}
+.btn-wsp{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:var(--blanco);padding:13px 24px;border-radius:8px;font-size:15px;font-weight:700;margin-top:28px;transition:background .18s}
+.btn-wsp:hover{background:#1eb358}
+footer{background:#071a27;padding:56px 5% 26px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:26px}
+.footer-brand-desc{color:rgba(255,255,255,.4);font-size:13px;line-height:1.75;margin-top:14px;max-width:240px}
+.socials{display:flex;gap:8px;margin-top:18px}
+.social{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.6);transition:all .18s}
+.social:hover{background:var(--rojo);color:var(--blanco)}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-col ul a{font-size:14px;color:rgba(255,255,255,.5);transition:color .18s;cursor:pointer}
+.footer-col ul a:hover{color:var(--blanco)}
+.footer-bottom{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.2)}
+
+/* Responsive */
+@media(max-width:1024px){
+  .cat-grid{grid-template-columns:repeat(3,1fr)}
+  .prop-grid,.prop-grid-busq{grid-template-columns:1fr 1fr}
+  .des-grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .des-card--grande{grid-row:auto}.des-card{height:280px}
+  .tas-split,.contacto-split{grid-template-columns:1fr;gap:48px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+  .busq-body{grid-template-columns:200px 1fr}
+  .det-body{grid-template-columns:1fr 340px}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-kpis{gap:24px}
+  .hero-search-bottom{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:1fr 1fr}
+  .prop-grid,.prop-grid-busq{grid-template-columns:1fr}
+  .busq-body{grid-template-columns:1fr}
+  .filtros-sidebar{position:static;border-right:none;border-bottom:1px solid var(--gris-borde)}
+  .det-body{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .busq-tabs{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar" id="navbar">
+  <div class="brand" onclick="irAHome()">
+    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="#0a2f42"/></svg></div>
+    <div class="brand-name"><b>Di Martino</b><span>Propiedades</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="irAHome()">Inicio</a></li>
+    <li><a onclick="abrirBuscador('',{})">Propiedades</a></li>
+    <li><a onclick="irAHome('desarrollos')">Desarrollos</a></li>
+    <li><a onclick="irAHome('tasaciones')">Tasaciones</a></li>
+    <li><a onclick="irAHome('contacto')">Contacto</a></li>
+    <li><a href="https://wa.me/5492323652581" class="nav-wsp" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      WhatsApp
+    </a></li>
+  </ul>
+</nav>
+
+<!-- ════════ VISTA HOME ════════ -->
+<div id="vista-home" class="vista activa">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span>●</span> Luján · Buenos Aires</div>
+      <h1>Encontrá tu lugar.<br><em>Empezá acá.</em></h1>
+      <p class="hero-sub">Propiedades en venta y alquiler en Luján y la zona. Más de 20 años acompañando a familias y empresas.</p>
+      <div class="hero-search">
+        <div class="hero-search-top">
+          <button class="bus-tab active" data-op="">Todas</button>
+          <button class="bus-tab" data-op="1">Comprar</button>
+          <button class="bus-tab" data-op="2">Alquilar</button>
+          <button class="bus-tab" data-op="1">Terrenos</button>
+        </div>
+        <div class="hero-search-bottom">
+          <div class="search-input-wrap">
+            <input id="hero-kw" type="text" placeholder="Buscá por barrio, tipo, dirección…" onkeydown="if(event.key==='Enter')buscarDesdeHero()"/>
+          </div>
+          <button class="btn-buscar" onclick="buscarDesdeHero()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><b>+500</b><small>Propiedades</small></div>
+      <div class="kpi"><b>20+</b><small>Años en el mercado</small></div>
+      <div class="kpi"><b>100%</b><small>Escrituras seguras</small></div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--gris">
+    <div class="sec-cabecera"><div><span class="sec-label">¿Qué buscás?</span><h2 class="sec-titulo">Explorá por categoría</h2></div></div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="abrirBuscador('',{op:'1'})"><div class="cat-ico">🏡</div><h3>Casas en Venta</h3><p>Familiar o inversión</p></div>
+      <div class="cat-card" onclick="abrirBuscador('',{op:'2'})"><div class="cat-ico">🔑</div><h3>Alquileres</h3><p>Casas y deptos</p></div>
+      <div class="cat-card" onclick="abrirBuscador('',{op:'1',tipos:['1']})"><div class="cat-ico">🌿</div><h3>Terrenos y Lotes</h3><p>Para construir</p></div>
+      <div class="cat-card" onclick="abrirBuscador('',{op:'1',tipos:['2']})"><div class="cat-ico">🏢</div><h3>Departamentos</h3><p>Venta y alquiler</p></div>
+      <div class="cat-card" onclick="abrirBuscador('',{})"><div class="cat-ico">🏗️</div><h3>Ver todo</h3><p>Todas las propiedades</p></div>
+    </div>
+  </section>
+
+  <section class="seccion" id="propiedades-home">
+    <div class="sec-cabecera">
+      <div><span class="sec-label">Nuestra cartera</span><h2 class="sec-titulo">Propiedades destacadas</h2><p class="sec-sub">Las mejores opciones del momento.</p></div>
+      <button class="btn-link" onclick="abrirBuscador('',{})">Ver todas →</button>
+    </div>
+    <div id="home-loading" class="estado-carga"><div class="spinner"></div><p>Cargando propiedades…</p></div>
+    <div id="home-grid" class="prop-grid" style="display:none"></div>
+  </section>
+
+  <section class="seccion seccion--azul" id="desarrollos">
+    <div class="sec-cabecera">
+      <div><span class="sec-label" style="color:rgba(255,255,255,.4)">Proyectos propios</span><h2 class="sec-titulo sec-titulo--blanco">Nuestros Desarrollos</h2><p class="sec-sub sec-sub--blanco">Emprendimientos con financiación propia.</p></div>
+      <button class="btn-link btn-link--blanco" onclick="irAHome('contacto')">Consultar →</button>
+    </div>
+    <div class="des-grid">
+      <div class="des-card des-card--grande" onclick="irAHome('contacto')">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80" alt="Villa Odilia"/>
+        <div class="des-overlay"><span class="des-tag">Barrio Abierto · Escritura Inmediata</span><div class="des-nombre">Tierras de Villa Odilia</div><p class="des-desc">Terrenos de 1.000 m² con asfalto y gas. Escritura inmediata.</p></div>
+      </div>
+      <div class="des-card" onclick="irAHome('contacto')">
+        <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=600&q=80" alt="Residencial"/>
+        <div class="des-overlay"><span class="des-tag">En desarrollo</span><div class="des-nombre">Residencial Nuevo</div><p class="des-desc">Casas llave en mano con financiación</p></div>
+      </div>
+      <div class="des-card" onclick="irAHome('contacto')">
+        <img src="https://images.unsplash.com/photo-1448630360428-65456885c650?w=600&q=80" alt="Lotes"/>
+        <div class="des-overlay"><span class="des-tag">Inversión</span><div class="des-nombre">Lotes en cuotas</div><p class="des-desc">Invertí con el respaldo de Di Martino</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--gris" id="tasaciones">
+    <div class="tas-split">
+      <div class="tas-texto">
+        <span class="sec-label">Valuaciones profesionales</span>
+        <h2>¿Sabés cuánto vale tu propiedad?</h2>
+        <p>Tasaciones precisas basadas en datos reales del mercado de Luján. Sin cargo y sin compromiso.</p>
+        <a href="#" class="btn-primary" onclick="irAHome('tasaciones-form');return false">Solicitar tasación gratuita →</a>
+        <div class="tas-nums"><div class="tas-num"><b>24hs</b><small>Respuesta</small></div><div class="tas-num"><b>Gratis</b><small>Sin cargo</small></div><div class="tas-num"><b>+20 años</b><small>Experiencia</small></div></div>
+      </div>
+      <div class="formulario" id="tasaciones-form">
+        <h3>Solicitá tu tasación</h3>
+        <p>Completá el formulario y te contactamos pronto.</p>
+        <div class="campo"><label>Tu nombre</label><input type="text" placeholder="Ej: María García"/></div>
+        <div class="campo"><label>Teléfono / WhatsApp</label><input type="tel" placeholder="2323-000000"/></div>
+        <div class="campo"><label>Tipo de propiedad</label><select><option value="">Seleccioná</option><option>Casa</option><option>Departamento</option><option>Terreno / Lote</option><option>Local comercial</option><option>Chacra / Quinta</option></select></div>
+        <div class="campo"><label>Dirección aproximada</label><textarea placeholder="Ej: calle Las Heras al 400, Luján..."></textarea></div>
+        <button class="btn-form" onclick="enviarForm(this)">Enviar solicitud →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--azul" id="contacto">
+    <div class="contacto-split">
+      <div class="contacto-info">
+        <span class="sec-label" style="color:rgba(255,255,255,.4)">Estamos para ayudarte</span>
+        <h2>Hablemos de tu próxima propiedad</h2>
+        <p>Respondemos consultas sobre venta, alquiler, inversiones y desarrollos en Luján y la zona.</p>
+        <div class="datos">
+          <div class="dato"><div class="dato-ico">📍</div><div class="dato-texto"><b>Dirección</b><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján (BA)</a></div></div>
+          <div class="dato"><div class="dato-ico">📞</div><div class="dato-texto"><b>Teléfono</b><a href="tel:+5492323426040">(02323) 426040</a></div></div>
+          <div class="dato"><div class="dato-ico">📱</div><div class="dato-texto"><b>WhatsApp</b><a href="https://wa.me/5492323652581" target="_blank">2323-652581</a></div></div>
+          <div class="dato"><div class="dato-ico">🕐</div><div class="dato-texto"><b>Horarios</b><span>Lun–Vie 9:00–18:00 · Sáb 9:00–13:00</span></div></div>
+        </div>
+        <a href="https://wa.me/5492323652581" class="btn-wsp" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Escribinos por WhatsApp
+        </a>
+      </div>
+      <div class="formulario formulario--dark">
+        <h3>Envianos tu consulta</h3>
+        <p>Te respondemos en 24 horas hábiles.</p>
+        <div class="campo"><label>Nombre</label><input type="text" placeholder="Tu nombre"/></div>
+        <div class="campo"><label>Email</label><input type="email" placeholder="tu@email.com"/></div>
+        <div class="campo"><label>Teléfono</label><input type="tel" placeholder="2323-000000"/></div>
+        <div class="campo"><label>Mensaje</label><textarea id="msg-contacto" placeholder="Contanos qué necesitás..."></textarea></div>
+        <button class="btn-form" onclick="enviarForm(this)">Enviar consulta →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="brand" onclick="irAHome()"><div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="#0a2f42"/></svg></div><div class="brand-name"><b>Di Martino</b><span>Propiedades</span></div></div>
+        <p class="footer-brand-desc">Más de 20 años acompañando a familias y empresas en sus decisiones inmobiliarias en Luján.</p>
+        <div class="socials"><a href="https://www.facebook.com/dimartinopropiedades" class="social" target="_blank">f</a><a href="https://www.instagram.com/dimartinopropiedades/" class="social" target="_blank">◻</a><a href="https://www.youtube.com/channel/UCECkXsvrDSwIi_x11e5b3Ew" class="social" target="_blank">▶</a></div>
+      </div>
+      <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="irAHome('desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Categorías</h4><ul><li><a onclick="abrirBuscador('',{op:'1'})">Casas en venta</a></li><li><a onclick="abrirBuscador('',{op:'2'})">Alquileres</a></li><li><a onclick="abrirBuscador('',{op:'1',tipos:['1']})">Terrenos</a></li><li><a onclick="abrirBuscador('',{})">Ver todo</a></li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul><li><a href="tel:+5492323426040">(02323) 426040</a></li><li><a href="https://wa.me/5492323652581" target="_blank">WA: 2323-652581</a></li><li><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Di Martino Propiedades · Luján, Buenos Aires</span><span>Todos los derechos reservados</span></div>
+  </footer>
+</div>
+
+<!-- ════════ VISTA BUSCADOR ════════ -->
+<div id="vista-busqueda" class="vista">
+  <div class="busq-header">
+    <button class="busq-volver" onclick="irAHome()">← Volver</button>
+    <div class="busq-header-input">
+      <input id="busq-kw" type="text" placeholder="Buscá por barrio, tipo, dirección…" onkeydown="if(event.key==='Enter')ejecutarBusqueda()"/>
+      <button onclick="ejecutarBusqueda()">Buscar</button>
+    </div>
+    <div class="busq-tabs">
+      <button class="busq-tab active" data-op="" onclick="selBusqTab(this,'')">Todas</button>
+      <button class="busq-tab" data-op="1" onclick="selBusqTab(this,'1')">Venta</button>
+      <button class="busq-tab" data-op="2" onclick="selBusqTab(this,'2')">Alquiler</button>
+    </div>
+  </div>
+
+  <div class="busq-body">
+    <aside class="filtros-sidebar">
+      <div class="filtro-grupo">
+        <h4>Operación</h4>
+        <div class="filtro-radio">
+          <label><input type="radio" name="f-op" value="" checked> Todas</label>
+          <label><input type="radio" name="f-op" value="1"> En Venta</label>
+          <label><input type="radio" name="f-op" value="2"> En Alquiler</label>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Tipo de propiedad</h4>
+        <div class="filtro-check" id="filtro-tipos">
+          <label><input type="checkbox" value="3"> Casa</label>
+          <label><input type="checkbox" value="2"> Departamento</label>
+          <label><input type="checkbox" value="1"> Terreno / Lote</label>
+          <label><input type="checkbox" value="7"> Local comercial</label>
+          <label><input type="checkbox" value="13"> Quinta / Chacra</label>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Precio (USD)</h4>
+        <div class="filtro-precio">
+          <input type="number" id="f-desde" placeholder="Desde" min="0"/>
+          <input type="number" id="f-hasta" placeholder="Hasta" min="0"/>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <h4>Ambientes</h4>
+        <div class="filtro-radio">
+          <label><input type="radio" name="f-amb" value="" checked> Cualquiera</label>
+          <label><input type="radio" name="f-amb" value="1"> 1 ambiente</label>
+          <label><input type="radio" name="f-amb" value="2"> 2 ambientes</label>
+          <label><input type="radio" name="f-amb" value="3"> 3 ambientes</label>
+          <label><input type="radio" name="f-amb" value="4"> 4 o más</label>
+        </div>
+      </div>
+      <button class="btn-aplicar" onclick="ejecutarBusqueda()">Aplicar filtros</button>
+      <button class="btn-limpiar" onclick="limpiarFiltros()">Limpiar filtros</button>
+    </aside>
+
+    <div class="resultados-panel">
+      <div class="resultados-top">
+        <span class="res-count" id="res-count"></span>
+        <select class="res-orden" id="res-orden"><option value="">Sin orden específico</option><option value="asc">Precio: menor a mayor</option><option value="desc">Precio: mayor a menor</option></select>
+      </div>
+      <div id="busq-loading" class="estado-carga" style="display:none"><div class="spinner"></div><p>Buscando propiedades…</p></div>
+      <div id="busq-vacio" class="estado-vacio" style="display:none"><h3>Sin resultados</h3><p>Probá con otros términos o cambiá los filtros.</p></div>
+      <div id="busq-grid" class="prop-grid-busq" style="display:none"></div>
+      <div class="paginacion" id="busq-pag" style="display:none">
+        <button class="btn-pag" id="btn-prev" onclick="cambiarPag(-1)">← Anterior</button>
+        <span class="pag-info" id="pag-info"></span>
+        <button class="btn-pag" id="btn-next" onclick="cambiarPag(1)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ VISTA DETALLE ════════ -->
+<div id="vista-detalle" class="vista">
+  <div class="det-header">
+    <button class="det-volver" onclick="history.back()">← Volver</button>
+    <span class="det-breadcrumb">Di Martino Propiedades › <b id="det-breadcrumb-titulo"></b></span>
+  </div>
+
+  <div id="det-loading" class="estado-carga" style="padding:80px 0"><div class="spinner"></div><p>Cargando propiedad…</p></div>
+
+  <div class="det-wrap" id="det-body" style="display:none">
+
+    <!-- ── COLUMNA IZQUIERDA ── -->
+    <div>
+      <!-- Galería -->
+      <div class="det-galeria">
+        <div class="galeria-main">
+          <div class="galeria-track" id="gal-track"></div>
+          <button class="galeria-btn prev" id="gal-prev" onclick="galNav(-1)">‹</button>
+          <button class="galeria-btn next" id="gal-next" onclick="galNav(1)">›</button>
+          <div class="galeria-counter" id="gal-counter">1 / 1</div>
+          <div class="galeria-acciones" id="gal-acciones"></div>
+        </div>
+        <div class="galeria-thumbs" id="gal-thumbs"></div>
+      </div>
+
+      <!-- Características completas -->
+      <div class="det-card" id="det-caract-card">
+        <div class="det-card-titulo">Características</div>
+        <div class="det-feats-grid" id="det-feats-full"></div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="det-card" id="det-desc-card" style="display:none">
+        <div class="det-card-titulo">Descripción</div>
+        <p class="det-desc-txt" id="det-desc-txt"></p>
+      </div>
+
+      <!-- Amenidades / Tags -->
+      <div class="det-card" id="det-tags-card" style="display:none">
+        <div class="det-card-titulo">Amenidades y comodidades</div>
+        <div class="det-tags" id="det-tags"></div>
+      </div>
+
+      <!-- Video YouTube -->
+      <div class="det-card" id="det-video-card" style="display:none">
+        <div class="det-card-titulo">Video de la propiedad</div>
+        <div class="det-video-wrap" id="det-video-wrap"></div>
+      </div>
+
+      <!-- Tour virtual -->
+      <div class="det-card" id="det-tour-card" style="display:none">
+        <div class="det-card-titulo">🔵 Recorrido virtual 360°</div>
+        <div id="det-tour-wrap"></div>
+      </div>
+
+      <!-- Ubicación -->
+      <div class="det-card" id="det-ubic-card">
+        <div class="det-card-titulo">Ubicación</div>
+        <a class="det-mapa-link" id="det-mapa-link" href="#" target="_blank">
+          📍 <span id="det-mapa-txt">Ver en Google Maps</span>
+        </a>
+      </div>
+
+      <!-- Agente -->
+      <div class="det-card" id="det-agente-card">
+        <div class="det-card-titulo">Tu agente</div>
+        <div class="det-agente">
+          <div class="det-agente-avatar" id="det-agente-avatar">DM</div>
+          <div>
+            <div class="det-agente-nombre" id="det-agente-nombre">Di Martino Propiedades</div>
+            <div class="det-agente-cargo" id="det-agente-cargo">Asesor inmobiliario</div>
+            <div class="det-agente-contactos">
+              <a href="tel:+5492323426040" class="btn-agente btn-agente-tel">📞 426040</a>
+              <a href="https://wa.me/5492323652581" target="_blank" class="btn-agente btn-agente-wsp">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SIDEBAR ── -->
+    <div class="det-sidebar">
+
+      <!-- Precio y datos clave -->
+      <div class="det-card">
+        <div id="det-badge"></div>
+        <h1 class="det-titulo" id="det-titulo"></h1>
+        <div class="det-ubic" id="det-ubic-top">📍 <span id="det-ubic-txt"></span></div>
+        <div class="det-precio-row">
+          <div class="det-precio" id="det-precio"></div>
+        </div>
+        <div class="det-precio-m2" id="det-precio-m2"></div>
+        <div class="det-gastos" id="det-gastos"></div>
+        <!-- Barra de iconos clave -->
+        <div class="det-key-feats" id="det-key-feats"></div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="det-card">
+        <a id="det-wsp" href="#" target="_blank" class="btn-det-wsp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Consultar por WhatsApp
+        </a>
+        <a href="tel:+5492323426040" class="btn-det-tel">📞 (02323) 426040</a>
+
+        <!-- Formulario -->
+        <div style="border-top:1px solid var(--gris-bg);padding-top:16px;margin-top:4px">
+          <p style="font-size:13px;color:var(--gris-txt);margin-bottom:14px">O dejanos tus datos y te contactamos:</p>
+          <div class="campo"><label>Nombre</label><input type="text" placeholder="Tu nombre"/></div>
+          <div class="campo"><label>Teléfono</label><input type="tel" placeholder="2323-000000"/></div>
+          <div class="campo"><label>Mensaje</label><textarea id="det-msg" placeholder="Me interesa esta propiedad…"></textarea></div>
+          <button class="btn-form" onclick="enviarForm(this)">Enviar consulta →</button>
+        </div>
+      </div>
+
+      <!-- Ref ID -->
+      <div style="text-align:center;font-size:12px;color:var(--gris-txt)" id="det-ref"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════
+   CONFIG
+═══════════════════════════════ */
+const KEY  = 'a06ecb4a1c79709c0cd21d83adb9dd2e6d2b0f5f';
+const BASE = 'https://tokkobroker.com/api/v1';
+const PPP  = 6; // por página
+
+const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', amb:'', pagina:1, total:0 };
+
+/* ═══════════════════════════════
+   VISTAS
+═══════════════════════════════ */
+function mostrarVista(id) {
+  document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+  window.scrollTo(0, 0);
+}
+
+function irAHome(ancla) {
+  mostrarVista('vista-home');
+  if (ancla) setTimeout(() => {
+    const el = document.getElementById(ancla);
+    if (el) el.scrollIntoView({ behavior:'smooth' });
+  }, 80);
+}
+
+/* ═══════════════════════════════
+   HERO TABS
+═══════════════════════════════ */
+document.querySelectorAll('.bus-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bus-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+function buscarDesdeHero() {
+  const kw = document.getElementById('hero-kw').value.trim();
+  const op = document.querySelector('.bus-tab.active')?.dataset.op || '';
+  abrirBuscador(kw, { op });
+}
+
+/* ═══════════════════════════════
+   BUSCADOR
+═══════════════════════════════ */
+function abrirBuscador(kw, opciones) {
+  S.kw     = kw || '';
+  S.op     = opciones.op !== undefined ? opciones.op : '';
+  S.tipos  = opciones.tipos || [];
+  S.desde  = '';
+  S.hasta  = '';
+  S.amb    = '';
+  S.pagina = 1;
+
+  // Sync UI sidebar
+  document.getElementById('busq-kw').value = S.kw;
+  document.querySelectorAll('[name=f-op]').forEach(r => { r.checked = r.value === S.op; });
+  document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = S.tipos.includes(c.value); });
+  document.getElementById('f-desde').value = '';
+  document.getElementById('f-hasta').value = '';
+  document.querySelectorAll('[name=f-amb]')[0].checked = true;
+  document.getElementById('f-desde').value = '';
+
+  // Sync busq-tabs
+  document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
+
+  mostrarVista('vista-busqueda');
+  cargarResultados();
+}
+
+function selBusqTab(el, op) {
+  document.querySelectorAll('.busq-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  S.op = op;
+  // Sync sidebar radio
+  document.querySelectorAll('[name=f-op]').forEach(r => { r.checked = r.value === op; });
+  S.pagina = 1;
+  cargarResultados();
+}
+
+function ejecutarBusqueda() {
+  // Leer estado completo del sidebar
+  S.kw    = document.getElementById('busq-kw').value.trim();
+  S.op    = document.querySelector('[name=f-op]:checked')?.value || '';
+  S.tipos = [...document.querySelectorAll('#filtro-tipos input:checked')].map(c => c.value);
+  S.desde = document.getElementById('f-desde').value;
+  S.hasta = document.getElementById('f-hasta').value;
+  S.amb   = document.querySelector('[name=f-amb]:checked')?.value || '';
+  S.pagina = 1;
+
+  // Sync busq-tabs
+  document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
+
+  cargarResultados();
+}
+
+function limpiarFiltros() {
+  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.amb=''; S.pagina=1;
+  document.getElementById('busq-kw').value = '';
+  document.querySelectorAll('[name=f-op]')[0].checked = true;
+  document.querySelectorAll('#filtro-tipos input').forEach(c => c.checked = false);
+  document.getElementById('f-desde').value = '';
+  document.getElementById('f-hasta').value = '';
+  document.querySelectorAll('[name=f-amb]')[0].checked = true;
+  document.querySelectorAll('.busq-tab').forEach(t => t.classList.toggle('active', t.dataset.op === ''));
+  cargarResultados();
+}
+
+/* ═══════════════════════════════
+   API
+═══════════════════════════════ */
+function buildURL() {
+  const offset = (S.pagina - 1) * PPP;
+  let url = `${BASE}/property/?key=${KEY}&format=json&limit=${PPP}&offset=${offset}`;
+  if (S.kw)          url += `&search-input=${encodeURIComponent(S.kw)}`;
+  if (S.op)          url += `&operation_types=${S.op}`;
+  if (S.tipos.length) url += `&property_types=${S.tipos.join(',')}`;
+  if (S.desde)       url += `&price_from=${S.desde}`;
+  if (S.hasta)       url += `&price_to=${S.hasta}`;
+  if (S.amb)         url += `&room_amount=${S.amb}`;
+  return url;
+}
+
+async function cargarResultados() {
+  const loading = document.getElementById('busq-loading');
+  const grid    = document.getElementById('busq-grid');
+  const vacio   = document.getElementById('busq-vacio');
+  const pagDiv  = document.getElementById('busq-pag');
+  const count   = document.getElementById('res-count');
+
+  grid.style.display='none'; vacio.style.display='none'; pagDiv.style.display='none';
+  loading.style.display='block'; count.textContent='Buscando…';
+
+  try {
+    const res  = await fetch(buildURL());
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    const props = data.objects || data.results || [];
+    S.total = data.count || data.meta?.total_count || props.length;
+
+    loading.style.display='none';
+
+    if (!props.length) {
+      vacio.style.display='block';
+      count.textContent = 'Sin resultados';
+      return;
+    }
+
+    count.innerHTML = `<b>${S.total.toLocaleString('es-AR')}</b> propiedades encontradas`;
+    grid.innerHTML = props.map(renderCard).join('');
+    grid.style.display = 'grid';
+
+    const totalPags = Math.ceil(S.total / PPP);
+    if (totalPags > 1) {
+      document.getElementById('pag-info').textContent = `Página ${S.pagina} de ${totalPags}`;
+      document.getElementById('btn-prev').disabled = S.pagina <= 1;
+      document.getElementById('btn-next').disabled = S.pagina >= totalPags;
+      pagDiv.style.display = 'flex';
+    }
+  } catch (e) {
+    loading.style.display='none';
+    vacio.innerHTML = '<h3>Error de conexión</h3><p>No se pudo contactar con el servidor. Intentá nuevamente.</p>';
+    vacio.style.display='block';
+    count.textContent = 'Error';
+  }
+}
+
+async function cargarHome() {
+  try {
+    const res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6`);
+    const data = await res.json();
+    const props = (data.objects || data.results || []).slice(0, 6);
+    document.getElementById('home-loading').style.display = 'none';
+    if (props.length) {
+      const g = document.getElementById('home-grid');
+      g.innerHTML = props.map(renderCard).join('');
+      g.style.display = 'grid';
+    }
+  } catch(e) { document.getElementById('home-loading').style.display='none'; }
+}
+
+function cambiarPag(d) {
+  S.pagina += d;
+  cargarResultados();
+  window.scrollTo(0, 136);
+}
+
+/* ═══════════════════════════════
+   HELPERS TOKKO
+═══════════════════════════════ */
+const FALLBACK = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=70';
+
+function getFoto(p) { return (p.photos||[])[0]?.image || FALLBACK; }
+
+function getPrecio(ops) {
+  const pr = (ops||[])[0]?.prices?.[0];
+  if (!pr?.price) return '';
+  const m = Number(pr.price).toLocaleString('es-AR');
+  const c = pr.currency==='USD' ? 'USD' : '$';
+  const s = (ops[0].operation_type||'').toLowerCase()==='alquiler' ? '/mes' : '';
+  return `${c} ${m}${s}`;
+}
+
+function getOp(ops) {
+  const t = (ops||[])[0]?.operation_type || '';
+  return { label: t||'Consultar', cls: t.toLowerCase()==='alquiler' ? 'alquiler' : 'venta' };
+}
+
+function getUbic(p) {
+  const parts = [];
+  if (p.location?.name) parts.push(p.location.name);
+  if (p.location?.parent_location?.name) parts.push(p.location.parent_location.name);
+  return parts.join(', ') || p.address || 'Luján, Buenos Aires';
+}
+
+function getSup(p) {
+  const s = p.roofed_surface || p.total_surface || p.surface || 0;
+  return s ? `${Math.round(s)} m²` : '';
+}
+
+/* ═══════════════════════════════
+   RENDER CARD
+═══════════════════════════════ */
+function renderCard(p) {
+  const foto   = getFoto(p);
+  const precio = getPrecio(p.operations);
+  const {label,cls} = getOp(p.operations);
+  const ubic   = getUbic(p);
+  const sup    = getSup(p);
+  const rooms  = p.room_amount || '';
+  const banos  = p.bathroom_amount || '';
+  const titulo = p.title || p.type?.name || 'Propiedad';
+
+  let feats = '';
+  if (rooms) feats += `<span class="prop-feat">🛏 ${rooms} amb.</span>`;
+  if (banos) feats += `<span class="prop-feat">🚿 ${banos} baño${banos>1?'s':''}</span>`;
+  if (sup)   feats += `<span class="prop-feat">📐 ${sup}</span>`;
+
+  return `
+  <div class="prop-card" onclick="abrirDetalle(${p.id})">
+    <div class="prop-foto">
+      <img src="${foto}" alt="${titulo}" loading="lazy" onerror="this.src='${FALLBACK}'"/>
+      <span class="prop-tipo ${cls}">${label}</span>
+      ${precio ? `<span class="prop-precio">${precio}</span>` : ''}
+    </div>
+    <div class="prop-body">
+      <h3 class="prop-titulo">${titulo}</h3>
+      <div class="prop-ubicacion">📍 ${ubic}</div>
+      ${feats ? `<div class="prop-features">${feats}</div>` : ''}
+      <div class="prop-cta">Ver detalle →</div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════
+   DETALLE (nueva pestaña / misma página)
+═══════════════════════════════ */
+function abrirDetalle(id) {
+  // Abre en nueva pestaña con ?prop=ID en la URL
+  const url = window.location.href.split('?')[0].split('#')[0] + '?prop=' + id;
+  window.open(url, '_blank');
+}
+
+async function cargarDetalle(id) {
+  mostrarVista('vista-detalle');
+  document.getElementById('det-loading').style.display = 'block';
+  document.getElementById('det-body').style.display = 'none';
+
+  try {
+    const res  = await fetch(`${BASE}/property/${id}/?key=${KEY}&format=json`);
+    if (!res.ok) throw new Error(res.status);
+    const p = await res.json();
+    renderDetalle(p);
+  } catch(e) {
+    document.getElementById('det-loading').innerHTML = '<p style="color:#c0392b;padding:40px;text-align:center">No se pudo cargar la propiedad. <button onclick="history.back()" style="margin-left:8px;padding:8px 16px;background:#0a2f42;color:#fff;border:none;border-radius:6px;cursor:pointer">← Volver</button></p>';
+  }
+}
+
+let galIdx = 0, galFotos = [];
+
+function renderDetalle(p) {
+  const titulo = p.title || p.type?.name || 'Propiedad';
+  const precio = getPrecio(p.operations);
+  const {label, cls} = getOp(p.operations);
+  const ubic   = getUbic(p);
+
+  /* ── Títulos y breadcrumb ── */
+  document.getElementById('det-breadcrumb-titulo').textContent = titulo;
+  document.title = titulo + ' | Di Martino Propiedades';
+  document.getElementById('det-badge').innerHTML = `<span class="det-tipo-badge ${cls}">${label}</span>`;
+  document.getElementById('det-titulo').textContent = titulo;
+
+  /* ── Ubicación ── */
+  document.getElementById('det-ubic-txt').textContent = ubic;
+  const mapq = encodeURIComponent((p.address ? p.address + ', ' : '') + ubic + ', Buenos Aires, Argentina');
+  const mapaLink = document.getElementById('det-mapa-link');
+  mapaLink.href = `https://www.google.com/maps/search/?api=1&query=${mapq}`;
+  document.getElementById('det-mapa-txt').textContent = p.address ? p.address + ' — Ver en Google Maps' : 'Ver en Google Maps';
+
+  /* ── Precio ── */
+  document.getElementById('det-precio').textContent = precio || 'Consultar precio';
+
+  // Precio por m²
+  const pm2El = document.getElementById('det-precio-m2');
+  const op0 = (p.operations||[])[0];
+  const pr0 = (op0?.prices||[])[0];
+  const sup_r = parseFloat(p.roofed_surface||0);
+  if (pr0?.price && sup_r > 1) {
+    const ppm2 = Math.round(pr0.price / sup_r);
+    pm2El.textContent = `${pr0.currency||'$'} ${ppm2.toLocaleString('es-AR')} / m²`;
+  } else { pm2El.textContent = ''; }
+
+  // Expensas
+  const gastosEl = document.getElementById('det-gastos');
+  if (p.expenses) {
+    gastosEl.textContent = `Expensas: ${p.currency_expenses||'$'} ${Number(p.expenses).toLocaleString('es-AR')}/mes`;
+  } else { gastosEl.textContent = ''; }
+
+  /* ── Barra de ícono clave (ambientes / baños / m²) ── */
+  let kf = '';
+  if (p.room_amount)     kf += `<div class="det-kf"><span class="det-kf-val">${p.room_amount}</span><span class="det-kf-lab">amb.</span></div>`;
+  if (p.bathroom_amount) kf += `<div class="det-kf"><span class="det-kf-val">${p.bathroom_amount}</span><span class="det-kf-lab">baño${p.bathroom_amount>1?'s':''}</span></div>`;
+  const supCub = p.roofed_surface || p.surface;
+  if (supCub)            kf += `<div class="det-kf"><span class="det-kf-val">${Math.round(supCub)}</span><span class="det-kf-lab">m² cub.</span></div>`;
+  if (p.total_surface && p.total_surface !== supCub)
+                         kf += `<div class="det-kf"><span class="det-kf-val">${Math.round(p.total_surface)}</span><span class="det-kf-lab">m² tot.</span></div>`;
+  document.getElementById('det-key-feats').innerHTML = kf;
+
+  /* ── Tabla completa de características ── */
+  const rows = [
+    ['🏠 Tipo',         p.type?.name],
+    ['📍 Ubicación',    ubic],
+    ['🛏 Ambientes',    p.room_amount],
+    ['🛁 Baños',        p.bathroom_amount],
+    ['🚗 Garage',       p.garage_amount ? `${p.garage_amount} cochera${p.garage_amount>1?'s':''}` : null],
+    ['🅿️ Estacionam.',  p.parking_lot_amount],
+    ['📐 Sup. cubierta',supCub ? `${Math.round(supCub)} m²` : null],
+    ['🌿 Sup. total',   p.total_surface ? `${Math.round(p.total_surface)} m²` : null],
+    ['🔲 Sup. terreno', p.surface && !supCub ? `${Math.round(p.surface)} m²` : null],
+    ['📅 Antigüedad',   p.age],
+    ['🔧 Estado',       p.condition],
+    ['📋 Situación',    p.situation],
+    ['💰 Expensas',     p.expenses ? `${p.currency_expenses||'$'} ${Number(p.expenses).toLocaleString('es-AR')}/mes` : null],
+  ];
+  document.getElementById('det-feats-full').innerHTML = rows
+    .filter(([,v]) => v !== null && v !== undefined && v !== '' && v !== 0)
+    .map(([k,v]) => `<div class="det-feat-item"><span>${k}</span><span style="font-weight:600">${v}</span></div>`)
+    .join('');
+
+  /* ── Descripción ── */
+  const desc = p.description || p.short_description || '';
+  const descCard = document.getElementById('det-desc-card');
+  if (desc.trim()) {
+    document.getElementById('det-desc-txt').textContent = desc;
+    descCard.style.display = 'block';
+  } else { descCard.style.display = 'none'; }
+
+  /* ── Amenidades / Tags ── */
+  const tags = (p.tags||[]).map(t => t.name||t).filter(Boolean);
+  const tagsCard = document.getElementById('det-tags-card');
+  if (tags.length) {
+    document.getElementById('det-tags').innerHTML = tags
+      .map(t => `<span class="det-tag">${t}</span>`).join('');
+    tagsCard.style.display = 'block';
+  } else { tagsCard.style.display = 'none'; }
+
+  /* ── Video YouTube ── */
+  const videos = (p.videos||[]).filter(v => v.player_url);
+  const videoCard = document.getElementById('det-video-card');
+  if (videos.length) {
+    // Convertir URL de YouTube a embed
+    function toEmbed(url) {
+      let vid = '';
+      try {
+        const u = new URL(url);
+        vid = u.searchParams.get('v') || u.pathname.split('/').pop();
+      } catch(e) { vid = url.split('/').pop(); }
+      return `https://www.youtube.com/embed/${vid}?rel=0`;
+    }
+    document.getElementById('det-video-wrap').innerHTML = videos
+      .map(v => `<div class="det-video-frame"><iframe src="${toEmbed(v.player_url)}" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe></div>`)
+      .join('');
+    // Hacer el contenedor relativo para que el iframe se posicione bien
+    const vw = document.getElementById('det-video-wrap');
+    vw.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden';
+    videoCard.style.display = 'block';
+  } else { videoCard.style.display = 'none'; }
+
+  /* ── Tour virtual ── */
+  const tours = (p.virtual_tours||[]).filter(t => t.player_url);
+  const tourCard = document.getElementById('det-tour-card');
+  if (tours.length) {
+    document.getElementById('det-tour-wrap').innerHTML = tours
+      .map(t => `<div class="det-tour-wrap"><iframe src="${t.player_url}" frameborder="0" allowfullscreen allow="xr-spatial-tracking"></iframe></div>`)
+      .join('');
+    tourCard.style.display = 'block';
+  } else { tourCard.style.display = 'none'; }
+
+  /* ── Agente / Producer ── */
+  const prod = p.producer || {};
+  const agNombre = prod.name || 'Di Martino Propiedades';
+  const agIniciales = agNombre.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  document.getElementById('det-agente-avatar').textContent = agIniciales;
+  document.getElementById('det-agente-nombre').textContent = agNombre;
+  document.getElementById('det-agente-cargo').textContent = prod.email || 'Asesor inmobiliario';
+
+  /* ── WhatsApp / teléfono ── */
+  const msg = encodeURIComponent(`Hola! Me interesa la propiedad: ${titulo} — ${ubic}. ¿Pueden darme más información?`);
+  document.getElementById('det-wsp').href = `https://wa.me/5492323652581?text=${msg}`;
+
+  /* ── Pre-fill formulario ── */
+  document.getElementById('det-msg').value = `Hola, me interesa la propiedad: ${titulo}. ¿Pueden darme más información?`;
+
+  /* ── Ref ID ── */
+  document.getElementById('det-ref').textContent = `Ref: #${p.id}`;
+
+  /* ── Galería ── */
+  galFotos = (p.photos||[]).map(x => x.image||x.thumb).filter(Boolean);
+  if (!galFotos.length) galFotos = [FALLBACK];
+  galIdx = 0;
+  buildGaleria();
+
+  document.getElementById('det-loading').style.display = 'none';
+  document.getElementById('det-body').style.display = 'grid';
+}
+
+function buildGaleria() {
+  const track  = document.getElementById('gal-track');
+  const thumbs = document.getElementById('gal-thumbs');
+  const single = galFotos.length <= 1;
+
+  track.innerHTML = galFotos.map((src,i) =>
+    `<img class="galeria-img" src="${src}" alt="Foto ${i+1}" loading="${i===0?'eager':'lazy'}" onerror="this.src='${FALLBACK}'">`
+  ).join('');
+
+  thumbs.innerHTML = galFotos.length > 1 ? galFotos.map((src,i) =>
+    `<div class="galeria-thumb${i===0?' activo':''}" onclick="galIr(${i})"><img src="${src}" alt="" onerror="this.src='${FALLBACK}'"></div>`
+  ).join('') : '';
+
+  document.getElementById('gal-prev').style.display = single ? 'none' : 'flex';
+  document.getElementById('gal-next').style.display = single ? 'none' : 'flex';
+
+  // Botón compartir
+  const acciones = document.getElementById('gal-acciones');
+  if (acciones) {
+    acciones.innerHTML = `<button class="gal-btn-accion" onclick="compartir()" title="Compartir">⬆ Compartir</button>`;
+  }
+
+  actualizarGal();
+}
+
+function actualizarGal() {
+  document.getElementById('gal-track').style.transform = `translateX(-${galIdx*100}%)`;
+  document.getElementById('gal-counter').textContent = `${galIdx+1} / ${galFotos.length}`;
+  document.querySelectorAll('.galeria-thumb').forEach((t,i) => t.classList.toggle('activo', i===galIdx));
+}
+
+function galNav(d) { galIdx = (galIdx+d+galFotos.length)%galFotos.length; actualizarGal(); }
+function galIr(i)  { galIdx = i; actualizarGal(); }
+
+function compartir() {
+  if (navigator.share) {
+    navigator.share({ title: document.title, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => alert('¡Link copiado al portapapeles!'));
+  }
+}
+
+/* ═══════════════════════════════
+   FORMULARIOS
+═══════════════════════════════ */
+function enviarForm(btn) {
+  const inputs = btn.closest('.det-card, .formulario').querySelectorAll('input,textarea,select');
+  let ok = true;
+  inputs.forEach(i => { i.value.trim() ? (i.style.borderColor='') : (i.style.borderColor='#c0392b', ok=false); });
+  if (!ok) { btn.textContent='⚠️ Completá todos los campos'; setTimeout(()=>btn.textContent='Enviar consulta →',2500); return; }
+  btn.textContent='✓ ¡Consulta enviada!'; btn.style.background='#27ae60';
+  inputs.forEach(i=>{i.value='';i.style.borderColor='';});
+  setTimeout(()=>{btn.textContent='Enviar consulta →';btn.style.background='';},4000);
+}
+
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+// Detectar ?prop=ID en la URL
+const urlParams = new URLSearchParams(window.location.search);
+const propId = urlParams.get('prop');
+
+if (propId) {
+  cargarDetalle(propId);
+} else {
+  cargarHome();
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow =
+    window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,.35)' : '0 2px 16px rgba(0,0,0,.25)';
+});
+</script>
+</body>
+</html>
