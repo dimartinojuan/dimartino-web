@@ -313,7 +313,8 @@ button,input,select,textarea{font-family:inherit}
 .lightbox-cerrar:hover{opacity:1}
 .lightbox-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:13px}
 
-/* Agente */
+/* Agente — ocultar sección de productor */
+#det-agente-card{display:none!important}
 .det-agente{display:flex;align-items:center;gap:14px}
 .det-agente-avatar{width:52px;height:52px;border-radius:50%;background:var(--azul);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--blanco);font-weight:700;flex-shrink:0}
 .det-agente-nombre{font-size:15px;font-weight:700;color:var(--azul);margin-bottom:2px}
@@ -417,6 +418,11 @@ footer{background:#071a27;padding:56px 5% 26px}
 .footer-col ul a{font-size:14px;color:rgba(255,255,255,.5);transition:color .18s;cursor:pointer}
 .footer-col ul a:hover{color:var(--blanco)}
 .footer-bottom{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.2)}
+
+/* ── Instagram flotante ── */
+.ig-float{position:fixed;bottom:22px;right:22px;display:flex;align-items:center;gap:9px;padding:11px 18px 11px 14px;border-radius:50px;background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.28);z-index:9999;transition:transform .18s,box-shadow .18s;letter-spacing:.01em}
+.ig-float:hover{transform:scale(1.06);box-shadow:0 7px 28px rgba(0,0,0,.36)}
+@media(max-width:480px){.ig-float span{display:none}.ig-float{padding:12px}}
 
 /* ══ SKELETON LOADER ══ */
 .skel-card{background:var(--blanco);border:1px solid var(--gris-borde);border-radius:14px;overflow:hidden}
@@ -697,6 +703,16 @@ footer{background:#071a27;padding:56px 5% 26px}
   </footer>
 </div>
 
+<!-- ════ BOTÓN FLOTANTE INSTAGRAM ════ -->
+<a href="https://www.instagram.com/dimartinopropiedades/" target="_blank" class="ig-float" title="Seguinos en Instagram" aria-label="Seguinos en Instagram">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="2"/>
+    <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="2"/>
+    <circle cx="17.5" cy="6.5" r="1.25" fill="white"/>
+  </svg>
+  <span>Seguinos</span>
+</a>
+
 <!-- ════════ VISTA BUSCADOR ════════ -->
 <div id="vista-busqueda" class="vista">
   <!-- input oculto para mantener sincronía con el buscador del navbar -->
@@ -756,6 +772,10 @@ footer{background:#071a27;padding:56px 5% 26px}
       <div class="filtro-grupo">
         <h4>Dormitorios</h4>
         <div id="filtro-dorm-opts" class="dorm-opts"></div>
+      </div>
+      <div class="filtro-grupo" id="filtro-barrio-grupo" style="display:none">
+        <h4>Barrio</h4>
+        <div id="filtro-barrio-opts" class="dorm-opts" style="flex-direction:column;align-items:flex-start;gap:4px"></div>
       </div>
       <button class="btn-limpiar-link" onclick="limpiarFiltros()">Limpiar filtros</button>
     </aside>
@@ -925,7 +945,7 @@ const KEY  = 'a06ecb4a1c79709c0cd21d83adb9dd2e6d2b0f5f';
 const BASE = 'https://tokkobroker.com/api/v1';
 const PPP = 12; // propiedades a mostrar por lote
 
-const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], moneda:'USD' };
+const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], barrios:[], moneda:'USD' };
 
 // ── Cache completo del API (se carga una sola vez) ──
 let todasLasProps  = [];  // todas las propiedades sin filtrar
@@ -1041,7 +1061,7 @@ function ejecutarBusqueda() {
 }
 
 function limpiarFiltros() {
-  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[];
+  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[];
   document.getElementById('busq-kw').value = '';
   document.getElementById('nav-search-input').value = '';
   document.querySelectorAll('[name=f-op]')[0].checked = true;
@@ -1220,9 +1240,14 @@ function aplicarFiltrosSin(props, excluir = []) {
       const match = S.ambs.some(v => v === '4' ? dorm >= 4 : String(dorm) === v);
       if (!match) return false;
     }
+    if (!excluir.includes('barrios') && S.barrios.length) {
+      const loc = (p.location?.name || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      if (!S.barrios.some(b => loc === b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''))) return false;
+    }
     if (!excluir.includes('kw') && S.kw) {
-      const q = S.kw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-      // Incluir nombre del tipo en español para que "casa" encuentre type.name="house"
+      const qRaw = S.kw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      // Expandir abreviaturas comunes
+      const qExpandido = qRaw.split(/\s+/).map(w => ALIAS_KW[w] || w).join(' ');
       const tipoES = TRAD_TIPO[(p.type?.name||'').toLowerCase()] || '';
       const hay = [
         p.title, p.description, p.short_description,
@@ -1230,7 +1255,7 @@ function aplicarFiltrosSin(props, excluir = []) {
         p.location?.name, p.location?.parent_location?.name,
         ...(p.tags||[]).map(t=>t.name),
       ].filter(Boolean).join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-      if (!q.split(/\s+/).every(w => hay.includes(w))) return false;
+      if (!qExpandido.split(/\s+/).every(w => hay.includes(w))) return false;
     }
     return true;
   });
@@ -1283,6 +1308,25 @@ function actualizarOpcionesDinamicas() {
   });
   const dormEl = document.getElementById('filtro-dorm-opts');
   if (dormEl) dormEl.innerHTML = dormHTML || '<span style="font-size:12px;color:#999">Sin opciones disponibles</span>';
+
+  // ── Opciones de barrios ──
+  const sinBarrio = aplicarFiltrosSin(todasLasProps, ['barrios']);
+  const barrioMap = {};
+  sinBarrio.forEach(p => {
+    const loc = p.location?.name;
+    if (loc) barrioMap[loc] = (barrioMap[loc] || 0) + 1;
+  });
+  const barriosSorted = Object.entries(barrioMap).sort((a,b) => b[1]-a[1]);
+  let barrioHTML = '';
+  barriosSorted.forEach(([loc, cnt]) => {
+    const activo = S.barrios.some(b => b === loc);
+    const locSafe = loc.replace(/'/g,"\\'");
+    barrioHTML += `<button class="dorm-btn${activo?' activo':''}" onclick="toggleBarrio('${locSafe}')" style="font-size:12px;padding:5px 11px">${loc} <span class="dorm-count">(${cnt})</span></button>`;
+  });
+  const barrioEl = document.getElementById('filtro-barrio-opts');
+  const barrioGrupo = document.getElementById('filtro-barrio-grupo');
+  if (barrioEl) barrioEl.innerHTML = barrioHTML;
+  if (barrioGrupo) barrioGrupo.style.display = barriosSorted.length ? 'block' : 'none';
 }
 
 // ── CAMBIAR MONEDA ────────────────────────────────────────────────────────────
@@ -1320,6 +1364,15 @@ function toggleDorm(val) {
   const idx = S.ambs.indexOf(val);
   if (idx >= 0) S.ambs.splice(idx, 1);
   else S.ambs.push(val);
+  actualizarOpcionesDinamicas();
+  cargarResultados();
+}
+
+// ── TOGGLE BARRIO ─────────────────────────────────────────────────────────────
+function toggleBarrio(val) {
+  const idx = S.barrios.indexOf(val);
+  if (idx >= 0) S.barrios.splice(idx, 1);
+  else S.barrios.push(val);
   actualizarOpcionesDinamicas();
   cargarResultados();
 }
@@ -1507,6 +1560,47 @@ const TRAD_TIPO = {
   'country house':'Quinta',
   'commercial premises':'Local comercial',
   'ph':'PH',
+};
+
+// Traducción de amenidades/tags (Tokko los devuelve en inglés)
+const TRAD_TAGS = {
+  'natural gas':'Gas natural','electricity':'Electricidad','pavement':'Pavimento',
+  'laundry':'Lavandería','one level':'Una planta','blinds':'Persianas',
+  'some restoration needed':'Requiere refacciones','sheet metal ceiling':'Techo de chapa',
+  'swimming pool':'Pileta','garage':'Cochera','central heating':'Calefacción central',
+  'air conditioning':'Aire acondicionado','fireplace':'Chimenea','backyard':'Patio trasero',
+  'front garden':'Jardín delantero','security':'Seguridad','doorman':'Portería',
+  'elevator':'Ascensor','gym':'Gimnasio','sauna':'Sauna','barbecue':'Quincho / Asador',
+  'terrace':'Terraza','balcony':'Balcón','garden':'Jardín','jacuzzi':'Jacuzzi',
+  'water':'Agua corriente','sewerage':'Cloacas','paved street':'Calle pavimentada',
+  'asphalted street':'Calle asfaltada','corner':'Esquina','phone':'Teléfono',
+  'cable tv':'TV cable','internet':'Internet','furnished':'Amueblado',
+  'pets allowed':'Se aceptan mascotas','hot water':'Agua caliente',
+  'city water':'Agua de red','septic tank':'Cámara séptica',
+  'artesian well':'Pozo artesiano','two levels':'Dos plantas','three levels':'Tres plantas',
+  'electric heating':'Calefacción eléctrica','gas heating':'Calefacción a gas',
+  'wood flooring':'Piso de madera','ceramic flooring':'Piso cerámico',
+  'vinyl flooring':'Piso vinílico','double glazing':'Doble vidrio',
+  'solar panels':'Paneles solares','cistern':'Cisterna','borehole':'Perforación',
+  'street lighting':'Alumbrado público','telephone line':'Línea telefónica',
+  'natural light':'Buena iluminación natural','laundry room':'Cuarto de lavado',
+  'storage room':'Baulera','utility room':'Sala de usos múltiples',
+  'american kitchen':'Cocina americana','separate kitchen':'Cocina separada',
+  'living room':'Living comedor','dining room':'Comedor','study':'Estudio',
+  'playroom':'Sala de juegos','office':'Oficina','studio':'Estudio',
+};
+function tradTag(tag) { return TRAD_TAGS[(tag||'').toLowerCase()] || tag; }
+
+// Alias para búsqueda por texto — "dpto" → "departamento", etc.
+const ALIAS_KW = {
+  'dpto':'departamento','depto':'departamento','dpt':'departamento',
+  'apto':'departamento','apt':'departamento','dto':'departamento',
+  'cas':'casa','ph':'ph','mono':'monoambiente',
+  'lote':'terreno','coch':'cochera','gge':'garage',
+  'galpn':'galpon','dep':'deposito','bod':'bodega',
+  'loc':'local','local com':'local comercial',
+  'pvta':'privada','priv':'privada','brio':'barrio',
+  'av':'avenida','rta':'ruta',
 };
 
 // Devuelve el nombre del tipo en español (sin dirección)
@@ -1715,7 +1809,7 @@ function renderDetalle(p) {
   } else { descCard.style.display = 'none'; }
 
   /* ── Amenidades / Tags ── */
-  const tags = (p.tags||[]).map(t => t.name||t).filter(Boolean);
+  const tags = (p.tags||[]).map(t => tradTag(t.name||t)).filter(Boolean);
   const tagsCard = document.getElementById('det-tags-card');
   if (tags.length) {
     document.getElementById('det-tags').innerHTML = tags
