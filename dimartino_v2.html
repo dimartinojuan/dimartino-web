@@ -30,12 +30,12 @@ button,input,select,textarea{font-family:inherit}
 .brand{display:flex;align-items:center;cursor:pointer;flex-shrink:0}
 .brand-logo{height:62px;width:auto;display:block}
 /* Buscador en navbar */
-.nav-search{flex:1;max-width:480px;display:flex;align-items:center;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;overflow:hidden;transition:all .2s}
-.nav-search:focus-within{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5)}
-.nav-search input{flex:1;background:none;border:none;padding:9px 14px;font-size:14px;color:var(--blanco);outline:none}
-.nav-search input::placeholder{color:rgba(255,255,255,.45)}
-.nav-search button{background:none;border:none;padding:9px 13px;cursor:pointer;color:rgba(255,255,255,.7);font-size:16px;transition:color .18s;display:flex;align-items:center}
-.nav-search button:hover{color:var(--blanco)}
+.nav-search{flex:1;max-width:480px;display:flex;align-items:center;background:#fff;border:none;border-radius:8px;overflow:hidden;transition:all .2s;box-shadow:0 1px 6px rgba(0,0,0,.15)}
+.nav-search:focus-within{box-shadow:0 2px 12px rgba(0,0,0,.22)}
+.nav-search input{flex:1;background:none;border:none;padding:9px 14px;font-size:14px;color:#222;outline:none}
+.nav-search input::placeholder{color:#999}
+.nav-search button{background:none;border:none;padding:9px 13px;cursor:pointer;color:#555;font-size:16px;transition:color .18s;display:flex;align-items:center}
+.nav-search button:hover{color:var(--azul)}
 .nav-links{display:flex;align-items:center;gap:20px;list-style:none;flex-shrink:0}
 .nav-links a{color:rgba(255,255,255,.8);font-size:13px;font-weight:500;transition:color .2s;cursor:pointer;white-space:nowrap}
 .nav-links a:hover{color:var(--blanco)}
@@ -503,7 +503,7 @@ footer{background:#071a27;padding:56px 5% 26px}
   </div>
   <!-- Buscador central -->
   <div class="nav-search">
-    <input type="text" id="nav-search-input" placeholder="Buscar propiedades en Luján…"
+    <input type="text" id="nav-search-input" placeholder="Buscar por palabra clave o código…"
       onkeydown="if(event.key==='Enter'){navBuscar()}"
       oninput="sincronizarNavSearch(this.value)"/>
     <button onclick="navBuscar()" title="Buscar">
