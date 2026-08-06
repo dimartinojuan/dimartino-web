@@ -2523,12 +2523,12 @@ function toYTEmbed(url) {
   } catch(e) { return url; }
 }
 
-// Abre video en el lightbox
+// Abre video de YouTube en nueva pestaña (embedding deshabilitado por muchos canales)
 function abrirLightboxVideo() {
   if (!galProp) return;
   const v = (galProp.videos||[]).find(v => v.player_url && (!v.provider || v.provider.toLowerCase().includes('youtube')));
   if (!v) return;
-  mostrarLightboxIframe(toYTEmbed(v.player_url));
+  window.open(v.player_url, '_blank', 'noopener');
 }
 
 // Abre 360° en el lightbox
