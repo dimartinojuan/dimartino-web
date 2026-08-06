@@ -2528,16 +2528,16 @@ function abrirLightboxVideo() {
   if (!galProp) return;
   const v = (galProp.videos||[]).find(v => v.player_url && (!v.provider || v.provider.toLowerCase().includes('youtube')));
   if (!v) return;
-  mostrarLightboxIframe(toYTEmbed(v.player_url), 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"');
+  mostrarLightboxIframe(toYTEmbed(v.player_url));
 }
 
 // Abre 360° en el lightbox
 function abrirLightboxTour() {
   if (!galProp) return;
   const tour = (galProp.virtual_tours||[]).find(t => t.player_url);
-  if (tour) { mostrarLightboxIframe(tour.player_url, 'allow="vr; xr-spatial-tracking; gyroscope; accelerometer; fullscreen; autoplay" scrolling="no"'); return; }
+  if (tour) { mostrarLightboxIframe(tour.player_url); return; }
   const v360 = (galProp.videos||[]).find(v => v.player_url && v.provider && !v.provider.toLowerCase().includes('youtube'));
-  if (v360) mostrarLightboxIframe(v360.player_url, 'allow="vr; xr-spatial-tracking; gyroscope; accelerometer; fullscreen; autoplay"');
+  if (v360) mostrarLightboxIframe(v360.player_url);
 }
 
 function volverAFotos() {
@@ -2549,16 +2549,14 @@ function volverAFotos() {
   document.getElementById('lb-counter').style.display = '';
 }
 
-function mostrarLightboxIframe(src, extraAttrs) {
-  const lb = document.getElementById('lightbox');
+function mostrarLightboxIframe(src) {
   document.getElementById('lb-iframe').src = src;
-  document.getElementById('lb-iframe').setAttribute('allow', extraAttrs.includes('allow=') ? extraAttrs.match(/allow="([^"]+)"/)?.[1]||'' : '');
   document.getElementById('lb-iframe-wrap').style.display = 'flex';
   document.getElementById('lb-img-wrap').style.display = 'none';
   document.getElementById('lb-prev').style.display = 'none';
   document.getElementById('lb-next').style.display = 'none';
   document.getElementById('lb-counter').style.display = 'none';
-  lb.classList.add('open');
+  document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
