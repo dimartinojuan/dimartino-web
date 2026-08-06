@@ -275,13 +275,21 @@ button,input,select,textarea{font-family:inherit}
 .det-precio-m2{font-size:13px;color:var(--gris-txt);margin-top:4px}
 .det-gastos{font-size:13px;color:var(--gris-txt);margin-top:3px}
 
-/* Características clave (bar horizontal) */
-.det-key-feats{display:flex;gap:0;border:1px solid var(--gris-borde);border-radius:10px;overflow:hidden;margin-top:18px}
-.det-kf{flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--gris-borde)}
-.det-kf:last-child{border-right:none}
-.det-kf-ico{font-size:20px;display:block;margin-bottom:4px}
-.det-kf-val{font-size:15px;font-weight:800;color:var(--azul);display:block}
-.det-kf-lab{font-size:10px;color:var(--gris-txt);letter-spacing:.5px;text-transform:uppercase}
+/* Características clave — estilo ZonaProp con íconos SVG */
+.det-key-feats{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--gris-borde);margin-top:18px;padding-top:18px}
+.det-kf{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;min-width:72px;text-align:center;position:relative}
+.det-kf:not(:last-child)::after{content:'';position:absolute;right:0;top:15%;height:70%;width:1px;background:var(--gris-borde)}
+.det-kf-ico{color:var(--negro);opacity:.7;display:flex;align-items:center;justify-content:center}
+.det-kf-val{font-size:14px;font-weight:800;color:var(--negro);line-height:1.1}
+.det-kf-lab{font-size:10px;color:var(--gris-txt);letter-spacing:.3px;text-transform:lowercase}
+
+/* Descripción colapsable */
+.det-desc-wrap{position:relative;overflow:hidden;transition:max-height .35s ease}
+.det-desc-wrap.collapsed{max-height:5.2em}
+.det-desc-txt{font-size:14px;color:var(--gris-txt);line-height:1.8;white-space:pre-wrap;margin:0}
+.det-desc-fade{position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,var(--blanco));pointer-events:none}
+.det-desc-ver-mas{background:none;border:none;color:var(--azul);font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;padding:0;display:flex;align-items:center;gap:4px}
+.det-desc-ver-mas:hover{text-decoration:underline}
 
 /* Características completas */
 .det-feats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -500,8 +508,7 @@ footer{background:#071a27;padding:56px 5% 26px}
   .galeria-layout{grid-template-columns:1fr;height:260px}
   .galeria-grid-der{display:none}
   .det-feats-grid{grid-template-columns:1fr}
-  .det-key-feats{flex-wrap:wrap}
-  .det-kf{flex:none;min-width:25%}
+  .det-kf{min-width:64px}
   .det-tour-wrap{height:320px}
 
   /* Secciones */
@@ -514,8 +521,7 @@ footer{background:#071a27;padding:56px 5% 26px}
 @media(max-width:480px){
   .cat-grid{grid-template-columns:1fr 1fr}
   .hero h1{font-size:1.75rem}
-  .det-key-feats{display:grid;grid-template-columns:1fr 1fr}
-  .det-kf{border-right:none;border-bottom:1px solid var(--gris-borde)}
+  .det-kf{min-width:60px;padding:8px 10px}
   .prop-card{border-radius:10px}
 }
 </style>
@@ -871,7 +877,14 @@ footer{background:#071a27;padding:56px 5% 26px}
       <!-- Descripción -->
       <div class="det-card" id="det-desc-card" style="display:none">
         <div class="det-card-titulo">Descripción</div>
-        <p class="det-desc-txt" id="det-desc-txt"></p>
+        <div class="det-desc-wrap collapsed" id="det-desc-wrap">
+          <p class="det-desc-txt" id="det-desc-txt"></p>
+          <div class="det-desc-fade" id="det-desc-fade"></div>
+        </div>
+        <button class="det-desc-ver-mas" id="det-desc-toggle" onclick="toggleDesc()">
+          Leer descripción completa
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
       </div>
 
       <!-- Amenidades / Tags -->
@@ -2180,15 +2193,45 @@ function renderDetalle(p) {
     gastosEl.textContent = `Expensas: ${p.currency_expenses||'$'} ${Number(p.expenses).toLocaleString('es-AR')}/mes`;
   } else { gastosEl.textContent = ''; }
 
-  /* ── Barra de ícono clave (ambientes / baños / m²) ── */
-  let kf = '';
-  if (p.suite_amount)    kf += `<div class="det-kf"><span class="det-kf-val">${p.suite_amount}</span><span class="det-kf-lab">dorm.</span></div>`;
-  if (p.room_amount)     kf += `<div class="det-kf"><span class="det-kf-val">${p.room_amount}</span><span class="det-kf-lab">amb.</span></div>`;
-  if (p.bathroom_amount) kf += `<div class="det-kf"><span class="det-kf-val">${p.bathroom_amount}</span><span class="det-kf-lab">baño${p.bathroom_amount>1?'s':''}</span></div>`;
+  /* ── Barra de características estilo ZonaProp ── */
+  const ICO = {
+    supTot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="7 3 3 3 3 7"/><polyline points="17 3 21 3 21 7"/><polyline points="3 17 3 21 7 21"/><polyline points="21 17 21 21 17 21"/><line x1="4" y1="4" x2="20" y2="20"/></svg>`,
+    supCub: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><polyline points="3 3 3 14 14 14 14 3"/></svg>`,
+    supLot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 22 8 22 16 12 22 2 16 2 8"/></svg>`,
+    amb:    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/><line x1="12" y1="3" x2="12" y2="17"/></svg>`,
+    dorm:   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 20V10a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10"/><path d="M2 14h20"/><path d="M7 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2"/></svg>`,
+    bano:   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16v2a6 6 0 0 1-12 0"/><path d="M4 6V4a2 2 0 0 1 4 0v1"/><line x1="4" y1="6" x2="4" y2="12"/></svg>`,
+    toilet: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2h8v4H8z"/><path d="M6 6h12a6 6 0 0 1-6 6A6 6 0 0 1 6 6z"/><path d="M12 12v4M9 16h6v4H9z"/></svg>`,
+    coche:  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 17H3v-4l2-5h14l2 5v4h-2"/><line x1="5" y1="17" x2="19" y2="17"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>`,
+    edad:   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    orient: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polygon points="12 2 14.5 9.5 12 12 9.5 9.5" fill="currentColor" stroke="none"/><polygon points="12 22 9.5 14.5 12 12 14.5 14.5" opacity=".35" fill="currentColor" stroke="none"/></svg>`,
+  };
+  function kfItem(ico, val, lab) {
+    return `<div class="det-kf"><span class="det-kf-ico">${ICO[ico]}</span><span class="det-kf-val">${val}</span><span class="det-kf-lab">${lab}</span></div>`;
+  }
   const supCub = p.roofed_surface || p.surface;
-  if (supCub)            kf += `<div class="det-kf"><span class="det-kf-val">${Math.round(supCub)}</span><span class="det-kf-lab">m² cub.</span></div>`;
+  let kf = '';
   if (p.total_surface && p.total_surface !== supCub)
-                         kf += `<div class="det-kf"><span class="det-kf-val">${Math.round(p.total_surface)}</span><span class="det-kf-lab">m² tot.</span></div>`;
+    kf += kfItem('supTot', `${Math.round(p.total_surface)} m²`, 'tot.');
+  if (supCub)
+    kf += kfItem('supCub', `${Math.round(supCub)} m²`, 'cub.');
+  if (p.surface && !supCub && !p.total_surface)
+    kf += kfItem('supLot', `${Math.round(p.surface)} m²`, 'sup.');
+  if (p.room_amount)
+    kf += kfItem('amb', p.room_amount, `amb.`);
+  if (p.suite_amount)
+    kf += kfItem('dorm', p.suite_amount, `dorm.`);
+  if (p.bathroom_amount)
+    kf += kfItem('bano', p.bathroom_amount, `baño${p.bathroom_amount>1?'s':''}`);
+  if (p.toilet_amount)
+    kf += kfItem('toilet', p.toilet_amount, 'toilette');
+  const cocheras = (p.garage_amount||0) + (p.parking_lot_amount||0);
+  if (cocheras)
+    kf += kfItem('coche', cocheras, `coch.`);
+  if (trad(p.age) && trad(p.age) !== '-')
+    kf += kfItem('edad', trad(p.age), 'años');
+  if (p.orientation)
+    kf += kfItem('orient', p.orientation, 'orient.');
   document.getElementById('det-key-feats').innerHTML = kf;
 
   /* ── Tabla completa de características ── */
@@ -2231,10 +2274,21 @@ function renderDetalle(p) {
 
   /* ── Descripción ── */
   const desc = p.description || p.short_description || '';
-  const descCard = document.getElementById('det-desc-card');
+  const descCard   = document.getElementById('det-desc-card');
+  const descWrap   = document.getElementById('det-desc-wrap');
+  const descToggle = document.getElementById('det-desc-toggle');
   if (desc.trim()) {
     document.getElementById('det-desc-txt').textContent = desc;
     descCard.style.display = 'block';
+    // Resetear estado colapsado al cargar nueva propiedad
+    descWrap.classList.add('collapsed');
+    descToggle.innerHTML = `Leer descripción completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+    // Sólo mostrar el toggle si el texto es más largo que el colapso
+    requestAnimationFrame(() => {
+      const needsToggle = descWrap.scrollHeight > descWrap.clientHeight + 4;
+      descToggle.style.display = needsToggle ? 'flex' : 'none';
+      document.getElementById('det-desc-fade').style.display = needsToggle ? 'block' : 'none';
+    });
   } else { descCard.style.display = 'none'; }
 
   /* ── Amenidades / Tags ── */
@@ -2448,6 +2502,23 @@ function compartir() {
     try { document.execCommand('copy'); mostrarToast('¡Link copiado!'); }
     catch(e) { prompt('Copiá este link:', url); }
     document.body.removeChild(el);
+  }
+}
+
+function toggleDesc() {
+  const wrap   = document.getElementById('det-desc-wrap');
+  const toggle = document.getElementById('det-desc-toggle');
+  const fade   = document.getElementById('det-desc-fade');
+  const open   = wrap.classList.toggle('collapsed');
+  // open=true → volvió a colapsado; open=false → expandido
+  if (wrap.classList.contains('collapsed')) {
+    toggle.innerHTML = `Leer descripción completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+    fade.style.display = 'block';
+    wrap.style.maxHeight = '';
+  } else {
+    wrap.style.maxHeight = wrap.scrollHeight + 'px';
+    toggle.innerHTML = `Ocultar descripción <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>`;
+    fade.style.display = 'none';
   }
 }
 
