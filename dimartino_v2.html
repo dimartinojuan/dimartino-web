@@ -2443,14 +2443,14 @@ function buildGaleria() {
     // Pill de video
     const tieneVideo = (galProp.videos||[]).some(v => v.player_url &&
       (!v.provider || v.provider.toLowerCase().includes('youtube')));
-    if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="document.getElementById('det-video-card').scrollIntoView({behavior:'smooth'})">
+    if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="irASeccion('det-video-card')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>`);
 
     // Pill de 360°
     const tiene360 = (galProp.virtual_tours||[]).some(t => t.player_url) ||
       (galProp.videos||[]).some(v => v.player_url && v.provider &&
         !v.provider.toLowerCase().includes('youtube'));
-    if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="document.getElementById('det-tour-card').scrollIntoView({behavior:'smooth'})">
+    if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="irASeccion('det-tour-card')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
       360°</button>`);
 
@@ -2484,25 +2484,41 @@ function galIr(i)  { galIdx = i; actualizarGal(); }
 
 function compartir() {
   const url = window.location.href;
-  if (navigator.share) {
+  // navigator.share con file:// mata el tab en Chrome — solo usar en HTTPS/HTTP
+  const esWeb = window.location.protocol === 'https:' || window.location.protocol === 'http:';
+  if (esWeb && navigator.share) {
     navigator.share({ title: document.title, url }).catch(() => {});
     return;
   }
-  // Fallback: copiar al portapapeles (funciona en file:// y http)
-  if (navigator.clipboard && navigator.clipboard.writeText) {
+  // Fallback: clipboard API (requiere HTTPS o localhost)
+  if (esWeb && navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url)
       .then(() => mostrarToast('¡Link copiado al portapapeles!'))
-      .catch(() => prompt('Copiá este link:', url));
-  } else {
+      .catch(() => mostrarToast('Copiá la URL desde la barra del navegador'));
+    return;
+  }
+  // Último recurso: execCommand (funciona en file://)
+  try {
     const el = document.createElement('textarea');
     el.value = url;
-    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
     document.body.appendChild(el);
     el.select();
-    try { document.execCommand('copy'); mostrarToast('¡Link copiado!'); }
-    catch(e) { prompt('Copiá este link:', url); }
+    document.execCommand('copy');
     document.body.removeChild(el);
+    mostrarToast('¡Link copiado al portapapeles!');
+  } catch(e) {
+    mostrarToast('Copiá la URL desde la barra del navegador');
   }
+}
+
+// Cierra el lightbox y luego hace scroll al elemento indicado
+function irASeccion(id) {
+  cerrarLightbox();
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 120); // pequeño delay para que el lightbox se cierre antes
 }
 
 function toggleDesc() {
