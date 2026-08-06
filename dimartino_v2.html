@@ -419,6 +419,14 @@ footer{background:#071a27;padding:56px 5% 26px}
 .footer-col ul a:hover{color:var(--blanco)}
 .footer-bottom{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.2)}
 
+/* ── NLP chips ── */
+.nlp-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 0 2px}
+.nlp-chip{display:inline-flex;align-items:center;gap:4px;background:var(--azul);color:#fff;border-radius:20px;padding:4px 8px 4px 12px;font-size:12px;font-weight:600;animation:chipIn .18s ease}
+@keyframes chipIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.nlp-chip button{background:none;border:none;color:rgba(255,255,255,.75);cursor:pointer;font-size:15px;line-height:1;padding:0 2px;transition:color .12s}
+.nlp-chip button:hover{color:#fff}
+.nlp-hint{font-size:11px;color:var(--gris-txt);padding:0 0 6px;font-style:italic}
+
 /* ── Instagram flotante ── */
 .ig-float{position:fixed;bottom:22px;right:22px;display:flex;align-items:center;gap:9px;padding:11px 18px 11px 14px;border-radius:50px;background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.28);z-index:9999;transition:transform .18s,box-shadow .18s;letter-spacing:.01em}
 .ig-float:hover{transform:scale(1.06);box-shadow:0 7px 28px rgba(0,0,0,.36)}
@@ -781,6 +789,8 @@ footer{background:#071a27;padding:56px 5% 26px}
     </aside>
 
     <div class="resultados-panel">
+      <div id="nlp-bar" class="nlp-bar" style="display:none"></div>
+      <div id="nlp-hint" class="nlp-hint" style="display:none"></div>
       <div class="resultados-top">
         <span class="res-count" id="res-count"></span>
         <div class="res-acciones">
@@ -1001,7 +1011,58 @@ function buscarDesdeHero() {
 ═══════════════════════════════ */
 function navBuscar() {
   const kw = document.getElementById('nav-search-input').value.trim();
-  abrirBuscador(kw, {});
+  // Si la query tiene más de 3 palabras o contiene palabras clave → NLP
+  const palabras = kw.trim().split(/\s+/).length;
+  if (palabras >= 2 || /\d/.test(kw)) {
+    // Interpretar primero, luego abrir buscador con el resto
+    if (!cacheCargado) {
+      abrirBuscador(kw, {});
+      setTimeout(() => aplicarNLP(kw), 800);
+    } else {
+      abrirBuscador('', {});
+      setTimeout(() => aplicarNLP(kw), 50);
+    }
+  } else {
+    abrirBuscador(kw, {});
+  }
+}
+
+function aplicarNLP(texto) {
+  if (!texto.trim()) return;
+  const r = interpretarBusqueda(texto);
+  // Aplicar filtros detectados (sin pisar lo que el usuario puso manualmente)
+  if (r.op) {
+    S.op = r.op;
+    document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === S.op; });
+    document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
+  }
+  if (r.tipos.length) {
+    S.tipos = r.tipos;
+    document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = S.tipos.includes(c.value); });
+  }
+  if (r.ambs.length) S.ambs = r.ambs;
+  if (r.barrios.length) S.barrios = r.barrios;
+  if (r.moneda) {
+    S.moneda = r.moneda;
+    document.getElementById('btn-usd').classList.toggle('activo', r.moneda === 'USD');
+    document.getElementById('btn-ars').classList.toggle('activo', r.moneda === 'ARS');
+  }
+  if (r.hasta) {
+    S.hasta = r.hasta;
+    document.getElementById('f-hasta').value = r.hasta;
+  }
+  if (r.desde) {
+    S.desde = r.desde;
+    document.getElementById('f-desde').value = r.desde;
+  }
+  // El resto del texto (palabras no interpretadas) queda como kw
+  S.kw = r.resto;
+  document.getElementById('nav-search-input').value = r.resto;
+  document.getElementById('busq-kw').value = r.resto;
+
+  renderChips();
+  actualizarOpcionesDinamicas();
+  cargarResultados();
 }
 
 function sincronizarNavSearch(val) {
@@ -1045,6 +1106,282 @@ function selBusqTab(el, op) {
   cargarResultados();
 }
 
+/* ═══════════════════════════════════════════════════════
+   MOTOR NLP — Búsqueda en lenguaje natural con tolerancia
+   a errores ortográficos y abreviaturas
+═══════════════════════════════════════════════════════ */
+
+// ── Levenshtein (distancia de edición) ───────────────────────────────────────
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = [];
+  for (let i = 0; i <= m; i++) { dp[i] = [i]; }
+  for (let j = 0; j <= n; j++) { dp[0][j] = j; }
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+// ── Normalización fonética (español argentino) ────────────────────────────────
+function fonetica(s) {
+  return (s||'').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/h/g,'')                    // h muda
+    .replace(/v/g,'b')                   // v = b
+    .replace(/y(?=[aeiou])/g,'ll')       // ya→lla, etc.
+    .replace(/[zs](?=[ei])/g,'s')        // ce/ci/ze/zi → se/si
+    .replace(/c(?=[ei])/g,'s')           // ce/ci → se/si
+    .replace(/c(?![ei])/g,'k')           // ca/co/cu → ka/ko/ku
+    .replace(/qu/g,'k')                  // qu → k
+    .replace(/gue|gui/g,'ge')            // güe → ge
+    .replace(/[áéíóú]/g, m=>({á:'a',é:'e',í:'i',ó:'o',ú:'u'}[m]))
+    .replace(/[^a-z0-9 ]/g,'');
+}
+
+// ── Buscar mejor coincidencia fonética + Levenshtein ─────────────────────────
+function mejorMatch(palabra, catalogo) {
+  const pfon = fonetica(palabra);
+  let mejor = null, menorDist = Infinity;
+  for (const [clave, valor] of Object.entries(catalogo)) {
+    const cfon = fonetica(clave);
+    if (pfon === cfon) return valor; // coincidencia exacta fonética
+    // Prefijo: si la palabra empieza igual con 5+ caracteres
+    const minLen = Math.min(pfon.length, cfon.length);
+    if (minLen >= 5 && pfon.substring(0,5) === cfon.substring(0,5)) {
+      if (0 < menorDist) { menorDist = 0; mejor = valor; }
+      continue;
+    }
+    // Umbral dinámico según largo
+    const umbral = pfon.length <= 4 ? 1 : pfon.length <= 7 ? 2 : 3;
+    const dist = levenshtein(pfon, cfon);
+    if (dist <= umbral && dist < menorDist) { menorDist = dist; mejor = valor; }
+  }
+  return mejor;
+}
+
+// ── Catálogos NLP ─────────────────────────────────────────────────────────────
+const NLP_TIPOS = {
+  // Casas
+  'casa':'2','casas':'2','chalet':'2','chalecito':'2','casita':'2','chalets':'2',
+  // Departamentos
+  'departamento':'3','departamentos':'3','dpto':'3','depto':'3','dto':'3',
+  'dept':'3','dpt':'3','apartamento':'3','apto':'3','apt':'3',
+  // Quintas
+  'quinta':'5','quintas':'5','chacra':'5','campo vacacional':'5',
+  // Terrenos
+  'terreno':'1','terrenos':'1','lote':'1','lotes':'1','loteo':'1',
+  // Locales
+  'local':'7','locales':'7','negocio':'7','comercio':'7',
+  // Oficinas
+  'oficina':'6','oficinas':'6','consultorio':'30',
+  // Cocheras
+  'cochera':'10','cocheras':'10','garage':'10','garaje':'10',
+  // Galpones
+  'galpon':'24','galpones':'24','deposito':'14','bodega':'17',
+  // Campos
+  'campo':'9','haras':'29','establecimiento':'18',
+  // PH / Monoambiente
+  'ph':'13','monoambiente':'13','mono':'13','studio':'13',
+  // Hotel
+  'hotel':'11','hoteles':'11',
+};
+
+const NLP_OPS = {
+  'venta':'1','vender':'1','comprar':'1','compra':'1','compro':'1',
+  'alquiler':'2','alquilar':'2','alquilo':'2','alquileres':'2','renta':'2',
+  'arrendar':'2','alquier':'2','alqiluer':'2',
+  'temporal':'3','temporario':'3','temporada':'3','vacacional':'3','turismo':'3',
+};
+
+const NLP_NUMS = {
+  'un':1,'uno':1,'una':1,'dos':2,'tres':3,'cuatro':4,'cinco':5,
+  'seis':6,'siete':7,'ocho':8,'nueve':9,'diez':10,
+};
+
+const NLP_AMENIDADES_KW = [
+  'pileta','pool','piscina',
+  'cochera','garage','garaje',
+  'quincho','asador','parrilla',
+  'jardin','patio','parque',
+  'country','barrio cerrado','countries',
+  'seguridad','vigilancia',
+  'ascensor','elevador',
+  'calefaccion','calefacion','calefacción',
+  'aire','acondicionado',
+];
+
+// ── Parser principal ──────────────────────────────────────────────────────────
+function interpretarBusqueda(texto) {
+  const r = { op: null, tipos: [], ambs: [], barrios: [], desde: '', hasta: '', moneda: null, resto: [] };
+  const norm = fonetica(texto);
+  const tokens = norm.split(/\s+/).filter(Boolean);
+  const original = texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/\s+/).filter(Boolean);
+  const usado = new Set(); // índices de tokens ya consumidos
+
+  // ── Operación ────────────────────────────────────────────────────────────────
+  tokens.forEach((t, i) => {
+    if (r.op) return;
+    // combinación de 2 tokens
+    if (i < tokens.length - 1) {
+      const par = t + ' ' + tokens[i+1];
+      const op = mejorMatch(par, NLP_OPS);
+      if (op) { r.op = op; usado.add(i); usado.add(i+1); return; }
+    }
+    const op = mejorMatch(t, NLP_OPS);
+    if (op) { r.op = op; usado.add(i); }
+  });
+
+  // ── Tipo ─────────────────────────────────────────────────────────────────────
+  tokens.forEach((t, i) => {
+    if (r.tipos.length) return;
+    if (i < tokens.length - 1) {
+      const par = t + ' ' + tokens[i+1];
+      const tipo = mejorMatch(par, NLP_TIPOS);
+      if (tipo) { r.tipos = [tipo]; usado.add(i); usado.add(i+1); return; }
+    }
+    const tipo = mejorMatch(t, NLP_TIPOS);
+    if (tipo) { r.tipos = [tipo]; usado.add(i); }
+  });
+
+  // ── Dormitorios ───────────────────────────────────────────────────────────────
+  const dormRE = /(\d+|un|uno|dos|tres|cuatro|cinco)\s*(dormitorio|dormitorios|dorm|dorms|ambiente|ambientes|amb|habitacion|habitaciones|cuarto|cuartos|pieza|piezas)/;
+  const dormMatch = fonetica(texto).match(dormRE);
+  if (dormMatch) {
+    const n = isNaN(dormMatch[1]) ? (NLP_NUMS[dormMatch[1]] || 1) : parseInt(dormMatch[1]);
+    if (n >= 1) r.ambs = [n >= 4 ? '4' : String(n)];
+    // marcar los tokens correspondientes como usados
+    tokens.forEach((t, i) => {
+      if (NLP_NUMS[t] !== undefined || !isNaN(t)) used_maybe: {
+        if (i < tokens.length - 1) {
+          const siguiente = fonetica(tokens[i+1] || '');
+          if (/dormitorio|dorm|ambiente|amb|habitacion|cuarto|pieza/.test(siguiente)) {
+            usado.add(i); usado.add(i+1);
+          }
+        }
+      }
+    });
+  }
+
+  // ── Precio ────────────────────────────────────────────────────────────────────
+  // Detectar moneda
+  if (/dolar|dolares|usd|us\$|u\$s/.test(norm)) r.moneda = 'USD';
+  else if (/peso|pesos|ars/.test(norm)) r.moneda = 'ARS';
+
+  // "hasta X", "hasta Xk", "hasta X mil", "hasta X millones"
+  const hastaRE = /hasta\s+(\d[\d.,]*)\s*(k|mil(?:lon(?:es)?)?|m\b)?/;
+  const hastaM = texto.toLowerCase().match(hastaRE);
+  if (hastaM) {
+    let v = parseFloat(hastaM[1].replace(/[.,](?=\d{3})/g,'').replace(',','.'));
+    const suf = (hastaM[2]||'').toLowerCase();
+    if (suf === 'k') v *= 1000;
+    else if (suf.startsWith('mil') && !suf.startsWith('millon')) v *= 1000;
+    else if (suf.startsWith('millon')) v *= 1000000;
+    else if (suf === 'm') v *= 1000000;
+    r.hasta = String(Math.round(v));
+  }
+
+  const desdeRE = /desde\s+(\d[\d.,]*)\s*(k|mil(?:lon(?:es)?)?|m\b)?/;
+  const desdeM = texto.toLowerCase().match(desdeRE);
+  if (desdeM) {
+    let v = parseFloat(desdeM[1].replace(/[.,](?=\d{3})/g,'').replace(',','.'));
+    const suf = (desdeM[2]||'').toLowerCase();
+    if (suf === 'k') v *= 1000;
+    else if (suf.startsWith('mil') && !suf.startsWith('millon')) v *= 1000;
+    else if (suf.startsWith('millon')) v *= 1000000;
+    else if (suf === 'm') v *= 1000000;
+    r.desde = String(Math.round(v));
+  }
+
+  // precio standalone: "150k", "200000", "300 mil"
+  if (!r.hasta) {
+    const priceRE = /\b(\d[\d.,]*)\s*(k|mil(?:lon(?:es)?)?)\b/g;
+    let pm;
+    while ((pm = priceRE.exec(texto.toLowerCase())) !== null) {
+      let v = parseFloat(pm[1].replace(/[.,](?=\d{3})/g,'').replace(',','.'));
+      const suf = pm[2].toLowerCase();
+      if (suf === 'k') v *= 1000;
+      else if (suf.startsWith('mil') && !suf.startsWith('millon')) v *= 1000;
+      else if (suf.startsWith('millon')) v *= 1000000;
+      if (v >= 1000) { r.hasta = String(Math.round(v)); break; }
+    }
+  }
+
+  // ── Barrio (fuzzy contra cache) ───────────────────────────────────────────────
+  if (todasLasProps.length) {
+    const barriosCatalogo = {};
+    [...new Set(todasLasProps.map(p => p.location?.name).filter(Boolean))]
+      .forEach(b => { barriosCatalogo[b] = b; });
+
+    // probar combos de 1, 2 y 3 tokens
+    const combos = [];
+    for (let len = 3; len >= 1; len--) {
+      for (let i = 0; i <= original.length - len; i++) {
+        combos.push({ phrase: original.slice(i, i+len).join(' '), idx: Array.from({length:len},(_,j)=>i+j) });
+      }
+    }
+    for (const { phrase, idx } of combos) {
+      if (idx.some(i => usado.has(i))) continue;
+      const barrio = mejorMatch(phrase, barriosCatalogo);
+      if (barrio) { r.barrios = [barrio]; idx.forEach(i => usado.add(i)); break; }
+    }
+  }
+
+  // ── Amenidades en el texto libre (para kw) ────────────────────────────────────
+  const kwParts = original.filter((_, i) => !usado.has(i));
+  r.resto = kwParts.join(' ').trim();
+
+  return r;
+}
+
+// ── Generar chips visuales ────────────────────────────────────────────────────
+const NLP_TIPO_NOMBRE = {
+  '1':'Terreno','2':'Casa','3':'Departamento','5':'Quinta','6':'Oficina',
+  '7':'Local','9':'Campo','10':'Cochera','11':'Hotel','12':'Nave industrial',
+  '13':'PH / Monoambiente','14':'Depósito','15':'Fondo de comercio',
+  '16':'Baulera','17':'Bodega','18':'Est. rural','24':'Galpón','29':'Haras','30':'Consultorio',
+};
+const NLP_OP_NOMBRE = { '1':'Venta','2':'Alquiler','3':'Temporal' };
+
+function renderChips() {
+  const bar = document.getElementById('nlp-bar');
+  const hint = document.getElementById('nlp-hint');
+  if (!bar) return;
+  const chips = [];
+
+  if (S.op) chips.push({ label: NLP_OP_NOMBRE[S.op] || S.op, key: 'op' });
+  S.tipos.forEach(t => chips.push({ label: NLP_TIPO_NOMBRE[t] || t, key: 'tipo', val: t }));
+  S.ambs.forEach(a => chips.push({ label: a === '4' ? '4+ dorm.' : `${a} dorm.`, key: 'amb', val: a }));
+  S.barrios.forEach(b => chips.push({ label: b, key: 'barrio', val: b }));
+  if (S.hasta) chips.push({ label: `Hasta ${S.moneda==='ARS'?'$':'US$'}${Number(S.hasta).toLocaleString('es-AR')}`, key: 'hasta' });
+  if (S.desde) chips.push({ label: `Desde ${S.moneda==='ARS'?'$':'US$'}${Number(S.desde).toLocaleString('es-AR')}`, key: 'desde' });
+
+  if (!chips.length) { bar.style.display = 'none'; if (hint) hint.style.display = 'none'; return; }
+
+  bar.style.display = 'flex';
+  bar.innerHTML = chips.map(c =>
+    `<span class="nlp-chip">${c.label}<button onclick="quitarChip('${c.key}','${c.val||''}')">×</button></span>`
+  ).join('');
+
+  if (hint) {
+    hint.style.display = 'block';
+    hint.textContent = 'Filtros detectados automáticamente. Tocá × para quitar uno.';
+  }
+}
+
+function quitarChip(key, val) {
+  if (key === 'op') S.op = '';
+  else if (key === 'tipo') S.tipos = S.tipos.filter(t => t !== val);
+  else if (key === 'amb') S.ambs = S.ambs.filter(a => a !== val);
+  else if (key === 'barrio') S.barrios = S.barrios.filter(b => b !== val);
+  else if (key === 'hasta') { S.hasta = ''; document.getElementById('f-hasta').value = ''; }
+  else if (key === 'desde') { S.desde = ''; document.getElementById('f-desde').value = ''; }
+  renderChips();
+  actualizarOpcionesDinamicas();
+  cargarResultados();
+}
+
 function ejecutarBusqueda() {
   S.kw    = document.getElementById('nav-search-input').value.trim();
   document.getElementById('busq-kw').value = S.kw;
@@ -1062,6 +1399,7 @@ function ejecutarBusqueda() {
 
 function limpiarFiltros() {
   S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[];
+  renderChips();
   document.getElementById('busq-kw').value = '';
   document.getElementById('nav-search-input').value = '';
   document.querySelectorAll('[name=f-op]')[0].checked = true;
