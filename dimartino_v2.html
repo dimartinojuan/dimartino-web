@@ -214,7 +214,7 @@ button,input,select,textarea{font-family:inherit}
 .pag-info{font-size:13px;color:var(--gris-txt);padding:0 8px}
 
 /* ══ VISTA DETALLE ══ */
-#vista-detalle{padding-top:68px;min-height:100vh;background:var(--gris-bg)}
+#vista-detalle{padding-top:84px;min-height:100vh;background:var(--gris-bg)}
 .det-header{background:var(--azul);padding:14px 5%;display:flex;align-items:center;gap:14px;position:sticky;top:68px;z-index:800;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .det-volver{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--blanco);padding:8px 15px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background .18s;white-space:nowrap}
 .det-volver:hover{background:rgba(255,255,255,.22)}
@@ -235,9 +235,15 @@ button,input,select,textarea{font-family:inherit}
 .galeria-btn.prev{left:10px}
 .galeria-btn.next{right:10px}
 .galeria-counter{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.62);color:var(--blanco);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap;z-index:5}
-.galeria-acciones{position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:5}
-.gal-btn-accion{background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.gal-btn-accion:hover{background:#fff}
+/* Overlay compartir — arriba derecha */
+.galeria-compartir{position:absolute;top:10px;right:10px;z-index:5}
+.gal-btn-compartir{background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.gal-btn-compartir:hover{background:#fff}
+/* Overlay medios — abajo izquierda (estilo ZonaProp) */
+.galeria-acciones{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;z-index:5;align-items:center}
+.gal-media-pill{background:rgba(0,0,0,.55);border:none;color:#fff;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;backdrop-filter:blur(2px)}
+.gal-media-pill:hover{background:rgba(0,0,0,.8)}
+.gal-media-pill svg{flex-shrink:0}
 /* Grilla lateral de miniaturas */
 .galeria-grid-der{display:grid;grid-template-rows:repeat(2,1fr);gap:3px;overflow:hidden}
 .galeria-grid-item{position:relative;overflow:hidden;cursor:pointer}
@@ -312,6 +318,9 @@ button,input,select,textarea{font-family:inherit}
 .lightbox-cerrar{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;opacity:.7;transition:opacity .18s}
 .lightbox-cerrar:hover{opacity:1}
 .lightbox-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:13px}
+/* Wrapper relativo para posicionar pills sobre la foto del lightbox */
+.lb-img-wrap{position:relative;display:inline-flex;align-items:flex-end}
+.lb-acciones{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;z-index:10;align-items:center}
 
 /* Agente — ocultar sección de productor */
 #det-agente-card{display:none!important}
@@ -327,7 +336,12 @@ button,input,select,textarea{font-family:inherit}
 .btn-agente-wsp:hover{background:#1eb358}
 
 /* Sidebar sticky */
-.det-sidebar{position:sticky;top:136px;display:flex;flex-direction:column;gap:16px}
+.det-sidebar{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}
+
+/* Barra de medios (video / 360 / plano) */
+.det-media-bar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 0 4px}
+.det-media-btn{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--gris-borde);color:var(--negro);padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.det-media-btn:hover{border-color:var(--azul);color:var(--azul)}
 .det-sidebar .det-card{margin-bottom:0}
 
 /* Botones contacto */
@@ -819,10 +833,6 @@ footer{background:#071a27;padding:56px 5% 26px}
 
 <!-- ════════ VISTA DETALLE ════════ -->
 <div id="vista-detalle" class="vista">
-  <div class="det-header">
-    <button class="det-volver" onclick="history.back()">← Volver</button>
-    <span class="det-breadcrumb">Di Martino Propiedades › <b id="det-breadcrumb-titulo"></b></span>
-  </div>
 
   <div id="det-loading" class="estado-carga" style="padding:80px 0"><div class="spinner"></div><p>Cargando propiedad…</p></div>
 
@@ -839,6 +849,7 @@ footer{background:#071a27;padding:56px 5% 26px}
             <button class="galeria-btn prev" id="gal-prev" onclick="galNav(-1)">‹</button>
             <button class="galeria-btn next" id="gal-next" onclick="galNav(1)">›</button>
             <div class="galeria-counter" id="gal-counter">1 / 1</div>
+            <div class="galeria-compartir"><button class="gal-btn-compartir" onclick="compartir()">⬆ Compartir</button></div>
             <div class="galeria-acciones" id="gal-acciones"></div>
           </div>
           <!-- Grilla lateral (2 miniaturas + "ver todas") -->
@@ -847,6 +858,9 @@ footer{background:#071a27;padding:56px 5% 26px}
         <!-- Fallback scroll (mobile) -->
         <div class="galeria-thumbs" id="gal-thumbs" style="display:none"></div>
       </div>
+
+      <!-- Barra de medios disponibles -->
+      <div id="det-media-bar" class="det-media-bar" style="display:none"></div>
 
       <!-- Características completas -->
       <div class="det-card" id="det-caract-card">
@@ -1001,9 +1015,23 @@ document.querySelectorAll('.bus-tab').forEach(btn => {
 });
 
 function buscarDesdeHero() {
-  const kw = document.getElementById('hero-kw').value.trim();
-  const op = document.querySelector('.bus-tab.active')?.dataset.op || '';
-  abrirBuscador(kw, { op });
+  const kw    = document.getElementById('hero-kw').value.trim();
+  const tabOp = document.querySelector('.bus-tab.active')?.dataset.op || '';
+
+  if (!kw) {
+    // Sin texto: abrir buscador con la operación del tab seleccionado
+    abrirBuscador('', { op: tabOp });
+    return;
+  }
+
+  // Con texto: correr NLP y usar tabOp como fallback si NLP no detecta operación
+  if (!cacheCargado) {
+    abrirBuscador(kw, { op: tabOp });
+    setTimeout(() => aplicarNLP(kw, tabOp), 800);
+  } else {
+    abrirBuscador('', { op: tabOp });
+    setTimeout(() => aplicarNLP(kw, tabOp), 50);
+  }
 }
 
 /* ═══════════════════════════════
@@ -1011,25 +1039,22 @@ function buscarDesdeHero() {
 ═══════════════════════════════ */
 function navBuscar() {
   const kw = document.getElementById('nav-search-input').value.trim();
-  // Si la query tiene más de 3 palabras o contiene palabras clave → NLP
-  const palabras = kw.trim().split(/\s+/).length;
-  if (palabras >= 2 || /\d/.test(kw)) {
-    // Interpretar primero, luego abrir buscador con el resto
-    if (!cacheCargado) {
-      abrirBuscador(kw, {});
-      setTimeout(() => aplicarNLP(kw), 800);
-    } else {
-      abrirBuscador('', {});
-      setTimeout(() => aplicarNLP(kw), 50);
-    }
-  } else {
+  if (!kw) { abrirBuscador('', {}); return; }
+  // Siempre pasar por NLP — detecta tipo/barrio/precio/op incluso en 1 palabra
+  if (!cacheCargado) {
     abrirBuscador(kw, {});
+    setTimeout(() => aplicarNLP(kw), 800);
+  } else {
+    abrirBuscador('', {});
+    setTimeout(() => aplicarNLP(kw), 50);
   }
 }
 
-function aplicarNLP(texto) {
+function aplicarNLP(texto, opFallback) {
   if (!texto.trim()) return;
   const r = interpretarBusqueda(texto);
+  // Si el NLP no detectó operación pero hay una de fallback (desde hero tab), usarla
+  if (!r.op && opFallback) r.op = opFallback;
   // Resetear filtros antes de aplicar los del NLP (nueva búsqueda limpia)
   S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.desde = ''; S.hasta = '';
   document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === ''; });
@@ -1060,10 +1085,12 @@ function aplicarNLP(texto) {
     S.desde = r.desde;
     document.getElementById('f-desde').value = r.desde;
   }
-  // El resto del texto (palabras no interpretadas) queda como kw
-  S.kw = r.resto;
-  document.getElementById('nav-search-input').value = r.resto;
-  document.getElementById('busq-kw').value = r.resto;
+  // Si el NLP detectó al menos un filtro estructurado, limpiar el buscador.
+  // Si no detectó nada, dejar el texto original como búsqueda por keyword.
+  const nlpDetectoAlgo = r.op || r.tipos.length || r.barrios.length || r.hasta || r.desde || r.ambs.length;
+  S.kw = nlpDetectoAlgo ? '' : r.resto;
+  document.getElementById('nav-search-input').value = S.kw;
+  document.getElementById('busq-kw').value = S.kw;
 
   renderChips();
   actualizarOpcionesDinamicas();
@@ -1084,6 +1111,7 @@ function abrirBuscador(kw, opciones) {
   S.desde  = '';
   S.hasta  = '';
   S.ambs   = [];
+  S.barrios = opciones.barrios || [];  // ← siempre resetear barrios
 
   // Sync UI sidebar
   document.getElementById('busq-kw').value = S.kw;
@@ -1093,11 +1121,13 @@ function abrirBuscador(kw, opciones) {
   document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = S.tipos.includes(c.value); });
   document.getElementById('f-desde').value = '';
   document.getElementById('f-hasta').value = '';
-  S.ambs = []; actualizarOpcionesDinamicas();
+  S.ambs = [];
 
   // Sync busq-tabs
   document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
 
+  renderChips();           // ← limpiar chips antes de que corra el NLP
+  actualizarOpcionesDinamicas();
   mostrarVista('vista-busqueda');
   cargarResultados();
 }
@@ -1117,15 +1147,23 @@ function selBusqTab(el, op) {
 ═══════════════════════════════════════════════════════ */
 
 // ── Levenshtein (distancia de edición) ───────────────────────────────────────
+// Damerau-Levenshtein: igual que Levenshtein pero trata transposiciones (ab→ba) como 1 operación
 function levenshtein(a, b) {
   const m = a.length, n = b.length;
   const dp = [];
   for (let i = 0; i <= m; i++) { dp[i] = [i]; }
   for (let j = 0; j <= n; j++) { dp[0][j] = j; }
   for (let i = 1; i <= m; i++)
-    for (let j = 1; j <= n; j++)
-      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
-        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    for (let j = 1; j <= n; j++) {
+      if (a[i-1] === b[j-1]) {
+        dp[i][j] = dp[i-1][j-1];
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+        // Transposición (ej: csaa ↔ casa): cuenta como 1 operación
+        if (i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1])
+          dp[i][j] = Math.min(dp[i][j], dp[i-2][j-2] + 1);
+      }
+    }
   return dp[m][n];
 }
 
@@ -1172,11 +1210,14 @@ function matchTipo(palabra) {
   for (const [clave, valor] of Object.entries(NLP_TIPOS)) {
     if (pfon === fonetica(clave)) return valor;
   }
-  // 2. Fuzzy solo para palabras largas (≥6 chars) con dist≤1
-  if (pfon.length >= 6) {
+  // 2. Fuzzy para palabras ≥4 chars con dist≤1 (incluye transposiciones: csaa→casa)
+  if (pfon.length >= 4) {
+    let mejor = null, menorDist = 2;
     for (const [clave, valor] of Object.entries(NLP_TIPOS)) {
-      if (levenshtein(pfon, fonetica(clave)) <= 1) return valor;
+      const d = levenshtein(pfon, fonetica(clave));
+      if (d < menorDist) { menorDist = d; mejor = valor; }
     }
+    if (mejor) return mejor;
   }
   return null;
 }
@@ -1190,28 +1231,30 @@ const NLP_STOP = new Set([
 
 // ── Catálogos NLP ─────────────────────────────────────────────────────────────
 const NLP_TIPOS = {
-  // Casas
-  'casa':'2','casas':'2','chalet':'2','chalecito':'2','casita':'2','chalets':'2',
-  // Departamentos
-  'departamento':'3','departamentos':'3','dpto':'3','depto':'3','dto':'3',
-  'dept':'3','dpt':'3','apartamento':'3','apto':'3','apt':'3',
-  // Quintas
-  'quinta':'5','quintas':'5','chacra':'5','campo vacacional':'5',
-  // Terrenos
+  // Casas  (Tokko type.id = 3)
+  'casa':'3','casas':'3','chalet':'3','chalecito':'3','casita':'3','chalets':'3',
+  // Departamentos  (Tokko type.id = 2)
+  'departamento':'2','departamentos':'2','dpto':'2','depto':'2','dto':'2',
+  'dept':'2','dpt':'2','apartamento':'2','apto':'2','apt':'2',
+  // Quintas  (Tokko type.id = 4)
+  'quinta':'4','quintas':'4','chacra':'4',
+  // Terrenos / Lotes  (Tokko type.id = 1)
   'terreno':'1','terrenos':'1','lote':'1','lotes':'1','loteo':'1',
-  // Locales
+  // Locales comerciales  (Tokko type.id = 7)
   'local':'7','locales':'7','negocio':'7','comercio':'7',
-  // Oficinas
-  'oficina':'6','oficinas':'6','consultorio':'30',
-  // Cocheras
+  // Oficinas  (Tokko type.id = 5)
+  'oficina':'5','oficinas':'5','consultorio':'30',
+  // Cocheras  (Tokko type.id = 10)
   'cochera':'10','cocheras':'10','garage':'10','garaje':'10',
-  // Galpones
-  'galpon':'24','galpones':'24','deposito':'14','bodega':'17',
-  // Campos
+  // Galpones / Depósitos  (Tokko type.id = 24 / 14)
+  'galpon':'24','galpones':'24','deposito':'14',
+  // Campos / rurales  (Tokko type.id = 9)
   'campo':'9','haras':'29','establecimiento':'18',
-  // PH / Monoambiente
-  'ph':'13','monoambiente':'13','mono':'13','studio':'13',
-  // Hotel
+  // PH  (Tokko type.id = 13)
+  'ph':'13',
+  // Monoambiente  (Tokko type.id = 31)
+  'monoambiente':'31','mono':'31','studio':'31',
+  // Hotel  (Tokko type.id = 11)
   'hotel':'11','hoteles':'11',
 };
 
@@ -1360,7 +1403,8 @@ function interpretarBusqueda(texto) {
   }
 
   // ── Amenidades en el texto libre (para kw) ────────────────────────────────────
-  const kwParts = original.filter((_, i) => !usado.has(i));
+  // Filtrar stop words y palabras de 1 char que no aportan nada como keyword
+  const kwParts = original.filter((_, i) => !usado.has(i) && !NLP_STOP.has(original[i]) && original[i].length > 1);
   r.resto = kwParts.join(' ').trim();
 
   return r;
@@ -1368,10 +1412,12 @@ function interpretarBusqueda(texto) {
 
 // ── Generar chips visuales ────────────────────────────────────────────────────
 const NLP_TIPO_NOMBRE = {
-  '1':'Terreno','2':'Casa','3':'Departamento','5':'Quinta','6':'Oficina',
-  '7':'Local','9':'Campo','10':'Cochera','11':'Hotel','12':'Nave industrial',
-  '13':'PH / Monoambiente','14':'Depósito','15':'Fondo de comercio',
-  '16':'Baulera','17':'Bodega','18':'Est. rural','24':'Galpón','29':'Haras','30':'Consultorio',
+  '1':'Terreno','2':'Departamento','3':'Casa','4':'Quinta','5':'Oficina',
+  '7':'Local','8':'Edificio','9':'Campo','10':'Cochera','11':'Hotel',
+  '12':'Nave industrial','13':'PH','14':'Depósito','15':'Fondo de comercio',
+  '16':'Baulera','18':'Est. rural','24':'Galpón','26':'Terreno com.',
+  '27':'Terreno ind.','29':'Haras','30':'Consultorio','31':'Monoambiente',
+  '32':'Lote en cond.',
 };
 const NLP_OP_NOMBRE = { '1':'Venta','2':'Alquiler','3':'Temporal' };
 
@@ -1388,16 +1434,28 @@ function renderChips() {
   if (S.hasta) chips.push({ label: `Hasta ${S.moneda==='ARS'?'$':'US$'}${Number(S.hasta).toLocaleString('es-AR')}`, key: 'hasta' });
   if (S.desde) chips.push({ label: `Desde ${S.moneda==='ARS'?'$':'US$'}${Number(S.desde).toLocaleString('es-AR')}`, key: 'desde' });
 
-  if (!chips.length) { bar.style.display = 'none'; if (hint) hint.style.display = 'none'; return; }
+  if (!chips.length) { bar.style.display = 'none'; if (hint) hint.style.display = 'none'; }
+  else {
+    bar.style.display = 'flex';
+    bar.innerHTML = chips.map(c =>
+      `<span class="nlp-chip">${c.label}<button onclick="quitarChip('${c.key}','${c.val||''}')">×</button></span>`
+    ).join('');
+    if (hint) { hint.style.display = 'block'; hint.textContent = 'Filtros detectados automáticamente. Tocá × para quitar uno.'; }
+  }
 
-  bar.style.display = 'flex';
-  bar.innerHTML = chips.map(c =>
-    `<span class="nlp-chip">${c.label}<button onclick="quitarChip('${c.key}','${c.val||''}')">×</button></span>`
-  ).join('');
-
-  if (hint) {
-    hint.style.display = 'block';
-    hint.textContent = 'Filtros detectados automáticamente. Tocá × para quitar uno.';
+  // ── Sincronizar sidebar para que siempre refleje S ────────────────────────
+  // Operación
+  document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === (S.op||''); });
+  document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
+  // Tipos
+  document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = S.tipos.includes(c.value); });
+  // Precio
+  document.getElementById('f-desde').value = S.desde || '';
+  document.getElementById('f-hasta').value = S.hasta || '';
+  // Moneda
+  if (S.moneda) {
+    document.getElementById('btn-usd').classList.toggle('activo', S.moneda === 'USD');
+    document.getElementById('btn-ars').classList.toggle('activo', S.moneda === 'ARS');
   }
 }
 
@@ -2070,7 +2128,7 @@ async function cargarDetalle(id) {
             : 'No se pudo contactar con el servidor. Verificá tu conexión e intentá nuevamente.'}
         </p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <button onclick="history.back()" style="padding:11px 22px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">← Volver</button>
+          <button onclick="abrirBuscador('',{})" style="padding:11px 22px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">← Volver</button>
           <button onclick="abrirBuscador('',{})" style="padding:11px 22px;background:none;color:var(--azul);border:2px solid var(--azul);border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">Ver otras propiedades</button>
         </div>
         <a href="https://wa.me/5492323652581?text=Hola%2C+busco+una+propiedad+en+Lu%C3%ADan" target="_blank"
@@ -2081,16 +2139,17 @@ async function cargarDetalle(id) {
   }
 }
 
-let galIdx = 0, galFotos = [];
+let galIdx = 0, galFotos = [], galProp = null;
 
 function renderDetalle(p) {
+  galProp = p;  // guardado para la barra de medios
   const titulo = tradTitulo(p);
   const precio = getPrecio(p.operations);
   const {label, cls} = getOp(p.operations);
   const ubic   = getUbic(p);
 
   /* ── Títulos y breadcrumb ── */
-  document.getElementById('det-breadcrumb-titulo').textContent = titulo;
+  // det-breadcrumb-titulo removido — sin acción
   document.title = titulo + ' | Di Martino Propiedades';
   document.getElementById('det-badge').innerHTML = `<span class="det-tipo-badge ${cls}">${label}</span>`;
   document.getElementById('det-titulo').textContent = titulo;
@@ -2315,13 +2374,47 @@ function buildGaleria() {
   document.getElementById('gal-prev').style.display = single ? 'none' : 'flex';
   document.getElementById('gal-next').style.display = single ? 'none' : 'flex';
 
-  // Botones de acción superpuestos en la foto principal
+  // ── Overlays inferiores sobre la foto (estilo ZonaProp) ───────────────────
   const acciones = document.getElementById('gal-acciones');
-  if (acciones) {
-    const btnFotos = galFotos.length > 1
-      ? `<button class="gal-btn-accion" onclick="galNav(1)">📷 ${galFotos.length} fotos</button>` : '';
-    acciones.innerHTML = `${btnFotos}<button class="gal-btn-accion" onclick="compartir()">⬆ Compartir</button>`;
+  if (acciones && galProp) {
+    const pills = [];
+
+    // Pill de fotos con ícono de cámara — abre el carrusel completo
+    if (galFotos.length > 0) {
+      pills.push(`<button class="gal-media-pill" onclick="abrirLightbox(galIdx)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.2A3.2 3.2 0 0 1 8.8 12 3.2 3.2 0 0 1 12 8.8 3.2 3.2 0 0 1 15.2 12 3.2 3.2 0 0 1 12 15.2m7.2-10H4.8A1.6 1.6 0 0 0 3.2 6.8v10.4A1.6 1.6 0 0 0 4.8 18.8h14.4a1.6 1.6 0 0 0 1.6-1.6V6.8a1.6 1.6 0 0 0-1.6-1.6M9.6 3.2h4.8v1.6H9.6V3.2z"/></svg>
+        ${galFotos.length}</button>`);
+    }
+
+    // Pill de video
+    const tieneVideo = (galProp.videos||[]).some(v => v.player_url &&
+      (!v.provider || v.provider.toLowerCase().includes('youtube')));
+    if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="document.getElementById('det-video-card').scrollIntoView({behavior:'smooth'})">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>`);
+
+    // Pill de 360°
+    const tiene360 = (galProp.virtual_tours||[]).some(t => t.player_url) ||
+      (galProp.videos||[]).some(v => v.player_url && v.provider &&
+        !v.provider.toLowerCase().includes('youtube'));
+    if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="document.getElementById('det-tour-card').scrollIntoView({behavior:'smooth'})">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      360°</button>`);
+
+    // Pill de plano
+    const tienePlano = (galProp.blueprints||[]).length > 0;
+    if (tienePlano) {
+      const bp = galProp.blueprints[0];
+      const planoUrl = (typeof bp === 'string') ? bp : (bp.image || bp.url || '');
+      if (planoUrl) pills.push(`<a class="gal-media-pill" href="${planoUrl}" target="_blank" rel="noopener" title="Ver plano">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></a>`);
+    }
+
+    acciones.innerHTML = pills.join('');
   }
+
+  // Ocultar barra de medios separada (ya no se usa)
+  const mediaBar = document.getElementById('det-media-bar');
+  if (mediaBar) mediaBar.style.display = 'none';
 
   actualizarGal();
 }
@@ -2336,11 +2429,40 @@ function galNav(d) { galIdx = (galIdx+d+galFotos.length)%galFotos.length; actual
 function galIr(i)  { galIdx = i; actualizarGal(); }
 
 function compartir() {
+  const url = window.location.href;
   if (navigator.share) {
-    navigator.share({ title: document.title, url: window.location.href });
-  } else {
-    navigator.clipboard.writeText(window.location.href).then(() => alert('¡Link copiado al portapapeles!'));
+    navigator.share({ title: document.title, url }).catch(() => {});
+    return;
   }
+  // Fallback: copiar al portapapeles (funciona en file:// y http)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url)
+      .then(() => mostrarToast('¡Link copiado al portapapeles!'))
+      .catch(() => prompt('Copiá este link:', url));
+  } else {
+    const el = document.createElement('textarea');
+    el.value = url;
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); mostrarToast('¡Link copiado!'); }
+    catch(e) { prompt('Copiá este link:', url); }
+    document.body.removeChild(el);
+  }
+}
+
+function mostrarToast(msg) {
+  let t = document.getElementById('share-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'share-toast';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;z-index:99999;opacity:0;transition:opacity .25s';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, 2500);
 }
 
 /* ═══════════════════════════════
@@ -2469,6 +2591,10 @@ function abrirLightbox(idx) {
   actualizarLightbox();
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
+  // Copiar pills de medios al lightbox
+  const src = document.getElementById('gal-acciones');
+  const dst = document.getElementById('lb-acciones');
+  if (src && dst) dst.innerHTML = src.innerHTML;
 }
 
 function cerrarLightbox() {
@@ -2502,7 +2628,10 @@ document.addEventListener('keydown', e => {
 <div id="lightbox" class="lightbox" onclick="if(event.target===this)cerrarLightbox()">
   <button class="lightbox-cerrar" onclick="cerrarLightbox()">×</button>
   <button class="lightbox-btn prev" id="lb-prev" onclick="lbNav(-1)">‹</button>
-  <img id="lb-img" class="lightbox-img" src="" alt="Foto ampliada">
+  <div class="lb-img-wrap">
+    <img id="lb-img" class="lightbox-img" src="" alt="Foto ampliada">
+    <div id="lb-acciones" class="lb-acciones"></div>
+  </div>
   <button class="lightbox-btn next" id="lb-next" onclick="lbNav(1)">›</button>
   <div class="lightbox-counter" id="lb-counter">1 / 1</div>
 </div>
