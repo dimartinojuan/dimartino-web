@@ -1145,25 +1145,40 @@ function fonetica(s) {
     .replace(/[^a-z0-9 ]/g,'');
 }
 
-// ── Buscar mejor coincidencia fonética + Levenshtein ─────────────────────────
+// ── Buscar coincidencia fonética general (para barrios y operaciones) ─────────
 function mejorMatch(palabra, catalogo) {
   const pfon = fonetica(palabra);
   let mejor = null, menorDist = Infinity;
   for (const [clave, valor] of Object.entries(catalogo)) {
     const cfon = fonetica(clave);
-    if (pfon === cfon) return valor; // coincidencia exacta fonética
-    // Prefijo: si la palabra empieza igual con 5+ caracteres
+    if (pfon === cfon) return valor;
     const minLen = Math.min(pfon.length, cfon.length);
     if (minLen >= 5 && pfon.substring(0,5) === cfon.substring(0,5)) {
       if (0 < menorDist) { menorDist = 0; mejor = valor; }
       continue;
     }
-    // Umbral dinámico según largo
     const umbral = pfon.length <= 4 ? 1 : pfon.length <= 7 ? 2 : 3;
     const dist = levenshtein(pfon, cfon);
     if (dist <= umbral && dist < menorDist) { menorDist = dist; mejor = valor; }
   }
   return mejor;
+}
+
+// ── Buscar tipo de propiedad — MUY ESTRICTO para evitar falsos positivos ──────
+// Solo acepta: coincidencia fonética exacta, O fuzzy con dist≤1 para palabras ≥6 chars
+function matchTipo(palabra) {
+  const pfon = fonetica(palabra);
+  // 1. Coincidencia exacta fonética
+  for (const [clave, valor] of Object.entries(NLP_TIPOS)) {
+    if (pfon === fonetica(clave)) return valor;
+  }
+  // 2. Fuzzy solo para palabras largas (≥6 chars) con dist≤1
+  if (pfon.length >= 6) {
+    for (const [clave, valor] of Object.entries(NLP_TIPOS)) {
+      if (levenshtein(pfon, fonetica(clave)) <= 1) return valor;
+    }
+  }
+  return null;
 }
 
 // ── Stop words (no matchear preposiciones ni artículos cortos) ────────────────
@@ -1246,17 +1261,18 @@ function interpretarBusqueda(texto) {
   });
 
   // ── Tipo ─────────────────────────────────────────────────────────────────────
+  // Usar matchTipo (estricto) para evitar falsos positivos
   tokens.forEach((t, i) => {
     if (r.tipos.length) return;
     if (NLP_STOP.has(t)) return;
-    // solo intentar match si el token tiene mínimo 3 caracteres
     if (t.length < 3) return;
+    // Intentar primero combinación de 2 tokens (ej: "local comercial")
     if (i < tokens.length - 1 && !NLP_STOP.has(tokens[i+1])) {
       const par = t + ' ' + tokens[i+1];
-      const tipo = mejorMatch(par, NLP_TIPOS);
+      const tipo = matchTipo(par);
       if (tipo) { r.tipos = [tipo]; usado.add(i); usado.add(i+1); return; }
     }
-    const tipo = mejorMatch(t, NLP_TIPOS);
+    const tipo = matchTipo(t);
     if (tipo) { r.tipos = [tipo]; usado.add(i); }
   });
 
