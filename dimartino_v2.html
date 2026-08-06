@@ -1030,7 +1030,12 @@ function navBuscar() {
 function aplicarNLP(texto) {
   if (!texto.trim()) return;
   const r = interpretarBusqueda(texto);
-  // Aplicar filtros detectados (sin pisar lo que el usuario puso manualmente)
+  // Resetear filtros antes de aplicar los del NLP (nueva búsqueda limpia)
+  S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.desde = ''; S.hasta = '';
+  document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === ''; });
+  document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = false; });
+  document.getElementById('f-desde').value = '';
+  document.getElementById('f-hasta').value = '';
   if (r.op) {
     S.op = r.op;
     document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === S.op; });
@@ -1161,6 +1166,13 @@ function mejorMatch(palabra, catalogo) {
   return mejor;
 }
 
+// ── Stop words (no matchear preposiciones ni artículos cortos) ────────────────
+const NLP_STOP = new Set([
+  'en','de','la','el','los','las','un','una','con','por','para','sin','del',
+  'al','y','o','a','que','se','su','le','me','te','nos','lo','hay','no',
+  'si','es','son','mas','pero','como','cual','que','muy','bien','mas','fue',
+]);
+
 // ── Catálogos NLP ─────────────────────────────────────────────────────────────
 const NLP_TIPOS = {
   // Casas
@@ -1223,8 +1235,8 @@ function interpretarBusqueda(texto) {
   // ── Operación ────────────────────────────────────────────────────────────────
   tokens.forEach((t, i) => {
     if (r.op) return;
-    // combinación de 2 tokens
-    if (i < tokens.length - 1) {
+    if (NLP_STOP.has(t)) return;
+    if (i < tokens.length - 1 && !NLP_STOP.has(tokens[i+1])) {
       const par = t + ' ' + tokens[i+1];
       const op = mejorMatch(par, NLP_OPS);
       if (op) { r.op = op; usado.add(i); usado.add(i+1); return; }
@@ -1236,7 +1248,10 @@ function interpretarBusqueda(texto) {
   // ── Tipo ─────────────────────────────────────────────────────────────────────
   tokens.forEach((t, i) => {
     if (r.tipos.length) return;
-    if (i < tokens.length - 1) {
+    if (NLP_STOP.has(t)) return;
+    // solo intentar match si el token tiene mínimo 3 caracteres
+    if (t.length < 3) return;
+    if (i < tokens.length - 1 && !NLP_STOP.has(tokens[i+1])) {
       const par = t + ' ' + tokens[i+1];
       const tipo = mejorMatch(par, NLP_TIPOS);
       if (tipo) { r.tipos = [tipo]; usado.add(i); usado.add(i+1); return; }
@@ -1393,6 +1408,7 @@ function ejecutarBusqueda() {
 
   document.querySelectorAll('.busq-tab').forEach(t => { t.classList.toggle('active', t.dataset.op === S.op); });
 
+  renderChips();
   actualizarOpcionesDinamicas();
   cargarResultados();
 }
