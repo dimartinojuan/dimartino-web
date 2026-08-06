@@ -2443,14 +2443,14 @@ function buildGaleria() {
     // Pill de video
     const tieneVideo = (galProp.videos||[]).some(v => v.player_url &&
       (!v.provider || v.provider.toLowerCase().includes('youtube')));
-    if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="irASeccion('det-video-card')">
+    if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="abrirLightboxVideo()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>`);
 
     // Pill de 360°
     const tiene360 = (galProp.virtual_tours||[]).some(t => t.player_url) ||
       (galProp.videos||[]).some(v => v.player_url && v.provider &&
         !v.provider.toLowerCase().includes('youtube'));
-    if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="irASeccion('det-tour-card')">
+    if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="abrirLightboxTour()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
       360°</button>`);
 
@@ -2512,13 +2512,45 @@ function compartir() {
   }
 }
 
-// Cierra el lightbox y luego hace scroll al elemento indicado
-function irASeccion(id) {
-  cerrarLightbox();
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 120); // pequeño delay para que el lightbox se cierre antes
+// Convierte URL de YouTube a embed
+function toYTEmbed(url) {
+  try {
+    const u = new URL(url);
+    let vid = u.searchParams.get('v');
+    if (!vid) { const p = u.pathname.split('/').filter(Boolean); vid = p[p.length-1]; }
+    vid = vid.split('?')[0].split('&')[0];
+    return `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1&autoplay=1`;
+  } catch(e) { return url; }
+}
+
+// Abre video en el lightbox
+function abrirLightboxVideo() {
+  if (!galProp) return;
+  const v = (galProp.videos||[]).find(v => v.player_url && (!v.provider || v.provider.toLowerCase().includes('youtube')));
+  if (!v) return;
+  mostrarLightboxIframe(toYTEmbed(v.player_url), 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"');
+}
+
+// Abre 360° en el lightbox
+function abrirLightboxTour() {
+  if (!galProp) return;
+  const tour = (galProp.virtual_tours||[]).find(t => t.player_url);
+  if (tour) { mostrarLightboxIframe(tour.player_url, 'allow="vr; xr-spatial-tracking; gyroscope; accelerometer; fullscreen; autoplay" scrolling="no"'); return; }
+  const v360 = (galProp.videos||[]).find(v => v.player_url && v.provider && !v.provider.toLowerCase().includes('youtube'));
+  if (v360) mostrarLightboxIframe(v360.player_url, 'allow="vr; xr-spatial-tracking; gyroscope; accelerometer; fullscreen; autoplay"');
+}
+
+function mostrarLightboxIframe(src, extraAttrs) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lb-iframe').src = src;
+  document.getElementById('lb-iframe').setAttribute('allow', extraAttrs.includes('allow=') ? extraAttrs.match(/allow="([^"]+)"/)?.[1]||'' : '');
+  document.getElementById('lb-iframe-wrap').style.display = 'flex';
+  document.getElementById('lb-img-wrap').style.display = 'none';
+  document.getElementById('lb-prev').style.display = 'none';
+  document.getElementById('lb-next').style.display = 'none';
+  document.getElementById('lb-counter').style.display = 'none';
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function toggleDesc() {
@@ -2687,6 +2719,16 @@ function abrirLightbox(idx) {
 function cerrarLightbox() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
+  // Detener video/360° y volver a modo foto
+  const iframe = document.getElementById('lb-iframe');
+  if (iframe) iframe.src = '';
+  const iw = document.getElementById('lb-iframe-wrap');
+  if (iw) iw.style.display = 'none';
+  const imgWrap = document.getElementById('lb-img-wrap');
+  if (imgWrap) imgWrap.style.display = 'inline-flex';
+  document.getElementById('lb-prev').style.display = '';
+  document.getElementById('lb-next').style.display = '';
+  document.getElementById('lb-counter').style.display = '';
 }
 
 function lbNav(d) {
@@ -2714,13 +2756,20 @@ document.addEventListener('keydown', e => {
 <!-- ══ LIGHTBOX ══ -->
 <div id="lightbox" class="lightbox" onclick="if(event.target===this)cerrarLightbox()">
   <button class="lightbox-cerrar" onclick="cerrarLightbox()">×</button>
+  <!-- Modo foto -->
   <button class="lightbox-btn prev" id="lb-prev" onclick="lbNav(-1)">‹</button>
-  <div class="lb-img-wrap">
+  <div class="lb-img-wrap" id="lb-img-wrap">
     <img id="lb-img" class="lightbox-img" src="" alt="Foto ampliada">
     <div id="lb-acciones" class="lb-acciones"></div>
   </div>
   <button class="lightbox-btn next" id="lb-next" onclick="lbNav(1)">›</button>
   <div class="lightbox-counter" id="lb-counter">1 / 1</div>
+  <!-- Modo iframe (video / 360°) -->
+  <div id="lb-iframe-wrap" style="display:none;align-items:center;justify-content:center;width:100%;height:100%">
+    <iframe id="lb-iframe" src="" frameborder="0" allowfullscreen
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; vr; xr-spatial-tracking"
+      style="width:92vw;max-width:1100px;height:82vh;border:none;border-radius:8px;background:#000"></iframe>
+  </div>
 </div>
 
 </body>
