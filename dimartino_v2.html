@@ -2193,6 +2193,22 @@ function renderDetalle(p) {
     gastosEl.textContent = `Expensas: ${p.currency_expenses||'$'} ${Number(p.expenses).toLocaleString('es-AR')}/mes`;
   } else { gastosEl.textContent = ''; }
 
+  /* ── Traducción de valores Tokko (necesaria antes del bloque kf) ── */
+  const TRAD = {
+    'house':'Casa','apartment':'Departamento','land':'Terreno / Lote',
+    'office':'Oficina','store':'Local comercial','garage':'Garage',
+    'country house':'Quinta / Chacra','building':'Edificio',
+    'used':'Usado','new':'A estrenar','very good':'Muy bueno',
+    'good':'Bueno','excellent':'Excelente','to recover':'A recuperar',
+    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'',
+  };
+  function trad(v) {
+    if (v == null) return null;
+    const s = String(v).trim();
+    if (!s || ['empty','null','undefined','-'].includes(s.toLowerCase())) return null;
+    return TRAD[s.toLowerCase()] ?? s;
+  }
+
   /* ── Barra de características estilo ZonaProp ── */
   const ICO = {
     supTot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="7 3 3 3 3 7"/><polyline points="17 3 21 3 21 7"/><polyline points="3 17 3 21 7 21"/><polyline points="21 17 21 21 17 21"/><line x1="4" y1="4" x2="20" y2="20"/></svg>`,
@@ -2235,22 +2251,6 @@ function renderDetalle(p) {
   document.getElementById('det-key-feats').innerHTML = kf;
 
   /* ── Tabla completa de características ── */
-  // Traduce valores en inglés que devuelve Tokko
-  const TRAD = {
-    'house':'Casa','apartment':'Departamento','land':'Terreno / Lote',
-    'office':'Oficina','store':'Local comercial','garage':'Garage',
-    'country house':'Quinta / Chacra','building':'Edificio',
-    'used':'Usado','new':'A estrenar','very good':'Muy bueno',
-    'good':'Bueno','excellent':'Excelente','to recover':'A recuperar',
-    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'',
-  };
-  function trad(v) {
-    if (v == null) return null;
-    const s = String(v).trim();
-    if (!s || ['empty','null','undefined','-'].includes(s.toLowerCase())) return null;
-    return TRAD[s.toLowerCase()] ?? s;
-  }
-
   const rows = [
     ['Tipo',          trad(p.type?.name)],
     ['Barrio / Zona', ubic],
