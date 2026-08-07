@@ -2523,32 +2523,13 @@ function toYTEmbed(url) {
   } catch(e) { return url; }
 }
 
-// Variable global para la URL del video YouTube actual
-let lbYtUrl = '';
-
-// Abre video YouTube en el lightbox como preview (embedding bloqueado por el canal)
+// Abre video YouTube en el lightbox con iframe embed
+// (funciona en HTTPS — en file:// YouTube bloquea embeds por origen nulo)
 function abrirLightboxVideo() {
   if (!galProp) return;
   const v = (galProp.videos||[]).find(v => v.player_url && (!v.provider || v.provider.toLowerCase().includes('youtube')));
   if (!v) return;
-  lbYtUrl = v.player_url;
-  // Extraer ID para el thumbnail
-  let vid = '';
-  try {
-    const u = new URL(v.player_url);
-    vid = u.searchParams.get('v') || u.pathname.split('/').filter(Boolean).pop();
-    vid = vid.split('?')[0].split('&')[0];
-  } catch(e) {}
-  document.getElementById('lb-yt-thumb').src = vid
-    ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg`
-    : '';
-  document.getElementById('lb-yt-wrap').style.display = 'flex';
-  document.getElementById('lb-img-wrap').style.display = 'none';
-  document.getElementById('lb-prev').style.display = 'none';
-  document.getElementById('lb-next').style.display = 'none';
-  document.getElementById('lb-counter').style.display = 'none';
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  mostrarLightboxIframe(toYTEmbed(v.player_url));
 }
 
 // Abre 360° en el lightbox
