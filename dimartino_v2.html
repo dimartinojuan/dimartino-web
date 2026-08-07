@@ -805,6 +805,14 @@ footer{background:#071a27;padding:56px 5% 26px}
         <h4>Barrio</h4>
         <div id="filtro-barrio-opts" class="dorm-opts" style="flex-direction:column;align-items:flex-start;gap:4px"></div>
       </div>
+      <div class="filtro-grupo">
+        <h4>Tipo de barrio</h4>
+        <div class="filtro-radio">
+          <label><input type="radio" name="f-barrio-tipo" value="" onchange="setBarrioTipo('')" checked> Todos</label>
+          <label><input type="radio" name="f-barrio-tipo" value="abierto" onchange="setBarrioTipo('abierto')"> Barrio abierto</label>
+          <label><input type="radio" name="f-barrio-tipo" value="cerrado" onchange="setBarrioTipo('cerrado')"> Barrio cerrado / Country</label>
+        </div>
+      </div>
       <button class="btn-limpiar-link" onclick="limpiarFiltros()">Limpiar filtros</button>
     </aside>
 
@@ -982,7 +990,7 @@ const KEY  = 'a06ecb4a1c79709c0cd21d83adb9dd2e6d2b0f5f';
 const BASE = 'https://tokkobroker.com/api/v1';
 const PPP = 12; // propiedades a mostrar por lote
 
-const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], barrios:[], tags:[], moneda:'USD' };
+const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], barrios:[], tags:[], barrioTipo:'', moneda:'USD' };
 
 // ── Cache completo del API (se carga una sola vez) ──
 let todasLasProps  = [];  // todas las propiedades sin filtrar
@@ -1069,7 +1077,8 @@ function aplicarNLP(texto, opFallback) {
   // Si el NLP no detectó operación pero hay una de fallback (desde hero tab), usarla
   if (!r.op && opFallback) r.op = opFallback;
   // Resetear filtros antes de aplicar los del NLP (nueva búsqueda limpia)
-  S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.tags = []; S.desde = ''; S.hasta = '';
+  S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.tags = []; S.barrioTipo = ''; S.desde = ''; S.hasta = '';
+  document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; });
   document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === ''; });
   document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = false; });
   document.getElementById('f-desde').value = '';
@@ -1086,6 +1095,10 @@ function aplicarNLP(texto, opFallback) {
   if (r.ambs.length) S.ambs = r.ambs;
   if (r.barrios.length) S.barrios = r.barrios;
   if (r.tags.length) S.tags = r.tags;
+  if (r.barrioTipo) {
+    S.barrioTipo = r.barrioTipo;
+    document.querySelectorAll('[name=f-barrio-tipo]').forEach(rb => { rb.checked = rb.value === r.barrioTipo; });
+  }
   if (r.moneda) {
     S.moneda = r.moneda;
     document.getElementById('btn-usd').classList.toggle('activo', r.moneda === 'USD');
@@ -1125,8 +1138,10 @@ function abrirBuscador(kw, opciones) {
   S.desde  = '';
   S.hasta  = '';
   S.ambs   = [];
-  S.barrios = opciones.barrios || [];
-  S.tags    = [];
+  S.barrios    = opciones.barrios || [];
+  S.tags       = [];
+  S.barrioTipo = '';
+  document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; });
 
   // Sync UI sidebar
   document.getElementById('busq-kw').value = S.kw;
@@ -1299,7 +1314,7 @@ const NLP_AMENIDADES_KW = [
 
 // ── Parser principal ──────────────────────────────────────────────────────────
 function interpretarBusqueda(texto) {
-  const r = { op: null, tipos: [], ambs: [], barrios: [], tags: [], desde: '', hasta: '', moneda: null, resto: [] };
+  const r = { op: null, tipos: [], ambs: [], barrios: [], tags: [], barrioTipo: '', desde: '', hasta: '', moneda: null, resto: [] };
   const norm = fonetica(texto);
   const tokens = norm.split(/\s+/).filter(Boolean);
   const original = texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/\s+/).filter(Boolean);
@@ -1417,30 +1432,25 @@ function interpretarBusqueda(texto) {
     }
   }
 
-  // ── Aliases de búsqueda (frases → término que aparece en full_location) ───────
-  // "barrio cerrado" y "country" se mapean a términos que Tokko usa en full_location:
-  // "Countries/B.Cerrado (Lujan)" → buscar "cerrado" o "countries"
-  const NLP_BUSQ_ALIAS = {
-    'barrio cerrado': 'cerrado',
-    'barrio privado': 'cerrado',
-    'b cerrado':      'cerrado',
-    'country':        'countries',
-    'countries':      'countries',
+  // ── Tipo de barrio (barrio cerrado / country / barrio abierto) ───────────────
+  const NLP_BARRIO_TIPO = {
+    'barrio cerrado': 'cerrado', 'barrio privado': 'cerrado',
+    'b cerrado': 'cerrado', 'country': 'cerrado', 'countries': 'cerrado',
+    'barrio abierto': 'abierto',
   };
-  const restoExtra = [];
   for (let len = 2; len >= 1; len--) {
     for (let i = 0; i <= original.length - len; i++) {
-      const idx  = Array.from({length:len}, (_,j) => i+j);
+      const idx = Array.from({length:len}, (_,j) => i+j);
       if (idx.some(k => usado.has(k))) continue;
       const phrase = original.slice(i, i+len).join(' ');
-      const alias = NLP_BUSQ_ALIAS[phrase];
-      if (alias) { restoExtra.push(alias); idx.forEach(k => usado.add(k)); }
+      const bt = NLP_BARRIO_TIPO[phrase];
+      if (bt && !r.barrioTipo) { r.barrioTipo = bt; idx.forEach(k => usado.add(k)); }
     }
   }
 
   // ── Amenidades en el texto libre (para kw) ────────────────────────────────────
   const kwParts = original.filter((_, i) => !usado.has(i) && !NLP_STOP.has(original[i]) && original[i].length > 1);
-  r.resto = [...kwParts, ...restoExtra].join(' ').trim();
+  r.resto = kwParts.join(' ').trim();
 
   return r;
 }
@@ -1467,6 +1477,8 @@ function renderChips() {
   S.ambs.forEach(a => chips.push({ label: a === '4' ? '4+ dorm.' : `${a} dorm.`, key: 'amb', val: a }));
   S.barrios.forEach(b => chips.push({ label: b, key: 'barrio', val: b }));
   S.tags.forEach(t => chips.push({ label: t, key: 'tag', val: t }));
+  if (S.barrioTipo === 'cerrado') chips.push({ label: 'Barrio cerrado / Country', key: 'barrioTipo' });
+  if (S.barrioTipo === 'abierto') chips.push({ label: 'Barrio abierto', key: 'barrioTipo' });
   if (S.hasta) chips.push({ label: `Hasta ${S.moneda==='ARS'?'$':'US$'}${Number(S.hasta).toLocaleString('es-AR')}`, key: 'hasta' });
   if (S.desde) chips.push({ label: `Desde ${S.moneda==='ARS'?'$':'US$'}${Number(S.desde).toLocaleString('es-AR')}`, key: 'desde' });
 
@@ -1501,6 +1513,7 @@ function quitarChip(key, val) {
   else if (key === 'amb') S.ambs = S.ambs.filter(a => a !== val);
   else if (key === 'barrio') S.barrios = S.barrios.filter(b => b !== val);
   else if (key === 'tag') S.tags = S.tags.filter(t => t !== val);
+  else if (key === 'barrioTipo') { S.barrioTipo = ''; document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; }); }
   else if (key === 'hasta') { S.hasta = ''; document.getElementById('f-hasta').value = ''; }
   else if (key === 'desde') { S.desde = ''; document.getElementById('f-desde').value = ''; }
   renderChips();
@@ -1525,7 +1538,8 @@ function ejecutarBusqueda() {
 }
 
 function limpiarFiltros() {
-  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[]; S.tags=[];
+  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[]; S.tags=[]; S.barrioTipo='';
+  document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; });
   renderChips();
   document.getElementById('busq-kw').value = '';
   document.getElementById('nav-search-input').value = '';
@@ -1713,6 +1727,12 @@ function aplicarFiltrosSin(props, excluir = []) {
       const propTags = (p.tags||[]).map(t => t.name);
       if (!S.tags.every(tag => propTags.includes(tag))) return false;
     }
+    if (!excluir.includes('barrioTipo') && S.barrioTipo) {
+      const fl = (p.location?.full_location || '').toLowerCase();
+      const esCerrado = fl.includes('countries') || fl.includes('b.cerrado') || fl.includes('cerrado');
+      if (S.barrioTipo === 'cerrado' && !esCerrado) return false;
+      if (S.barrioTipo === 'abierto' && esCerrado) return false;
+    }
     if (!excluir.includes('kw') && S.kw) {
       const qRaw = S.kw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
       // Expandir abreviaturas comunes
@@ -1733,6 +1753,13 @@ function aplicarFiltrosSin(props, excluir = []) {
 }
 
 function aplicarFiltros(props) { return aplicarFiltrosSin(props, []); }
+
+function setBarrioTipo(val) {
+  S.barrioTipo = val;
+  renderChips();
+  actualizarOpcionesDinamicas();
+  cargarResultados();
+}
 
 // ── ACTUALIZA OPCIONES DINÁMICAS (precio y dormitorios) ───────────────────────
 function actualizarOpcionesDinamicas() {
