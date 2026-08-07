@@ -1101,8 +1101,8 @@ function aplicarNLP(texto, opFallback) {
   }
   // Si el NLP detectó al menos un filtro estructurado, limpiar el buscador.
   // Si no detectó nada, dejar el texto original como búsqueda por keyword.
-  const nlpDetectoAlgo = r.op || r.tipos.length || r.barrios.length || r.tags.length || r.hasta || r.desde || r.ambs.length;
-  S.kw = nlpDetectoAlgo ? '' : r.resto;
+  // Siempre usar el texto sobrante como kw (ej: "terreno en barrio cerrado" → tipo=Terreno, kw="barrio cerrado")
+  S.kw = r.resto || '';
   document.getElementById('nav-search-input').value = S.kw;
   document.getElementById('busq-kw').value = S.kw;
 
@@ -1922,7 +1922,7 @@ async function cargarHome() {
   try {
     // Usar cache completo para filtrar is_featured correctamente
     await cargarCache();
-    let props = todasLasProps.filter(p => p.is_featured === true);
+    let props = todasLasProps.filter(p => p.is_starred_on_web === true);
     // Si Tokko no devuelve is_featured, mostrar las primeras 6
     if (!props.length) props = todasLasProps.slice(0, 6);
     else props = props.slice(0, 6);
