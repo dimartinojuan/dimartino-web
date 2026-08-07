@@ -1887,21 +1887,23 @@ function cargarMas() {
 }
 
 async function cargarHome() {
-  // Mostrar skeletons mientras carga
   const loading = document.getElementById('home-loading');
   const grid    = document.getElementById('home-grid');
   loading.style.display = 'none';
   grid.innerHTML = renderSkeletons(6);
   grid.style.display = 'grid';
   try {
-    const res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6`);
-    const data = await res.json();
-    const props = (data.objects || data.results || []).slice(0, 6);
-    if (props.length) {
-      grid.innerHTML = props.map(renderCard).join('');
-    } else {
-      grid.innerHTML = '';
+    // Primero intentar con is_featured=1 (Tokko lo soporta server-side)
+    let res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6&is_featured=1`);
+    let data = await res.json();
+    let props = (data.objects || data.results || []);
+    // Si no hay destacadas, mostrar las más recientes
+    if (!props.length) {
+      res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6`);
+      data = await res.json();
+      props = (data.objects || data.results || []).slice(0, 6);
     }
+    grid.innerHTML = props.length ? props.map(renderCard).join('') : '';
   } catch(e) { grid.innerHTML = ''; }
 }
 
@@ -2195,12 +2197,32 @@ function renderDetalle(p) {
 
   /* ── Traducción de valores Tokko (necesaria antes del bloque kf) ── */
   const TRAD = {
+    // Tipos de propiedad
     'house':'Casa','apartment':'Departamento','land':'Terreno / Lote',
-    'office':'Oficina','store':'Local comercial','garage':'Garage',
+    'office':'Oficina','store':'Local comercial','garage':'Cochera',
     'country house':'Quinta / Chacra','building':'Edificio',
+    'ph':'PH','warehouse':'Galpón','deposit':'Depósito',
+    'field':'Campo','local':'Local','hotel':'Hotel',
+    // Condición / estado
     'used':'Usado','new':'A estrenar','very good':'Muy bueno',
-    'good':'Bueno','excellent':'Excelente','to recover':'A recuperar',
+    'very_good':'Muy bueno','good':'Bueno','excellent':'Excelente',
+    'to recover':'A recuperar','to_recover':'A recuperar',
+    'recyclable':'Reciclable',
+    // Situación
     'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'',
+    'for rent':'En alquiler',
+    // Antigüedad — Tokko devuelve rangos en inglés
+    'a estrenar':'A estrenar','0':'A estrenar',
+    '1 to 5':'1 a 5 años','1-5':'1 a 5 años',
+    '6 to 10':'6 a 10 años','6-10':'6 a 10 años',
+    '11 to 20':'11 a 20 años','11-20':'11 a 20 años',
+    '21 to 50':'21 a 50 años','21-50':'21 a 50 años',
+    'more than 50':'Más de 50 años','+50':'Más de 50 años',
+    // Orientación
+    'north':'Norte','south':'Sur','east':'Este','west':'Oeste',
+    'northeast':'Noreste','northwest':'Noroeste',
+    'southeast':'Sureste','southwest':'Suroeste',
+    'n':'N','s':'S','e':'E','o':'O','ne':'NE','no':'NO','se':'SE','so':'SO',
   };
   function trad(v) {
     if (v == null) return null;
