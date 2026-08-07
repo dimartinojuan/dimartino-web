@@ -1417,29 +1417,30 @@ function interpretarBusqueda(texto) {
     }
   }
 
-  // ── Tags (barrio cerrado, country, amenidades, etc.) ─────────────────────────
-  if (todasLasProps.length) {
-    const tagsCatalogo = {};
-    [...new Set(todasLasProps.flatMap(p => (p.tags||[])).map(t => t.name).filter(Boolean))]
-      .forEach(t => { tagsCatalogo[t] = t; });
-
-    const combosTag = [];
-    for (let len = 3; len >= 1; len--) {
-      for (let i = 0; i <= original.length - len; i++) {
-        combosTag.push({ phrase: original.slice(i, i+len).join(' '), idx: Array.from({length:len},(_,j)=>i+j) });
-      }
-    }
-    for (const { phrase, idx } of combosTag) {
-      if (idx.some(i => usado.has(i))) continue;
-      const tag = mejorMatch(phrase, tagsCatalogo);
-      if (tag && !r.tags.includes(tag)) { r.tags.push(tag); idx.forEach(i => usado.add(i)); }
+  // ── Aliases de búsqueda (frases → término que aparece en full_location) ───────
+  // "barrio cerrado" y "country" se mapean a términos que Tokko usa en full_location:
+  // "Countries/B.Cerrado (Lujan)" → buscar "cerrado" o "countries"
+  const NLP_BUSQ_ALIAS = {
+    'barrio cerrado': 'cerrado',
+    'barrio privado': 'cerrado',
+    'b cerrado':      'cerrado',
+    'country':        'countries',
+    'countries':      'countries',
+  };
+  const restoExtra = [];
+  for (let len = 2; len >= 1; len--) {
+    for (let i = 0; i <= original.length - len; i++) {
+      const idx  = Array.from({length:len}, (_,j) => i+j);
+      if (idx.some(k => usado.has(k))) continue;
+      const phrase = original.slice(i, i+len).join(' ');
+      const alias = NLP_BUSQ_ALIAS[phrase];
+      if (alias) { restoExtra.push(alias); idx.forEach(k => usado.add(k)); }
     }
   }
 
   // ── Amenidades en el texto libre (para kw) ────────────────────────────────────
-  // Filtrar stop words y palabras de 1 char que no aportan nada como keyword
   const kwParts = original.filter((_, i) => !usado.has(i) && !NLP_STOP.has(original[i]) && original[i].length > 1);
-  r.resto = kwParts.join(' ').trim();
+  r.resto = [...kwParts, ...restoExtra].join(' ').trim();
 
   return r;
 }
@@ -1720,8 +1721,10 @@ function aplicarFiltrosSin(props, excluir = []) {
       const hay = [
         p.title, p.description, p.short_description,
         p.address, p.type?.name, tipoES,
-        p.location?.name, p.location?.parent_location?.name,
+        p.location?.name, p.location?.full_location,
+        p.location?.parent_location?.name,
         ...(p.tags||[]).map(t=>t.name),
+        ...(p.custom_tags||[]).map(t=>t.name),
       ].filter(Boolean).join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
       if (!qExpandido.split(/\s+/).every(w => hay.includes(w))) return false;
     }
