@@ -982,7 +982,7 @@ const KEY  = 'a06ecb4a1c79709c0cd21d83adb9dd2e6d2b0f5f';
 const BASE = 'https://tokkobroker.com/api/v1';
 const PPP = 12; // propiedades a mostrar por lote
 
-const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], barrios:[], moneda:'USD' };
+const S = { kw:'', op:'', tipos:[], desde:'', hasta:'', ambs:[], barrios:[], tags:[], moneda:'USD' };
 
 // ── Cache completo del API (se carga una sola vez) ──
 let todasLasProps  = [];  // todas las propiedades sin filtrar
@@ -1069,7 +1069,7 @@ function aplicarNLP(texto, opFallback) {
   // Si el NLP no detectó operación pero hay una de fallback (desde hero tab), usarla
   if (!r.op && opFallback) r.op = opFallback;
   // Resetear filtros antes de aplicar los del NLP (nueva búsqueda limpia)
-  S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.desde = ''; S.hasta = '';
+  S.op = ''; S.tipos = []; S.ambs = []; S.barrios = []; S.tags = []; S.desde = ''; S.hasta = '';
   document.querySelectorAll('[name=f-op]').forEach(rb => { rb.checked = rb.value === ''; });
   document.querySelectorAll('#filtro-tipos input').forEach(c => { c.checked = false; });
   document.getElementById('f-desde').value = '';
@@ -1085,6 +1085,7 @@ function aplicarNLP(texto, opFallback) {
   }
   if (r.ambs.length) S.ambs = r.ambs;
   if (r.barrios.length) S.barrios = r.barrios;
+  if (r.tags.length) S.tags = r.tags;
   if (r.moneda) {
     S.moneda = r.moneda;
     document.getElementById('btn-usd').classList.toggle('activo', r.moneda === 'USD');
@@ -1100,7 +1101,7 @@ function aplicarNLP(texto, opFallback) {
   }
   // Si el NLP detectó al menos un filtro estructurado, limpiar el buscador.
   // Si no detectó nada, dejar el texto original como búsqueda por keyword.
-  const nlpDetectoAlgo = r.op || r.tipos.length || r.barrios.length || r.hasta || r.desde || r.ambs.length;
+  const nlpDetectoAlgo = r.op || r.tipos.length || r.barrios.length || r.tags.length || r.hasta || r.desde || r.ambs.length;
   S.kw = nlpDetectoAlgo ? '' : r.resto;
   document.getElementById('nav-search-input').value = S.kw;
   document.getElementById('busq-kw').value = S.kw;
@@ -1124,7 +1125,8 @@ function abrirBuscador(kw, opciones) {
   S.desde  = '';
   S.hasta  = '';
   S.ambs   = [];
-  S.barrios = opciones.barrios || [];  // ← siempre resetear barrios
+  S.barrios = opciones.barrios || [];
+  S.tags    = [];
 
   // Sync UI sidebar
   document.getElementById('busq-kw').value = S.kw;
@@ -1297,7 +1299,7 @@ const NLP_AMENIDADES_KW = [
 
 // ── Parser principal ──────────────────────────────────────────────────────────
 function interpretarBusqueda(texto) {
-  const r = { op: null, tipos: [], ambs: [], barrios: [], desde: '', hasta: '', moneda: null, resto: [] };
+  const r = { op: null, tipos: [], ambs: [], barrios: [], tags: [], desde: '', hasta: '', moneda: null, resto: [] };
   const norm = fonetica(texto);
   const tokens = norm.split(/\s+/).filter(Boolean);
   const original = texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/\s+/).filter(Boolean);
@@ -1415,6 +1417,25 @@ function interpretarBusqueda(texto) {
     }
   }
 
+  // ── Tags (barrio cerrado, country, amenidades, etc.) ─────────────────────────
+  if (todasLasProps.length) {
+    const tagsCatalogo = {};
+    [...new Set(todasLasProps.flatMap(p => (p.tags||[])).map(t => t.name).filter(Boolean))]
+      .forEach(t => { tagsCatalogo[t] = t; });
+
+    const combosTag = [];
+    for (let len = 3; len >= 1; len--) {
+      for (let i = 0; i <= original.length - len; i++) {
+        combosTag.push({ phrase: original.slice(i, i+len).join(' '), idx: Array.from({length:len},(_,j)=>i+j) });
+      }
+    }
+    for (const { phrase, idx } of combosTag) {
+      if (idx.some(i => usado.has(i))) continue;
+      const tag = mejorMatch(phrase, tagsCatalogo);
+      if (tag && !r.tags.includes(tag)) { r.tags.push(tag); idx.forEach(i => usado.add(i)); }
+    }
+  }
+
   // ── Amenidades en el texto libre (para kw) ────────────────────────────────────
   // Filtrar stop words y palabras de 1 char que no aportan nada como keyword
   const kwParts = original.filter((_, i) => !usado.has(i) && !NLP_STOP.has(original[i]) && original[i].length > 1);
@@ -1444,6 +1465,7 @@ function renderChips() {
   S.tipos.forEach(t => chips.push({ label: NLP_TIPO_NOMBRE[t] || t, key: 'tipo', val: t }));
   S.ambs.forEach(a => chips.push({ label: a === '4' ? '4+ dorm.' : `${a} dorm.`, key: 'amb', val: a }));
   S.barrios.forEach(b => chips.push({ label: b, key: 'barrio', val: b }));
+  S.tags.forEach(t => chips.push({ label: t, key: 'tag', val: t }));
   if (S.hasta) chips.push({ label: `Hasta ${S.moneda==='ARS'?'$':'US$'}${Number(S.hasta).toLocaleString('es-AR')}`, key: 'hasta' });
   if (S.desde) chips.push({ label: `Desde ${S.moneda==='ARS'?'$':'US$'}${Number(S.desde).toLocaleString('es-AR')}`, key: 'desde' });
 
@@ -1477,6 +1499,7 @@ function quitarChip(key, val) {
   else if (key === 'tipo') S.tipos = S.tipos.filter(t => t !== val);
   else if (key === 'amb') S.ambs = S.ambs.filter(a => a !== val);
   else if (key === 'barrio') S.barrios = S.barrios.filter(b => b !== val);
+  else if (key === 'tag') S.tags = S.tags.filter(t => t !== val);
   else if (key === 'hasta') { S.hasta = ''; document.getElementById('f-hasta').value = ''; }
   else if (key === 'desde') { S.desde = ''; document.getElementById('f-desde').value = ''; }
   renderChips();
@@ -1501,7 +1524,7 @@ function ejecutarBusqueda() {
 }
 
 function limpiarFiltros() {
-  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[];
+  S.kw=''; S.op=''; S.tipos=[]; S.desde=''; S.hasta=''; S.ambs=[]; S.barrios=[]; S.tags=[];
   renderChips();
   document.getElementById('busq-kw').value = '';
   document.getElementById('nav-search-input').value = '';
@@ -1684,6 +1707,10 @@ function aplicarFiltrosSin(props, excluir = []) {
     if (!excluir.includes('barrios') && S.barrios.length) {
       const loc = (p.location?.name || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
       if (!S.barrios.some(b => loc === b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''))) return false;
+    }
+    if (!excluir.includes('tags') && S.tags.length) {
+      const propTags = (p.tags||[]).map(t => t.name);
+      if (!S.tags.every(tag => propTags.includes(tag))) return false;
     }
     if (!excluir.includes('kw') && S.kw) {
       const qRaw = S.kw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
@@ -1893,16 +1920,12 @@ async function cargarHome() {
   grid.innerHTML = renderSkeletons(6);
   grid.style.display = 'grid';
   try {
-    // Primero intentar con is_featured=1 (Tokko lo soporta server-side)
-    let res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6&is_featured=1`);
-    let data = await res.json();
-    let props = (data.objects || data.results || []);
-    // Si no hay destacadas, mostrar las más recientes
-    if (!props.length) {
-      res  = await fetch(`${BASE}/property/?key=${KEY}&format=json&limit=6`);
-      data = await res.json();
-      props = (data.objects || data.results || []).slice(0, 6);
-    }
+    // Usar cache completo para filtrar is_featured correctamente
+    await cargarCache();
+    let props = todasLasProps.filter(p => p.is_featured === true);
+    // Si Tokko no devuelve is_featured, mostrar las primeras 6
+    if (!props.length) props = todasLasProps.slice(0, 6);
+    else props = props.slice(0, 6);
     grid.innerHTML = props.length ? props.map(renderCard).join('') : '';
   } catch(e) { grid.innerHTML = ''; }
 }
