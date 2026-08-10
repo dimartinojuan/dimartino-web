@@ -227,34 +227,36 @@ button,input,select,textarea{font-family:inherit}
 /* ── Galería full-width ── */
 #det-galeria-wrapper{width:100%;margin-bottom:28px}
 .det-galeria{background:#111;overflow:hidden;margin-bottom:0}
-.galeria-layout{display:grid;grid-template-columns:2fr 1fr;gap:4px;height:520px}
+.galeria-layout{display:block;height:500px}
 .galeria-main{position:relative;background:#000;overflow:hidden;height:100%}
 .galeria-track{display:flex;height:100%;transition:transform .32s ease}
-.galeria-img{flex:none;width:100%;height:100%;object-fit:cover}
-.galeria-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:var(--blanco);width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer;transition:background .18s;display:flex;align-items:center;justify-content:center;z-index:5}
-.galeria-btn:hover{background:rgba(0,0,0,.85)}
-.galeria-btn.prev{left:10px}
-.galeria-btn.next{right:10px}
-.galeria-counter{display:none}
-/* Overlay compartir — arriba derecha */
-.galeria-compartir{position:absolute;top:10px;right:10px;z-index:5}
-.gal-btn-compartir{background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.galeria-img{flex:none;width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.galeria-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.38);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:26px;cursor:pointer;transition:background .18s;display:flex;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(4px)}
+.galeria-btn:hover{background:rgba(0,0,0,.72)}
+.galeria-btn.prev{left:14px}
+.galeria-btn.next{right:14px}
+/* Contador arriba izquierda */
+.galeria-counter{position:absolute;top:14px;left:14px;background:rgba(0,0,0,.52);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;z-index:5;display:block;backdrop-filter:blur(3px)}
+/* Ver todas — arriba derecha */
+.galeria-compartir{position:absolute;top:14px;right:14px;z-index:5}
+.gal-btn-compartir{background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;box-shadow:0 1px 6px rgba(0,0,0,.2)}
 .gal-btn-compartir:hover{background:#fff}
-/* Overlay medios — abajo izquierda (estilo ZonaProp) */
-.galeria-acciones{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;z-index:5;align-items:center}
-.gal-media-pill{background:rgba(0,0,0,.55);border:none;color:#fff;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;backdrop-filter:blur(2px)}
-.gal-media-pill:hover{background:rgba(0,0,0,.8)}
+/* Pills abajo izquierda */
+.galeria-acciones{position:absolute;bottom:14px;left:14px;display:flex;gap:6px;z-index:5;align-items:center}
+.gal-media-pill{background:rgba(0,0,0,.52);border:none;color:#fff;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;backdrop-filter:blur(3px)}
+.gal-media-pill:hover{background:rgba(0,0,0,.78)}
 .gal-media-pill svg{flex-shrink:0}
-/* Grilla lateral 2x2 (Airbnb style) */
-.galeria-grid-der{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;overflow:hidden}
-.galeria-grid-item{position:relative;overflow:hidden;cursor:pointer}
-.galeria-grid-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .22s}
-.galeria-grid-item:hover img{transform:scale(1.06)}
-.galeria-grid-item.ver-mas::after{content:attr(data-label);position:absolute;inset:0;background:rgba(0,0,0,.5);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;pointer-events:none}
-/* Scroll horizontal (fallback mobile) */
-.galeria-thumbs{display:none}
-.galeria-thumb{flex:none;width:72px;height:54px;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border .18s}
-.galeria-thumb.activo{border-color:var(--azul)}
+/* Botón ver todas las fotos — abajo derecha */
+.gal-ver-todas{position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:5;transition:background .18s}
+.gal-ver-todas:hover{background:#fff}
+/* Grilla lateral — oculta en este modo */
+.galeria-grid-der{display:none!important}
+/* Thumbnails strip */
+.galeria-thumbs{display:flex!important;gap:4px;padding:4px;background:#0a0a0a;overflow-x:auto;scrollbar-width:none}
+.galeria-thumbs::-webkit-scrollbar{display:none}
+.galeria-thumb{flex:none;width:88px;height:60px;border-radius:4px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .18s;opacity:.75;transition:opacity .18s,border-color .18s}
+.galeria-thumb.activo{border-color:#fff;opacity:1}
+.galeria-thumb:hover{opacity:1}
 .galeria-thumb img{width:100%;height:100%;object-fit:cover}
 
 /* ── Secciones de detalle ── */
@@ -507,9 +509,9 @@ footer{background:#071a27;padding:56px 5% 26px}
   /* Vista detalle */
   .det-wrap{grid-template-columns:1fr;padding:16px 4% 48px}
   .det-sidebar{position:static;top:auto}
-  .galeria-layout{grid-template-columns:1fr;height:260px}
-  .galeria-grid-der{display:none}
+  .galeria-layout{height:260px}
   #det-galeria-wrapper{margin-bottom:0}
+  .galeria-thumb{width:64px;height:44px}
   .det-feats-grid{gap:0}
   .det-kf{min-width:64px}
   .det-tour-wrap{height:320px}
@@ -865,6 +867,10 @@ footer{background:#071a27;padding:56px 5% 26px}
           <div class="galeria-counter" id="gal-counter">1 / 1</div>
           <div class="galeria-compartir"><button class="gal-btn-compartir" onclick="compartir()">⬆ Compartir</button></div>
           <div class="galeria-acciones" id="gal-acciones"></div>
+          <button class="gal-ver-todas" id="gal-ver-todas" onclick="abrirLightbox(galIdx)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Ver todas las fotos
+          </button>
         </div>
         <!-- Mosaico 2x2 -->
         <div class="galeria-grid-der" id="gal-grid-der"></div>
@@ -2529,25 +2535,25 @@ function buildGaleria() {
     `<img class="galeria-img" src="${src}" alt="Foto ${i+1}" loading="${i===0?'eager':'lazy'}" onerror="this.src='${FALLBACK}'" onclick="abrirLightbox(${i})" style="cursor:zoom-in">`
   ).join('');
 
-  // Mosaico 2x2: fotos 2–5, la última con overlay "+ N fotos"
-  const gridDer = document.getElementById('gal-grid-der');
-  if (gridDer) {
+  // Thumbnail strip
+  const thumbsEl = document.getElementById('gal-thumbs');
+  if (thumbsEl) {
     if (galFotos.length > 1) {
-      const total = galFotos.length;
-      const items = [];
-      for (let i = 1; i <= 4; i++) {
-        const src = galFotos[i] || galFotos[galFotos.length - 1];
-        const isLast = i === 4 && total > 4;
-        const label = isLast ? `+ ${total - 4} fotos` : '';
-        items.push(`<div class="galeria-grid-item${isLast ? ' ver-mas' : ''}" ${isLast ? `data-label="${label}"` : ''} onclick="${isLast ? `abrirLightbox(${i})` : `galIr(${i})`}">
+      thumbsEl.innerHTML = galFotos.map((src, i) =>
+        `<div class="galeria-thumb${i===0?' activo':''}" onclick="galIr(${i})">
           <img src="${src}" alt="Foto ${i+1}" loading="lazy" onerror="this.src='${FALLBACK}'">
-        </div>`);
-      }
-      gridDer.innerHTML = items.join('');
-      gridDer.style.display = 'grid';
+        </div>`
+      ).join('');
+      thumbsEl.style.display = 'flex';
     } else {
-      gridDer.style.display = 'none';
+      thumbsEl.style.display = 'none';
     }
+  }
+
+  // Botón "Ver todas las fotos" — actualizar label con total
+  const btnVerTodas = document.getElementById('gal-ver-todas');
+  if (btnVerTodas) {
+    btnVerTodas.style.display = galFotos.length > 1 ? 'flex' : 'none';
   }
 
   document.getElementById('gal-prev').style.display = single ? 'none' : 'flex';
@@ -2602,7 +2608,11 @@ function buildGaleria() {
 function actualizarGal() {
   document.getElementById('gal-track').style.transform = `translateX(-${galIdx*100}%)`;
   document.getElementById('gal-counter').textContent = `${galIdx+1} / ${galFotos.length}`;
-  document.querySelectorAll('.galeria-thumb').forEach((t,i) => t.classList.toggle('activo', i===galIdx));
+  const thumbs = document.querySelectorAll('.galeria-thumb');
+  thumbs.forEach((t,i) => t.classList.toggle('activo', i===galIdx));
+  // Scroll thumbnail activo al centro del strip
+  const activeThumb = thumbs[galIdx];
+  if (activeThumb) activeThumb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 }
 
 function galNav(d) { galIdx = (galIdx+d+galFotos.length)%galFotos.length; actualizarGal(); }
