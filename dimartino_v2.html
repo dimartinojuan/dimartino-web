@@ -2060,30 +2060,50 @@ const TRAD_TIPO = {
 
 // Traducción de amenidades/tags (Tokko los devuelve en inglés)
 const TRAD_TAGS = {
+  // Servicios básicos
+  'water':'Agua corriente','sewage':'Cloaca','sewerage':'Cloaca',
   'natural gas':'Gas natural','electricity':'Electricidad','pavement':'Pavimento',
-  'laundry':'Lavandería','one level':'Una planta','blinds':'Persianas',
-  'some restoration needed':'Requiere refacciones','sheet metal ceiling':'Techo de chapa',
-  'swimming pool':'Pileta','garage':'Cochera','central heating':'Calefacción central',
-  'air conditioning':'Aire acondicionado','fireplace':'Chimenea','backyard':'Patio trasero',
-  'front garden':'Jardín delantero','security':'Seguridad','doorman':'Portería',
-  'elevator':'Ascensor','gym':'Gimnasio','sauna':'Sauna','barbecue':'Quincho / Asador',
-  'terrace':'Terraza','balcony':'Balcón','garden':'Jardín','jacuzzi':'Jacuzzi',
-  'water':'Agua corriente','sewerage':'Cloacas','paved street':'Calle pavimentada',
-  'asphalted street':'Calle asfaltada','corner':'Esquina','phone':'Teléfono',
-  'cable tv':'TV cable','internet':'Internet','furnished':'Amueblado',
-  'pets allowed':'Se aceptan mascotas','hot water':'Agua caliente',
-  'city water':'Agua de red','septic tank':'Cámara séptica',
-  'artesian well':'Pozo artesiano','two levels':'Dos plantas','three levels':'Tres plantas',
-  'electric heating':'Calefacción eléctrica','gas heating':'Calefacción a gas',
-  'wood flooring':'Piso de madera','ceramic flooring':'Piso cerámico',
-  'vinyl flooring':'Piso vinílico','double glazing':'Doble vidrio',
-  'solar panels':'Paneles solares','cistern':'Cisterna','borehole':'Perforación',
-  'street lighting':'Alumbrado público','telephone line':'Línea telefónica',
-  'natural light':'Buena iluminación natural','laundry room':'Cuarto de lavado',
+  'paved street':'Calle pavimentada','asphalted street':'Calle asfaltada',
+  'street lighting':'Alumbrado público','phone':'Teléfono','telephone line':'Línea telefónica',
+  'cable':'TV cable','cable tv':'TV cable','internet':'Internet',
+  'city water':'Agua de red','artesian well':'Pozo artesiano',
+  'septic tank':'Cámara séptica','cistern':'Cisterna','borehole':'Perforación',
+  // Espacios
+  'garden':'Jardín','backyard':'Patio trasero','front garden':'Jardín delantero',
+  'balcony':'Balcón','terrace':'Terraza','laundry':'Lavandería',
+  'laundry room':'Cuarto de lavado','kitchen':'Cocina','hall':'Hall de entrada',
+  'living room':'Living comedor','dining room':'Comedor','study':'Estudio',
+  'office':'Oficina','studio':'Estudio','playroom':'Sala de juegos',
   'storage room':'Baulera','utility room':'Sala de usos múltiples',
   'american kitchen':'Cocina americana','separate kitchen':'Cocina separada',
-  'living room':'Living comedor','dining room':'Comedor','study':'Estudio',
-  'playroom':'Sala de juegos','office':'Oficina','studio':'Estudio',
+  'dependency':'Dependencia de servicio',
+  'independent studio':'Estudio independiente',
+  'independent apartment':'Departamento independiente',
+  // Amenidades
+  'pool':'Pileta','swimming pool':'Pileta','jacuzzi':'Jacuzzi',
+  'barbecue':'Asador / Parrilla','barbecue area':'Quincho',
+  'fireplace':'Chimenea','sauna':'Sauna','gym':'Gimnasio',
+  'elevator':'Ascensor','doorman':'Portería','security':'Seguridad',
+  'alarm':'Alarma','security grills':'Rejas de seguridad',
+  'electric gates':'Portón eléctrico','corner':'Esquina',
+  'furnished':'Amueblado','hot water':'Agua caliente',
+  'pets allowed':'Se aceptan mascotas','solar panels':'Paneles solares',
+  // Climatización
+  'air conditioning':'Aire acondicionado',
+  'individual air conditioner':'Aire acondicionado split',
+  'central heating':'Calefacción central','gas heating':'Calefacción a gas',
+  'electric heating':'Calefacción eléctrica','individual heating':'Calefacción individual',
+  'tb stoves':'Estufas TB',
+  // Características constructivas
+  'one level':'Una planta','two levels':'Dos plantas','three levels':'Tres plantas',
+  'blinds':'Persianas','double glazing':'Doble vidrio','wooden windows':'Ventanas de madera',
+  'wood flooring':'Piso de madera','ceramic flooring':'Piso cerámico',
+  'vinyl flooring':'Piso vinílico','sheet metal ceiling':'Techo de chapa',
+  'natural light':'Luminoso','luminous':'Luminoso',
+  'some restoration needed':'Requiere refacciones',
+  // Ubicación / contexto
+  'walking distance to t. centre':'Cerca del centro','good rental potential':'Buen potencial de renta',
+  'ruta':'Sobre ruta',
 };
 function tradTag(tag) { return TRAD_TAGS[(tag||'').toLowerCase()] || tag; }
 
@@ -2250,21 +2270,22 @@ function renderDetalle(p) {
 
   /* ── Traducción de valores Tokko (necesaria antes del bloque kf) ── */
   const TRAD = {
-    // Tipos de propiedad
+    // Tipos de propiedad (Tokko devuelve en inglés, a veces mal escrito)
     'house':'Casa','apartment':'Departamento','land':'Terreno / Lote',
     'office':'Oficina','store':'Local comercial','garage':'Cochera',
     'country house':'Quinta / Chacra','building':'Edificio',
     'ph':'PH','warehouse':'Galpón','deposit':'Depósito',
     'field':'Campo','local':'Local','hotel':'Hotel',
+    'bussiness premises':'Local comercial','business premises':'Local comercial',
+    'industrial premises':'Local industrial','commercial premises':'Local comercial',
+    'rural property':'Propiedad rural','chacra':'Chacra','quinta':'Quinta',
     // Condición / estado
     'used':'Usado','new':'A estrenar','very good':'Muy bueno',
     'very_good':'Muy bueno','good':'Bueno','excellent':'Excelente',
-    'to recover':'A recuperar','to_recover':'A recuperar',
-    'recyclable':'Reciclable',
+    'to recover':'A recuperar','to_recover':'A recuperar','recyclable':'Reciclable',
     // Situación
-    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'',
-    'for rent':'En alquiler',
-    // Antigüedad — Tokko devuelve rangos en inglés
+    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'','for rent':'En alquiler',
+    // Antigüedad
     'a estrenar':'A estrenar','0':'A estrenar',
     '1 to 5':'1 a 5 años','1-5':'1 a 5 años',
     '6 to 10':'6 a 10 años','6-10':'6 a 10 años',
@@ -2273,9 +2294,11 @@ function renderDetalle(p) {
     'more than 50':'Más de 50 años','+50':'Más de 50 años',
     // Orientación
     'north':'Norte','south':'Sur','east':'Este','west':'Oeste',
-    'northeast':'Noreste','northwest':'Noroeste',
-    'southeast':'Sureste','southwest':'Suroeste',
+    'northeast':'Noreste','northwest':'Noroeste','southeast':'Sureste','southwest':'Suroeste',
+    'north-east':'Noreste','north-west':'Noroeste','south-east':'Sureste','south-west':'Suroeste',
     'n':'N','s':'S','e':'E','o':'O','ne':'NE','no':'NO','se':'SE','so':'SO',
+    // Crédito
+    'eligible':'Apto crédito','not specified':'','not eligible':'No apto crédito',
   };
   function trad(v) {
     if (v == null) return null;
@@ -2319,28 +2342,49 @@ function renderDetalle(p) {
   const cocheras = (p.garage_amount||0) + (p.parking_lot_amount||0);
   if (cocheras)
     kf += kfItem('coche', cocheras, `coch.`);
-  if (trad(p.age) && trad(p.age) !== '-')
-    kf += kfItem('edad', trad(p.age), 'años');
-  if (p.orientation)
-    kf += kfItem('orient', p.orientation, 'orient.');
+  const edadTrad = trad(p.age);
+  if (edadTrad && edadTrad !== '-') {
+    // Si el valor es numérico, agregar "años"; si ya viene con "años" (rango), no duplicar
+    const edadVal = isNaN(p.age) ? edadTrad : (p.age == 0 ? 'A estrenar' : `${p.age} años`);
+    if (edadVal && edadVal !== 'A estrenar')
+      kf += kfItem('edad', edadVal, 'antigüedad');
+    else if (edadVal === 'A estrenar')
+      kf += kfItem('edad', 'Estreno', 'a estrenar');
+  }
+  const orientTrad = trad(p.orientation);
+  if (orientTrad)
+    kf += kfItem('orient', orientTrad, 'orientación');
   document.getElementById('det-key-feats').innerHTML = kf;
 
   /* ── Tabla completa de características ── */
+  const creditoTrad = trad(p.credit_eligible);
   const rows = [
-    ['Tipo',          trad(p.type?.name)],
+    // Identificación
+    ['Tipo de propiedad', trad(p.type?.name)],
+    ['Código de referencia', p.reference_code ? `#${p.reference_code}` : null],
+    // Ubicación
     ['Barrio / Zona', ubic],
-    ['Dormitorios',   p.suite_amount  ? `${p.suite_amount}`       : null],
-    ['Ambientes',     p.room_amount   ? `${p.room_amount}`        : null],
-    ['Baños',         p.bathroom_amount ? `${p.bathroom_amount} baño${p.bathroom_amount>1?'s':''}` : null],
-    ['Cocheras',      p.garage_amount ? `${p.garage_amount}` : null],
-    ['Estacion.',     p.parking_lot_amount ? `${p.parking_lot_amount}` : null],
-    ['Sup. cubierta', supCub ? `${Math.round(supCub)} m²` : null],
-    ['Sup. total',    p.total_surface && p.total_surface !== supCub ? `${Math.round(p.total_surface)} m²` : null],
-    ['Sup. terreno',  p.surface && !supCub ? `${Math.round(p.surface)} m²` : null],
-    ['Antigüedad',    trad(p.age)],
-    ['Estado',        trad(p.condition)],
-    ['Situación',     trad(p.situation)],
-    ['Expensas',      p.expenses ? `${p.currency_expenses||'$'} ${Number(p.expenses).toLocaleString('es-AR')}/mes` : null],
+    ['Dirección',     p.address || null],
+    // Superficies
+    ['Sup. cubierta',  supCub ? `${Math.round(supCub)} m²` : null],
+    ['Sup. semicubierta', p.semiroofed_surface && parseFloat(p.semiroofed_surface) > 0 ? `${Math.round(p.semiroofed_surface)} m²` : null],
+    ['Sup. total',     p.total_surface && parseFloat(p.total_surface) > parseFloat(supCub||0) ? `${Math.round(p.total_surface)} m²` : null],
+    ['Sup. terreno',   p.surface && parseFloat(p.surface) > parseFloat(supCub||0) ? `${Math.round(p.surface)} m²` : null],
+    // Ambientes
+    ['Ambientes',      p.room_amount   ? `${p.room_amount}` : null],
+    ['Dormitorios',    p.suite_amount  ? `${p.suite_amount}` : null],
+    ['Baños',          p.bathroom_amount ? `${p.bathroom_amount}` : null],
+    ['Toilettes',      p.toilet_amount ? `${p.toilet_amount}` : null],
+    ['Cocheras',       cocheras ? `${cocheras}` : null],
+    ['Plantas',        p.floors_amount && p.floors_amount > 1 ? `${p.floors_amount}` : null],
+    // Estado
+    ['Antigüedad',     p.age == 0 ? 'A estrenar' : (trad(p.age) || (p.age ? `${p.age} años` : null))],
+    ['Estado',         trad(p.property_condition || p.condition)],
+    ['Situación',      trad(p.situation)],
+    ['Orientación',    trad(p.orientation)],
+    // Financiero
+    ['Apto crédito',   creditoTrad && creditoTrad !== '' ? creditoTrad : null],
+    ['Expensas',       p.expenses ? `$ ${Number(p.expenses).toLocaleString('es-AR')}/mes` : null],
   ];
   document.getElementById('det-feats-full').innerHTML = rows
     .filter(([,v]) => v !== null && v !== undefined && v !== '')
@@ -2508,25 +2552,26 @@ function buildGaleria() {
   if (acciones && galProp) {
     const pills = [];
 
-    // Pill de fotos con ícono de cámara — abre el carrusel completo
+    // Pill de fotos — ícono plano de imagen
     if (galFotos.length > 0) {
       pills.push(`<button class="gal-media-pill" onclick="abrirLightbox(galIdx)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.2A3.2 3.2 0 0 1 8.8 12 3.2 3.2 0 0 1 12 8.8 3.2 3.2 0 0 1 15.2 12 3.2 3.2 0 0 1 12 15.2m7.2-10H4.8A1.6 1.6 0 0 0 3.2 6.8v10.4A1.6 1.6 0 0 0 4.8 18.8h14.4a1.6 1.6 0 0 0 1.6-1.6V6.8a1.6 1.6 0 0 0-1.6-1.6M9.6 3.2h4.8v1.6H9.6V3.2z"/></svg>
-        ${galFotos.length}</button>`);
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 9h2l2-3h10l2 3h2"/></svg>
+        ${galFotos.length} fotos</button>`);
     }
 
-    // Pill de video
+    // Pill de video — ícono play simple
     const tieneVideo = (galProp.videos||[]).some(v => v.player_url &&
       (!v.provider || v.provider.toLowerCase().includes('youtube')));
     if (tieneVideo) pills.push(`<button class="gal-media-pill" title="Ver video" onclick="abrirLightboxVideo()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>`);
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>
+      Video</button>`);
 
-    // Pill de 360°
+    // Pill de 360° — ícono de rotación simple
     const tiene360 = (galProp.virtual_tours||[]).some(t => t.player_url) ||
       (galProp.videos||[]).some(v => v.player_url && v.provider &&
         !v.provider.toLowerCase().includes('youtube'));
     if (tiene360) pills.push(`<button class="gal-media-pill" title="Recorrido virtual 360°" onclick="abrirLightboxTour()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       360°</button>`);
 
     // Pill de plano
