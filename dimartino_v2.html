@@ -234,7 +234,7 @@ button,input,select,textarea{font-family:inherit}
 .galeria-btn:hover{background:rgba(0,0,0,.85)}
 .galeria-btn.prev{left:10px}
 .galeria-btn.next{right:10px}
-.galeria-counter{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.62);color:var(--blanco);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap;z-index:5}
+.galeria-counter{display:none}
 /* Overlay compartir — arriba derecha */
 .galeria-compartir{position:absolute;top:10px;right:10px;z-index:5}
 .gal-btn-compartir{background:rgba(255,255,255,.92);border:none;color:var(--negro);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .18s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
@@ -292,10 +292,11 @@ button,input,select,textarea{font-family:inherit}
 .det-desc-ver-mas:hover{text-decoration:underline}
 
 /* Características completas */
-.det-feats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.det-feat-item{display:flex;flex-direction:column;gap:3px;padding:11px 14px;background:var(--gris-bg);border-radius:8px;font-size:13px}
-.fi-key{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gris-txt)}
-.fi-val{font-size:14px;font-weight:600;color:var(--negro)}
+.det-feats-grid{display:flex;flex-direction:column;gap:0}
+.det-feat-item{display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--gris-borde);gap:16px}
+.det-feat-item:last-child{border-bottom:none}
+.fi-key{font-size:12px;color:var(--gris-txt);flex-shrink:0}
+.fi-val{font-size:13px;font-weight:600;color:var(--negro);text-align:right}
 .det-feat-val{font-weight:600;color:var(--negro)}
 
 /* Amenidades / tags */
@@ -507,7 +508,7 @@ footer{background:#071a27;padding:56px 5% 26px}
   .det-sidebar{position:static;top:auto}
   .galeria-layout{grid-template-columns:1fr;height:260px}
   .galeria-grid-der{display:none}
-  .det-feats-grid{grid-template-columns:1fr}
+  .det-feats-grid{gap:0}
   .det-kf{min-width:64px}
   .det-tour-wrap{height:320px}
 
