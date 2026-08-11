@@ -49,8 +49,8 @@ button,input,select,textarea{font-family:inherit}
   text-align:center;padding:120px 5% 80px;overflow:hidden;
   background:#0a2f42;
 }
-/* Video de fondo */
-.hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+/* Video de fondo — bottom:18% corta el área donde YouTube muestra subtítulos */
+.hero-video-wrap{position:absolute;top:0;left:0;right:0;bottom:18%;overflow:hidden;z-index:0;pointer-events:none}
 .hero-video-wrap iframe,
 .hero-video-wrap #hero-yt-player{
   position:absolute;top:50%;left:50%;
@@ -63,7 +63,7 @@ button,input,select,textarea{font-family:inherit}
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(to top, rgba(10,47,66,.98) 0%, rgba(10,47,66,.0) 22%),
+    linear-gradient(to top, rgba(10,47,66,1) 0%, rgba(10,47,66,1) 18%, rgba(10,47,66,0) 38%),
     linear-gradient(160deg,rgba(10,47,66,.82) 0%,rgba(10,47,66,.48) 50%,rgba(10,47,66,.78) 100%);
 }
 /* Fallback bg (mobile / sin JS) */
