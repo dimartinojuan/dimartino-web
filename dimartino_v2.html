@@ -44,16 +44,16 @@ button,input,select,textarea{font-family:inherit}
 
 /* ══ HERO ══ */
 .hero{
-  position:relative;min-height:100vh;
+  position:relative;height:100vh;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:120px 5% 80px;overflow:hidden;background:#0a2f42;
+  text-align:center;padding:80px 5%;overflow:hidden;background:#0a2f42;
 }
 .hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
 .hero-video-wrap iframe,
 .hero-video-wrap #hero-yt-player{
   position:absolute;top:50%;left:50%;
   width:100vw;height:56.25vw;
-  min-height:100vh;min-width:177.78vh;
+  min-height:100%;min-width:177.78vh;
   transform:translate(-50%,-50%);
   pointer-events:none;border:none;
 }
