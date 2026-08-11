@@ -51,7 +51,8 @@ button,input,select,textarea{font-family:inherit}
 }
 /* Video de fondo */
 .hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
-.hero-video-wrap iframe{
+.hero-video-wrap iframe,
+.hero-video-wrap #hero-yt-player{
   position:absolute;top:50%;left:50%;
   width:100vw;height:56.25vw;
   min-height:100vh;min-width:177.78vh;
@@ -581,10 +582,9 @@ footer{background:#071a27;padding:56px 5% 26px}
 <!-- ════════ VISTA HOME ════════ -->
 <div id="vista-home" class="vista activa">
   <section class="hero">
-    <!-- Video de fondo YouTube -->
+    <!-- Video de fondo YouTube (IFrame API para deshabilitar subtítulos) -->
     <div class="hero-video-wrap">
-      <iframe src="https://www.youtube.com/embed/1CAzLkikmeM?autoplay=1&mute=1&loop=1&playlist=1CAzLkikmeM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1&cc_load_policy=0&cc_lang_pref=none"
-        allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div id="hero-yt-player"></div>
     </div>
     <div class="hero-overlay"></div>
     <!-- Fallback imagen estática (mobile) -->
@@ -2923,6 +2923,34 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') lbNav(1);
   if (e.key === 'ArrowLeft')  lbNav(-1);
 });
+
+// ── YouTube IFrame API — video de fondo hero ──────────────────────────────
+var _ytHeroPlayer;
+function onYouTubeIframeAPIReady() {
+  _ytHeroPlayer = new YT.Player('hero-yt-player', {
+    videoId: '1CAzLkikmeM',
+    playerVars: {
+      autoplay: 1, mute: 1, loop: 1, playlist: '1CAzLkikmeM',
+      controls: 0, rel: 0, showinfo: 0, iv_load_policy: 3,
+      modestbranding: 1, playsinline: 1, cc_load_policy: 0,
+    },
+    events: {
+      onReady: function(e) {
+        e.target.mute();
+        e.target.playVideo();
+        try { e.target.unloadModule('captions'); } catch(_) {}
+        try { e.target.unloadModule('cc'); } catch(_) {}
+        try { e.target.setOption('captions','track',{}); } catch(_) {}
+      }
+    }
+  });
+}
+// Cargar el script de la API dinámicamente
+(function(){
+  var s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+})();
 </script>
 
 <!-- ══ LIGHTBOX ══ -->
