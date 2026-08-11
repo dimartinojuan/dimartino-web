@@ -62,7 +62,9 @@ button,input,select,textarea{font-family:inherit}
 /* Overlay degradado encima del video */
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
-  background:linear-gradient(160deg,rgba(10,47,66,.82) 0%,rgba(10,47,66,.48) 50%,rgba(10,47,66,.78) 100%);
+  background:
+    linear-gradient(to top, rgba(10,47,66,.98) 0%, rgba(10,47,66,.0) 22%),
+    linear-gradient(160deg,rgba(10,47,66,.82) 0%,rgba(10,47,66,.48) 50%,rgba(10,47,66,.78) 100%);
 }
 /* Fallback bg (mobile / sin JS) */
 .hero-bg{
@@ -2938,9 +2940,14 @@ function onYouTubeIframeAPIReady() {
       onReady: function(e) {
         e.target.mute();
         e.target.playVideo();
-        try { e.target.unloadModule('captions'); } catch(_) {}
-        try { e.target.unloadModule('cc'); } catch(_) {}
-        try { e.target.setOption('captions','track',{}); } catch(_) {}
+        function killCaptions() {
+          try { e.target.unloadModule('captions'); } catch(_) {}
+          try { e.target.unloadModule('cc'); } catch(_) {}
+          try { e.target.setOption('captions','track',{}); } catch(_) {}
+        }
+        killCaptions();
+        setTimeout(killCaptions, 800);
+        setTimeout(killCaptions, 2000);
       }
     }
   });
