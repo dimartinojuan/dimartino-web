@@ -47,13 +47,29 @@ button,input,select,textarea{font-family:inherit}
   position:relative;min-height:100vh;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   text-align:center;padding:120px 5% 80px;overflow:hidden;
+  background:#0a2f42;
 }
+/* Video de fondo */
+.hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.hero-video-wrap iframe{
+  position:absolute;top:50%;left:50%;
+  width:100vw;height:56.25vw;
+  min-height:100vh;min-width:177.78vh;
+  transform:translate(-50%,-50%);
+  pointer-events:none;border:none;
+}
+/* Overlay degradado encima del video */
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(160deg,rgba(10,47,66,.82) 0%,rgba(10,47,66,.48) 50%,rgba(10,47,66,.78) 100%);
+}
+/* Fallback bg (mobile / sin JS) */
 .hero-bg{
-  position:absolute;inset:0;
-  background:linear-gradient(160deg,rgba(10,47,66,.88) 0%,rgba(10,47,66,.62) 50%,rgba(10,47,66,.82) 100%),
-    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
+  position:absolute;inset:0;z-index:0;
+  background:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
+  display:none;
 }
-.hero-content{position:relative;z-index:1;max-width:740px}
+.hero-content{position:relative;z-index:2;max-width:740px}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:7px;
   border:1px solid rgba(255,255,255,.25);border-radius:30px;
@@ -70,7 +86,7 @@ button,input,select,textarea{font-family:inherit}
 .hero-acc-btn:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.6)}
 .hero-acc-principal{background:var(--rojo);border-color:var(--rojo);font-size:15px;padding:13px 28px}
 .hero-acc-principal:hover{background:var(--rojo-h);border-color:var(--rojo-h)}
-.hero-kpis{position:relative;z-index:1;display:flex;gap:48px;margin-top:36px}
+.hero-kpis{position:relative;z-index:2;display:flex;gap:48px;margin-top:36px}
 .kpi{text-align:center}
 .kpi b{display:block;font-size:2rem;font-weight:900;color:var(--blanco);line-height:1;margin-bottom:4px}
 .kpi small{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1.2px;text-transform:uppercase}
@@ -486,6 +502,8 @@ footer{background:#071a27;padding:56px 5% 26px}
 
   /* Hero */
   .hero{padding:100px 5% 60px;min-height:auto}
+  .hero-video-wrap{display:none}
+  .hero-bg{display:block}
   .hero h1{font-size:2rem}
   .hero-sub{font-size:.95rem;margin-bottom:30px}
   .hero-accesos{flex-direction:column;align-items:stretch}
@@ -563,6 +581,13 @@ footer{background:#071a27;padding:56px 5% 26px}
 <!-- ════════ VISTA HOME ════════ -->
 <div id="vista-home" class="vista activa">
   <section class="hero">
+    <!-- Video de fondo YouTube -->
+    <div class="hero-video-wrap">
+      <iframe src="https://www.youtube.com/embed/1CAzLkikmeM?autoplay=1&mute=1&loop=1&playlist=1CAzLkikmeM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1"
+        allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="hero-overlay"></div>
+    <!-- Fallback imagen estática (mobile) -->
     <div class="hero-bg"></div>
     <div class="hero-content">
       <h1>Cada historia<br><em>tiene un lugar.</em></h1>
