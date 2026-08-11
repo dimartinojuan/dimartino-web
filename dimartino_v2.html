@@ -46,10 +46,8 @@ button,input,select,textarea{font-family:inherit}
 .hero{
   position:relative;min-height:100vh;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:120px 5% 80px;overflow:hidden;
-  background:#0a2f42;
+  text-align:center;padding:120px 5% 80px;overflow:hidden;background:#0a2f42;
 }
-/* Video de fondo — bottom:18% corta el área donde YouTube muestra subtítulos */
 .hero-video-wrap{position:absolute;top:0;left:0;right:0;bottom:18%;overflow:hidden;z-index:0;pointer-events:none}
 .hero-video-wrap iframe,
 .hero-video-wrap #hero-yt-player{
@@ -59,16 +57,11 @@ button,input,select,textarea{font-family:inherit}
   transform:translate(-50%,-50%);
   pointer-events:none;border:none;
 }
-/* Overlay mínimo — solo oscurece un poco para legibilidad del texto */
-.hero-overlay{
-  position:absolute;inset:0;z-index:1;
-  background: rgba(0,0,0,.38);
-}
-/* Fallback bg (mobile / sin JS) */
+.hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.32)}
 .hero-bg{
-  position:absolute;inset:0;z-index:0;
-  background:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
-  display:none;
+  position:absolute;inset:0;z-index:0;display:none;
+  background:linear-gradient(160deg,rgba(10,47,66,.88) 0%,rgba(10,47,66,.62) 50%,rgba(10,47,66,.82) 100%),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
 }
 .hero-content{position:relative;z-index:2;max-width:740px}
 .hero-eyebrow{
@@ -582,12 +575,8 @@ footer{background:#071a27;padding:56px 5% 26px}
 <!-- ════════ VISTA HOME ════════ -->
 <div id="vista-home" class="vista activa">
   <section class="hero">
-    <!-- Video de fondo YouTube (IFrame API para deshabilitar subtítulos) -->
-    <div class="hero-video-wrap">
-      <div id="hero-yt-player"></div>
-    </div>
+    <div class="hero-video-wrap"><div id="hero-yt-player"></div></div>
     <div class="hero-overlay"></div>
-    <!-- Fallback imagen estática (mobile) -->
     <div class="hero-bg"></div>
     <div class="hero-content">
       <h1>Cada historia<br><em>tiene un lugar.</em></h1>
@@ -2924,15 +2913,15 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft')  lbNav(-1);
 });
 
-// ── YouTube IFrame API — video de fondo hero ──────────────────────────────
+// ── YouTube IFrame API — video de fondo hero ─────────────────────────────
 var _ytHeroPlayer;
 function onYouTubeIframeAPIReady() {
   _ytHeroPlayer = new YT.Player('hero-yt-player', {
-    videoId: '1CAzLkikmeM',
+    videoId: '61FhjbsgGiw',
     playerVars: {
-      autoplay: 1, mute: 1, loop: 1, playlist: '1CAzLkikmeM',
-      controls: 0, rel: 0, showinfo: 0, iv_load_policy: 3,
-      modestbranding: 1, playsinline: 1, cc_load_policy: 0,
+      autoplay:1, mute:1, loop:1, playlist:'61FhjbsgGiw',
+      controls:0, rel:0, showinfo:0, iv_load_policy:3,
+      modestbranding:1, playsinline:1, cc_load_policy:0,
     },
     events: {
       onReady: function(e) {
@@ -2945,17 +2934,17 @@ function onYouTubeIframeAPIReady() {
         }
         killCaptions();
         setTimeout(killCaptions, 800);
-        setTimeout(killCaptions, 2000);
+        setTimeout(killCaptions, 2500);
       }
     }
   });
 }
-// Cargar el script de la API dinámicamente
 (function(){
   var s = document.createElement('script');
   s.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(s);
 })();
+
 </script>
 
 <!-- ══ LIGHTBOX ══ -->
