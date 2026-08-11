@@ -59,12 +59,10 @@ button,input,select,textarea{font-family:inherit}
   transform:translate(-50%,-50%);
   pointer-events:none;border:none;
 }
-/* Overlay degradado encima del video */
+/* Overlay mínimo — solo oscurece un poco para legibilidad del texto */
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
-  background:
-    linear-gradient(to top, rgba(10,47,66,1) 0%, rgba(10,47,66,1) 18%, rgba(10,47,66,0) 38%),
-    linear-gradient(160deg,rgba(10,47,66,.82) 0%,rgba(10,47,66,.48) 50%,rgba(10,47,66,.78) 100%);
+  background: rgba(0,0,0,.38);
 }
 /* Fallback bg (mobile / sin JS) */
 .hero-bg{
