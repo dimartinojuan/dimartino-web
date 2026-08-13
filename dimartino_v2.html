@@ -304,13 +304,22 @@ button,input,select,textarea{font-family:inherit}
 .det-desc-ver-mas{background:none;border:none;color:var(--azul);font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;padding:0;display:flex;align-items:center;gap:4px}
 .det-desc-ver-mas:hover{text-decoration:underline}
 
-/* Características completas */
+/* Tabs de características */
+.det-tabs-nav{display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid var(--gris-borde)}
+.det-tab-btn{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;color:var(--gris-txt);transition:all .18s;letter-spacing:.3px}
+.det-tab-btn:hover{color:var(--negro)}
+.det-tab-btn.activo{color:var(--azul);border-bottom-color:var(--azul)}
+.det-tab-pane{display:none}
+.det-tab-pane.activo{display:block}
+/* Lista compacta dentro de cada tab */
 .det-feats-grid{display:flex;flex-direction:column;gap:0}
 .det-feat-item{display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--gris-borde);gap:16px}
 .det-feat-item:last-child{border-bottom:none}
 .fi-key{font-size:12px;color:var(--gris-txt);flex-shrink:0}
 .fi-val{font-size:13px;font-weight:600;color:var(--negro);text-align:right}
-.det-feat-val{font-weight:600;color:var(--negro)}
+/* Tags dentro del tab de amenidades */
+.det-tags-tab{display:flex;flex-wrap:wrap;gap:8px;padding-top:4px}
+.det-tag-item{background:var(--gris-bg);border:1px solid var(--gris-borde);color:var(--negro);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px}
 
 /* Amenidades / tags */
 .det-tags{display:flex;flex-wrap:wrap;gap:8px}
@@ -902,10 +911,17 @@ footer{background:#071a27;padding:56px 5% 26px}
       <!-- Barra de medios disponibles -->
       <div id="det-media-bar" class="det-media-bar" style="display:none"></div>
 
-      <!-- Características completas -->
+      <!-- Características con tabs -->
       <div class="det-card" id="det-caract-card">
         <div class="det-card-titulo">Características</div>
-        <div class="det-feats-grid" id="det-feats-full"></div>
+        <div class="det-tabs-nav" id="det-tabs-nav">
+          <button class="det-tab-btn activo" onclick="cambiarTab('general',this)">General</button>
+          <button class="det-tab-btn" onclick="cambiarTab('medidas',this)">Medidas</button>
+          <button class="det-tab-btn" id="tab-btn-amenidades" onclick="cambiarTab('amenidades',this)">Amenidades</button>
+        </div>
+        <div class="det-tab-pane activo" id="tab-general"><div class="det-feats-grid" id="tab-general-grid"></div></div>
+        <div class="det-tab-pane" id="tab-medidas"><div class="det-feats-grid" id="tab-medidas-grid"></div></div>
+        <div class="det-tab-pane" id="tab-amenidades"><div class="det-tags-tab" id="tab-amenidades-tags"></div></div>
       </div>
 
       <!-- Descripción -->
@@ -2383,40 +2399,58 @@ function renderDetalle(p) {
     kf += kfItem('orient', orientTrad, 'orientación');
   document.getElementById('det-key-feats').innerHTML = kf;
 
-  /* ── Tabla completa de características ── */
+  /* ── Características en tabs ── */
   const creditoTrad = trad(p.credit_eligible);
-  const rows = [
-    // Identificación
+  function buildGrid(rows) {
+    return rows
+      .filter(([,v]) => v !== null && v !== undefined && v !== '')
+      .map(([k,v]) => `<div class="det-feat-item"><span class="fi-key">${k}</span><span class="fi-val">${v}</span></div>`)
+      .join('');
+  }
+  // Tab General
+  document.getElementById('tab-general-grid').innerHTML = buildGrid([
     ['Tipo de propiedad', trad(p.type?.name)],
-    ['Código de referencia', p.reference_code ? `#${p.reference_code}` : null],
-    // Ubicación
-    ['Barrio / Zona', ubic],
-    ['Dirección',     p.address || null],
-    // Superficies
-    ['Sup. cubierta',  supCub ? `${Math.round(supCub)} m²` : null],
+    ['Código',            p.reference_code ? `#${p.reference_code}` : null],
+    ['Barrio / Zona',     ubic],
+    ['Dirección',         p.address || null],
+    ['Antigüedad',        p.age == 0 ? 'A estrenar' : (trad(p.age) || (p.age ? `${p.age} años` : null))],
+    ['Estado',            trad(p.property_condition || p.condition)],
+    ['Situación',         trad(p.situation)],
+    ['Orientación',       trad(p.orientation)],
+    ['Apto crédito',      creditoTrad && creditoTrad !== '' ? creditoTrad : null],
+    ['Expensas',          p.expenses ? `$ ${Number(p.expenses).toLocaleString('es-AR')}/mes` : null],
+  ]);
+  // Tab Medidas
+  document.getElementById('tab-medidas-grid').innerHTML = buildGrid([
+    ['Sup. cubierta',     supCub ? `${Math.round(supCub)} m²` : null],
     ['Sup. semicubierta', p.semiroofed_surface && parseFloat(p.semiroofed_surface) > 0 ? `${Math.round(p.semiroofed_surface)} m²` : null],
-    ['Sup. total',     p.total_surface && parseFloat(p.total_surface) > parseFloat(supCub||0) ? `${Math.round(p.total_surface)} m²` : null],
-    ['Sup. terreno',   p.surface && parseFloat(p.surface) > parseFloat(supCub||0) ? `${Math.round(p.surface)} m²` : null],
-    // Ambientes
-    ['Ambientes',      p.room_amount   ? `${p.room_amount}` : null],
-    ['Dormitorios',    p.suite_amount  ? `${p.suite_amount}` : null],
-    ['Baños',          p.bathroom_amount ? `${p.bathroom_amount}` : null],
-    ['Toilettes',      p.toilet_amount ? `${p.toilet_amount}` : null],
-    ['Cocheras',       cocheras ? `${cocheras}` : null],
-    ['Plantas',        p.floors_amount && p.floors_amount > 1 ? `${p.floors_amount}` : null],
-    // Estado
-    ['Antigüedad',     p.age == 0 ? 'A estrenar' : (trad(p.age) || (p.age ? `${p.age} años` : null))],
-    ['Estado',         trad(p.property_condition || p.condition)],
-    ['Situación',      trad(p.situation)],
-    ['Orientación',    trad(p.orientation)],
-    // Financiero
-    ['Apto crédito',   creditoTrad && creditoTrad !== '' ? creditoTrad : null],
-    ['Expensas',       p.expenses ? `$ ${Number(p.expenses).toLocaleString('es-AR')}/mes` : null],
-  ];
-  document.getElementById('det-feats-full').innerHTML = rows
-    .filter(([,v]) => v !== null && v !== undefined && v !== '')
-    .map(([k,v]) => `<div class="det-feat-item"><span class="fi-key">${k}</span><span class="fi-val">${v}</span></div>`)
-    .join('');
+    ['Sup. total',        p.total_surface && parseFloat(p.total_surface) > parseFloat(supCub||0) ? `${Math.round(p.total_surface)} m²` : null],
+    ['Sup. terreno',      p.surface && parseFloat(p.surface) > parseFloat(supCub||0) ? `${Math.round(p.surface)} m²` : null],
+    ['Ambientes',         p.room_amount   ? `${p.room_amount}` : null],
+    ['Dormitorios',       p.suite_amount  ? `${p.suite_amount}` : null],
+    ['Baños completos',   p.bathroom_amount ? `${p.bathroom_amount}` : null],
+    ['Toilettes',         p.toilet_amount ? `${p.toilet_amount}` : null],
+    ['Cocheras',          cocheras ? `${cocheras}` : null],
+    ['Plantas',           p.floors_amount && p.floors_amount > 1 ? `${p.floors_amount}` : null],
+  ]);
+  // Tab Amenidades (tags)
+  const allTags = [
+    ...(p.tags||[]).map(t => tradTag(t.name||t)),
+    ...(p.custom_tags||[]).map(t => tradTag(t.name||t)),
+  ].filter(Boolean);
+  const amenBtn = document.getElementById('tab-btn-amenidades');
+  if (allTags.length) {
+    document.getElementById('tab-amenidades-tags').innerHTML =
+      allTags.map(t => `<span class="det-tag-item">${t}</span>`).join('');
+    amenBtn.style.display = '';
+  } else {
+    amenBtn.style.display = 'none';
+  }
+  // Resetear tab activo a General al cargar
+  document.querySelectorAll('.det-tab-pane').forEach(p => p.classList.remove('activo'));
+  document.querySelectorAll('.det-tab-btn').forEach(b => b.classList.remove('activo'));
+  document.getElementById('tab-general').classList.add('activo');
+  document.querySelector('[onclick*="general"]').classList.add('activo');
 
   /* ── Descripción ── */
   const desc = p.description || p.short_description || '';
@@ -2439,12 +2473,9 @@ function renderDetalle(p) {
 
   /* ── Amenidades / Tags ── */
   const tags = (p.tags||[]).map(t => tradTag(t.name||t)).filter(Boolean);
+  // Tags ahora viven en el tab de Amenidades — ocultar card separado
   const tagsCard = document.getElementById('det-tags-card');
-  if (tags.length) {
-    document.getElementById('det-tags').innerHTML = tags
-      .map(t => `<span class="det-tag">${t}</span>`).join('');
-    tagsCard.style.display = 'block';
-  } else { tagsCard.style.display = 'none'; }
+  if (tagsCard) tagsCard.style.display = 'none';
 
   /* ── Video YouTube ── */
   function toYTEmbed(url) {
@@ -2629,6 +2660,12 @@ function actualizarGal() {
   if (activeThumb) activeThumb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 }
 
+function cambiarTab(id, btn) {
+  document.querySelectorAll('.det-tab-pane').forEach(p => p.classList.remove('activo'));
+  document.querySelectorAll('.det-tab-btn').forEach(b => b.classList.remove('activo'));
+  document.getElementById('tab-'+id).classList.add('activo');
+  btn.classList.add('activo');
+}
 function galNav(d) { galIdx = (galIdx+d+galFotos.length)%galFotos.length; actualizarGal(); }
 function galIr(i)  { galIdx = i; actualizarGal(); }
 
