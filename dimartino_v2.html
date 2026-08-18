@@ -2086,75 +2086,78 @@ const TRAD_TIPO = {
   'ph':'PH',
 };
 
-// Traducción de amenidades/tags (Tokko los devuelve en inglés)
+// Traducción completa de tags de Tokko (catálogo extraído de la API)
 const TRAD_TAGS = {
-  // Servicios básicos
+  // ── Servicios básicos ──
   'water':'Agua corriente','sewage':'Cloaca','sewerage':'Cloaca',
   'natural gas':'Gas natural','electricity':'Electricidad','pavement':'Pavimento',
   'paved street':'Calle pavimentada','asphalted street':'Calle asfaltada',
-  'street lighting':'Alumbrado público','phone':'Teléfono','telephone line':'Línea telefónica',
+  'phone':'Teléfono','telephone line':'Línea telefónica',
   'cable':'TV cable','cable tv':'TV cable','internet':'Internet',
   'city water':'Agua de red','artesian well':'Pozo artesiano',
   'septic tank':'Cámara séptica','cistern':'Cisterna','borehole':'Perforación',
-  // Espacios
-  'garden':'Jardín','backyard':'Patio trasero','front garden':'Jardín delantero',
-  'balcony':'Balcón','terrace':'Terraza','laundry':'Lavandería',
-  'laundry room':'Cuarto de lavado','kitchen':'Cocina','hall':'Hall de entrada',
-  'living room':'Living comedor','dining room':'Comedor','study':'Estudio',
-  'office':'Oficina','studio':'Estudio','playroom':'Sala de juegos',
-  'storage room':'Baulera','utility room':'Sala de usos múltiples',
-  'american kitchen':'Cocina americana','separate kitchen':'Cocina separada',
-  'dependency':'Dependencia de servicio',
+  'drinking water':'Agua potable','hot water':'Agua caliente',
+  'hot water by gas':'Agua caliente a gas','water heater':'Termotanque',
+  'gas tank':'Tanque de gas','public lighting':'Alumbrado público',
+  'street lighting':'Alumbrado público','rainwater drainage':'Desagüe pluvial',
+  // ── Espacios interiores ──
+  'kitchen':'Cocina','american kitchen':'Cocina americana','separate kitchen':'Cocina separada',
+  'hall':'Hall de entrada','living room':'Living comedor','dining room':'Comedor',
+  'diary dining':'Living comedor','dining lounge':'Comedor',
+  'study':'Estudio','office':'Oficina','studio':'Estudio',
+  'playroom':'Sala de juegos','storage room':'Baulera',
+  'utility room':'Sala de usos múltiples','laundry':'Lavandería',
+  'laundry room':'Cuarto de lavado','dependency':'Dependencia de servicio',
   'independent studio':'Estudio independiente',
   'independent apartment':'Departamento independiente',
-  // Amenidades
-  'pool':'Pileta','swimming pool':'Pileta','jacuzzi':'Jacuzzi',
+  'guest apartment':'Departamento de huéspedes',
+  'warehouse':'Depósito','gallery':'Galería','workshop':'Taller',
+  'home office':'Home office','work able':'Apto para trabajar',
+  // ── Espacios exteriores ──
+  'garden':'Jardín','front garden':'Jardín delantero','backyard':'Patio trasero',
+  'balcony':'Balcón','terrace':'Terraza','balcony terrace':'Balcón terraza',
   'barbecue':'Asador / Parrilla','barbecue area':'Quincho',
-  'fireplace':'Chimenea','sauna':'Sauna','gym':'Gimnasio',
-  'elevator':'Ascensor','doorman':'Portería','security':'Seguridad',
-  'alarm':'Alarma','security grills':'Rejas de seguridad',
-  'electric gates':'Portón eléctrico','corner':'Esquina',
-  'furnished':'Amueblado','hot water':'Agua caliente',
-  'pets allowed':'Se aceptan mascotas','solar panels':'Paneles solares',
-  // Climatización
+  // ── Piletas ──
+  'pool':'Pileta','swimming pool':'Pileta',
+  'outdoor swimming pool':'Pileta exterior','outdoor swiming pool':'Pileta exterior',
+  'indoor swimming pool':'Pileta cubierta','heated pool':'Pileta climatizada',
+  'jacuzzi':'Jacuzzi',
+  // ── Climatización ──
+  'heating':'Calefacción','gas heating':'Calefacción a gas',
+  'central heating':'Calefacción central','electric heating':'Calefacción eléctrica',
+  'individual heating':'Calefacción individual','floor heating':'Calefacción por losa radiante',
+  'tb stoves':'Estufas de tiraje balanceado',
   'air conditioning':'Aire acondicionado',
-  'individual air conditioner':'Aire acondicionado split',
-  'central heating':'Calefacción central','gas heating':'Calefacción a gas',
-  'electric heating':'Calefacción eléctrica','individual heating':'Calefacción individual',
-  'tb stoves':'Estufas TB',
-  // Características constructivas
+  'individual air conditioner':'Aire acondicionado individual',
+  'split air':'Aire acondicionado split','ducted air':'Aire ducto',
+  'fireplace':'Chimenea',
+  // ── Seguridad ──
+  'alarm':'Alarma','security grills':'Rejas de seguridad',
+  'electric gates':'Portón eléctrico','security':'Seguridad',
+  'doorman':'Portería',
+  // ── Características constructivas ──
   'one level':'Una planta','two levels':'Dos plantas','three levels':'Tres plantas',
   'blinds':'Persianas','double glazing':'Doble vidrio','wooden windows':'Ventanas de madera',
   'wood flooring':'Piso de madera','ceramic flooring':'Piso cerámico',
   'vinyl flooring':'Piso vinílico','sheet metal ceiling':'Techo de chapa',
   'natural light':'Luminoso','luminous':'Luminoso',
   'some restoration needed':'Requiere refacciones',
-  // Ubicación / contexto
-  'walking distance to t. centre':'Cerca del centro','good rental potential':'Buen potencial de renta',
+  'corner':'Esquina','furnished':'Amueblado',
+  // ── Edificio / extras ──
+  'elevator':'Ascensor','gym':'Gimnasio','sauna':'Sauna',
+  'solar panels':'Paneles solares','bussiness premises':'Local comercial',
+  // ── Mascotas / estilo de vida ──
+  'pets allowed':'Se aceptan mascotas',
+  // ── Ubicación / contexto ──
+  'walking distance to t. centre':'Cerca del centro',
   'near the center':'Cerca del centro','close to center':'Cerca del centro',
   'quiet location':'Zona tranquila','close to public transport':'Cerca del transporte',
-  'ruta':'Sobre ruta','public lighting':'Alumbrado público',
-  'rainwater drainage':'Desagüe pluvial','immediate deed':'Escritura inmediata',
-  // Espacios adicionales
-  'diary dining':'Living comedor','dining lounge':'Living comedor',
-  'guest apartment':'Departamento de huéspedes','warehouse':'Depósito',
-  'gallery':'Galería','balcony terrace':'Balcón terraza',
-  'work able':'Apto para trabajar','home office':'Home office',
-  'workshop':'Taller',
-  // Piletas
-  'outdoor swimming pool':'Pileta exterior','outdoor swiming pool':'Pileta exterior',
-  'indoor swimming pool':'Pileta cubierta','heated pool':'Pileta climatizada',
-  // Estilo / calificaciones
+  'good rental potential':'Buen potencial de renta',
+  'immediate deed':'Escritura inmediata','ruta':'Sobre ruta',
+  // ── Estilo ──
   'rustic style':'Estilo rústico','colonial style':'Estilo colonial',
   'modern style':'Estilo moderno','classic style':'Estilo clásico',
-  // Agua y gas
-  'drinking water':'Agua potable','hot water by gas':'Agua caliente a gas',
-  'water heater':'Termotanque','gas tank':'Tanque de gas',
-  // Calefacción / climatización adicional
-  'heating':'Calefacción','floor heating':'Calefacción por losa radiante',
-  'ducted air':'Aire ducto','split air':'Aire acondicionado split',
-  // Accesibilidad / crédito
-  'apto crédito':'Apto crédito','apto edif. multifamiliar':'Apto edif. multifamiliar',
+  // ── Accesibilidad / crédito ──
   'accessible':'Accesible para discapacitados',
 };
 function tradTag(tag) { return TRAD_TAGS[(tag||'').toLowerCase()] || tag; }
