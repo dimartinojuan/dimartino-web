@@ -7,3 +7,5 @@ body[data-view=search] .related{display:none}.page-intro{padding-top:32px}.prop-
 .hero-video-wrap{display:block;z-index:1;opacity:0;transition:opacity .45s}.hero-video-wrap.is-playing{opacity:1}.hero-overlay{z-index:2;background:rgba(0,0,0,.32)}.hero-content{z-index:3}
 @media(max-width:768px){.hero-video-wrap{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.pagination[hidden]{display:none}.footer-col h4{color:#ccdbe4}.footer-col ul a,.footer-brand-desc,.social{color:#b8c9d4}.footer-bottom{color:#a9bdca}
