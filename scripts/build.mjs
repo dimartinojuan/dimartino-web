@@ -114,6 +114,17 @@ async function main(){
   const input=baseDoc.getElementById('nav-search-input');input.setAttribute('aria-label','Buscar propiedades por tipo, localidad, precio o código');input.setAttribute('list','search-suggestions');input.setAttribute('autocomplete','off');input.insertAdjacentHTML('afterend','<datalist id="search-suggestions"></datalist>');
   baseDoc.querySelector('.busq-body').insertAdjacentHTML('beforebegin','<button type="button" class="filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="property-filters">Mostrar u ocultar filtros</button>');baseDoc.querySelector('.filtros-sidebar').id='property-filters';baseDoc.getElementById('res-count').setAttribute('aria-live','polite');
   const hero=properties.find(p=>p.is_starred_on_web&&p.photos.length)||properties.find(p=>p.photos.length);baseDoc.documentElement.style.setProperty('--hero-photo',`url("${hero.photos[0].image}")`);
+  // Category artwork comes from the active public inventory, never stock photos.
+  const categoryPhotos=[{id:538270,state:{op:'1',tipos:['3']}},{id:190994,state:{op:'2'}},{id:2253192,photo:2,state:{op:'1',tipos:['1']}},{id:2334703,state:{tipos:['2']}},{id:176359,state:{}}];
+  const usedCategoryProperties=new Set();
+  for(const [i,card]of [...baseDoc.querySelectorAll('.cat-card')].entries()){
+    const choice=categoryPhotos[i],candidates=DMSearch.filter(properties,choice.state).filter(p=>p.photos?.length);
+    const property=candidates.find(p=>p.id===choice.id)||candidates.find(p=>!usedCategoryProperties.has(p.id))||candidates[0];
+    const img=card.querySelector('img');
+    if(property){const photo=property.photos[property.id===choice.id?(choice.photo||0):0]||property.photos[0];img.src=photo.image;img.alt=property.type.label+' en '+property.location.name+(property.address?' — '+property.address:'');img.setAttribute('data-property-id',property.id);usedCategoryProperties.add(property.id);}
+    else{img.src=BASE+'assets/property-placeholder.svg';img.alt='Di Martino Propiedades';}
+    img.setAttribute('decoding','async');img.setAttribute('width','640');img.setAttribute('height','480');
+  }
   baseDoc.querySelector('footer').remove();const footer=parseHTML(template).document.querySelector('footer');baseDoc.body.append(footer);
   for(const el of baseDoc.querySelectorAll('.des-card')){el.setAttribute('role','link');el.setAttribute('tabindex','0');el.setAttribute('onkeydown',"if(event.key==='Enter')irAHome('contacto')");}
   let fieldId=0;for(const field of baseDoc.querySelectorAll('.campo input,.campo select,.campo textarea')){if(!field.id)field.id='campo-'+(++fieldId);const label=field.parentElement.querySelector('label');if(label)label.setAttribute('for',field.id);if(field.name==='from_name')field.setAttribute('autocomplete','name');if(field.name==='from_phone')field.setAttribute('autocomplete','tel');if(field.name==='from_email')field.setAttribute('autocomplete','email');}
