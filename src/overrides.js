@@ -40,7 +40,8 @@ function renderEmptySearch(empty){
 function setupMarkerPreview(marker){
   const openPreview=()=>marker.openPopup();
   if(window.matchMedia('(any-hover: hover)').matches)marker.on('mouseover',openPreview);
-  marker.getElement()?.addEventListener('focus',openPreview);
+  const pin=marker.getElement();
+  pin?.addEventListener('focus',()=>{if(pin.matches(':focus-visible'))openPreview();});
 }
 function actualizarMapaMarcadores(props){
   if(!mapaLeaflet)return;
