@@ -9,3 +9,7 @@ body[data-view=search] .related{display:none}.page-intro{padding-top:32px}.prop-
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 .pagination[hidden]{display:none}.footer-col h4{color:#ccdbe4}.footer-col ul a,.footer-brand-desc,.social{color:#b8c9d4}.footer-bottom{color:#a9bdca}
+
+/* Let every category row fill its width, including the final incomplete row. */
+@media(max-width:1024px){.cat-grid{display:flex;flex-wrap:wrap}.cat-grid .cat-card{flex:1 1 calc((100% - 24px)/3);min-width:0;height:clamp(220px,30vw,300px);aspect-ratio:auto}}
+@media(max-width:768px){.cat-grid .cat-card{flex-basis:calc((100% - 8px)/2);height:clamp(180px,48vw,260px)}}
