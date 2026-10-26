@@ -19,3 +19,5 @@ body[data-view=search] .related{display:none}.page-intro{padding-top:32px}.prop-
 .search-return{display:inline-flex;margin:16px 5% 0;padding:10px 14px;border:1px solid #b8c9d4;border-radius:6px;color:#0a2f42;font-weight:700}.search-return:hover{background:#eaf1f5}.det-breadcrumb{line-height:1.8;align-items:center}
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.dm-map-marker{background:transparent;border:0;filter:drop-shadow(0 2px 2px #0005)}.dm-map-marker svg{display:block}.map-property{display:flex;width:220px;flex-direction:column;gap:6px;color:#0a2f42}.map-property img{width:220px;height:120px;object-fit:cover;border-radius:6px}.map-property-price{font-size:16px;font-weight:800}.map-property-link{font-weight:700;text-decoration:underline}
