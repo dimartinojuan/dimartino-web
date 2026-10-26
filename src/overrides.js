@@ -37,6 +37,11 @@ function renderEmptySearch(empty){
   if(suggestion){const button=document.createElement('button');button.type='button';button.className='search-recovery';button.textContent='¿Quisiste buscar “'+suggestion+'”?';button.addEventListener('click',()=>corregirBusqueda(suggestion));empty.append(button);}
   const all=document.createElement('a');all.className='search-recovery';all.href=DM_ROOT+'propiedades/';all.textContent='Ver todas las propiedades';empty.append(all);
 }
+function setupMarkerPreview(marker){
+  const openPreview=()=>marker.openPopup();
+  if(window.matchMedia('(any-hover: hover)').matches)marker.on('mouseover',openPreview);
+  marker.getElement()?.addEventListener('focus',openPreview);
+}
 function actualizarMapaMarcadores(props){
   if(!mapaLeaflet)return;
   mapaLeaflet.eachLayer(layer=>{if(layer instanceof L.Marker)mapaLeaflet.removeLayer(layer);});
@@ -49,6 +54,7 @@ function actualizarMapaMarcadores(props){
     const marker=L.marker([Number(p.geo_lat),Number(p.geo_long)],{icon,title,alt:title,keyboard:true}).addTo(mapaLeaflet);
     marker.bindPopup(`<a class="map-property" href="${escapeHTML(href)}"><img src="${escapeHTML(getFoto(p))}" alt="${escapeHTML(title)}" width="220" height="120" loading="lazy"><strong>${escapeHTML(title)}</strong><span class="map-property-price">${escapeHTML(price)}</span><span>${escapeHTML(getUbic(p))}</span><span class="map-property-link">Ver propiedad →</span></a>`);
     marker.getElement()?.setAttribute('aria-label',title);
+    setupMarkerPreview(marker);
   }
   if(valid.length)mapaLeaflet.fitBounds(L.latLngBounds(valid.map(p=>[Number(p.geo_lat),Number(p.geo_long)])),{padding:[40,40],maxZoom:16});
 }
