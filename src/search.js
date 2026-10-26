@@ -3,6 +3,7 @@
   const types = {casa:'3',casas:'3',chalet:'3',chalets:'3',casita:'3',departamento:'2',departamentos:'2',depto:'2',dpto:'2',dto:'2',apartamento:'2',apto:'2',quinta:'4',quintas:'4',chacra:'4',terreno:'1',terrenos:'1',lote:'1',lotes:'1',loteo:'1',local:'7',locales:'7',oficina:'5',oficinas:'5',consultorio:'30',cochera:'10',cocheras:'10',garage:'10',garaje:'10',galpon:'24',galpones:'24',deposito:'14',campo:'9',campos:'9',haras:'29',establecimiento:'18',ph:'13',monoambiente:'31',mono:'31',studio:'31',hotel:'11',hoteles:'11'};
   Object.assign(types,{chalecito:'3',dept:'2',dpt:'2',apt:'2',negocio:'7',comercio:'7'});
   const ops = {venta:'1',vender:'1',comprar:'1',compra:'1',compro:'1',alquiler:'2',alquilar:'2',alquilo:'2',alquileres:'2',alq:'2',renta:'2',arrendar:'2',alquier:'2',alqiluer:'2',temporal:'3',temporario:'3',temporada:'3',vacacional:'3',turismo:'3'};
+  Object.assign(ops,{vendo:'1',vende:'1'});
   const features = {pileta:['pileta','piscina','pool','swimming pool'],cochera:['cochera','garage','garaje','parking'],parrilla:['parrilla','barbecue','grill','asador'],quincho:['quincho'],jardin:['jardin','garden'],patio:['patio'],seguridad:['seguridad','security','vigilancia'],ascensor:['ascensor','elevator'],calefaccion:['calefaccion','heating']};
   function distance(a,b) { const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=0;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++){d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]!==b[j-1]));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1);}return d[a.length][b.length]; }
   function fuzzy(word, dict) {if(dict[word])return dict[word];if(word.length<4)return null;const hits=Object.entries(dict).filter(([k])=>Math.abs(k.length-word.length)<=1&&distance(word,k)<=1);const values=[...new Set(hits.map(([,v])=>v))];return values.length===1?values[0]:null;}
@@ -34,6 +35,17 @@
     if(!r.barrios.length&&q){const matches=locations.filter(loc=>distance(q,norm(loc))<=1&&q.length>=5);if(matches.length===1){r.barrios=matches;q='';}}
     r.resto=q.replace(/\s+/g,' ').trim();return r;
   }
+  // Suggest a correction only; do not silently broaden an unmatched search.
+  function suggest(text,properties=[]){
+    const parsed=parse(text,properties),typeNames={'1':'terreno','2':'departamento','3':'casa','4':'quinta','5':'oficina','7':'local','9':'campo','10':'cochera','11':'hotel','13':'ph','14':'deposito','18':'establecimiento','24':'galpon','29':'haras','30':'consultorio','31':'monoambiente'};
+    const vocabulary=[...Object.entries(ops).map(([word,id])=>[word,{'1':'venta','2':'alquiler','3':'temporal'}[id]]),...Object.entries(types).map(([word,id])=>[word,typeNames[id]||word])];
+    for(const token of parsed.resto.split(/\s+/).filter(t=>t.length>=4&&!/\d/.test(t))){
+      const hits=vocabulary.map(([word,replacement])=>({replacement,score:distance(token,word)})).filter(x=>x.score<=2).sort((a,b)=>a.score-b.score);
+      if(!hits.length)continue;const best=[...new Set(hits.filter(x=>x.score===hits[0].score).map(x=>x.replacement))];
+      if(best.length===1)return norm(text).split(' ').map(t=>t===token?best[0]:t).join(' ');
+    }
+    return null;
+  }
   function searchable(p){return norm([p.title,p.description,p.short_description,p.address,p.reference_code,p.id,p.type?.name,p.type?.label,p.location?.name,p.location?.full_location,p.location?.parent_location?.name,...(p.tags||[]).map(t=>t.name),...(p.custom_tags||[]).map(t=>t.name)].filter(Boolean).join(' '));}
   function selectedOffer(p,state={}) {const wanted=state.ops?.length?state.ops:(state.op?[state.op]:[]);const names={'1':'Sale','2':'Rent','3':'Temporary Rental'};const operations=(p.operations||[]).filter(o=>!wanted.length||wanted.some(id=>o.operation_type===names[id]||(id==='2'&&o.operation_type==='Temporary Rental')));let offers=operations.flatMap(o=>(o.prices||[]).map(pr=>({...pr,operation_type:o.operation_type})));if(state.moneda){const matched=offers.filter(o=>o.currency===state.moneda);if(matched.length)return matched[0];if(state.desde||state.hasta)return null;}return offers[0]||null;}
   function filter(properties,state,exclude=[]) {return properties.filter(p=>{
@@ -53,5 +65,5 @@
     if(!exclude.includes('kw')&&state.kw&&!norm(state.kw).split(/\s+/).every(w=>hay.includes(w)))return false;
     return true;
   });}
-  root.DMSearch={norm,parse,filter,selectedOffer,distance,searchable};
+  root.DMSearch={norm,parse,suggest,filter,selectedOffer,distance,searchable};
 })(globalThis);
