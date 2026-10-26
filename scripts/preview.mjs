@@ -1,0 +1,6 @@
+import http from 'node:http';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+const root=path.resolve('dist'),prefix='/dimartino-web/';
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.xml':'application/xml','.txt':'text/plain','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml'};
+http.createServer(async(req,res)=>{const u=new URL(req.url,'http://localhost');let rel=decodeURIComponent(u.pathname);if(rel==='/'){res.writeHead(302,{Location:prefix});res.end();return;}if(rel.startsWith(prefix))rel=rel.slice(prefix.length);const file=path.resolve(root,rel||'index.html');if(file!==root&&!file.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}try{let resolved=file;if((await fs.stat(resolved)).isDirectory())resolved=path.join(resolved,'index.html');const data=await fs.readFile(resolved);res.writeHead(200,{'Content-Type':types[path.extname(resolved)]||'application/octet-stream'});res.end(data);}catch{res.writeHead(404,{'Content-Type':'text/html; charset=utf-8'});res.end(await fs.readFile(path.join(root,'404.html')));}}).listen(4173,'127.0.0.1',()=>console.log('Local: http://127.0.0.1:4173/dimartino-web/'));
