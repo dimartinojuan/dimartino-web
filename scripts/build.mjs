@@ -95,6 +95,7 @@ async function main(){
   app=app.replaceAll("document.body.style.overflow = 'hidden';","document.body.style.overflow = 'hidden'; setTimeout(()=>document.querySelector('.lightbox-cerrar')?.focus(),0);");
   app=app.replace('`${c.label}', '`${escapeHTML(c.label)}');
   const overrides=await fs.readFile(path.join(ROOT,'src/overrides.js'),'utf8');app+='\n'+overrides+'\n'+await fs.readFile(path.join(ROOT,'src/media.js'),'utf8');
+  app+='\nif(!window.DM_BUILD){\n'+await fs.readFile(path.join(ROOT,'src/hero-video.js'),'utf8')+'\n}';
   template=template.replace(/<style>[\s\S]*?<\/style>/,`<link rel="stylesheet" href="${BASE}assets/site.css">`).replace(/<script src="https:\/\/cdn.jsdelivr.net\/npm\/@emailjs[\s\S]*?<\/script>/,'').replace(/<script>\s*\/\* ═[\s\S]*?<\/script>/,'');
   // Externalize the retained brand assets, including the oversized original favicon.
   let assetIndex=0;template=template.replace(/data:image\/png;base64,([A-Za-z0-9+/=]+)/g,()=>{const name=assetIndex++===0?'favicon-source.png':'logo.png';return BASE+'assets/'+name;});
@@ -109,7 +110,6 @@ async function main(){
   const {document:baseDoc}=parseHTML(template);baseDoc.body.id='contenido';baseDoc.body.prepend(Object.assign(baseDoc.createElement('a'),{className:'skip-link',href:'#contenido-principal',textContent:'Ir al contenido'}));baseDoc.querySelector('.navbar').insertAdjacentHTML('beforeend','<button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-menu">Menú</button>');baseDoc.querySelector('.nav-links').id='main-menu';
   const input=baseDoc.getElementById('nav-search-input');input.setAttribute('aria-label','Buscar propiedades por tipo, localidad, precio o código');input.setAttribute('list','search-suggestions');input.setAttribute('autocomplete','off');input.insertAdjacentHTML('afterend','<datalist id="search-suggestions"></datalist>');
   baseDoc.querySelector('.busq-body').insertAdjacentHTML('beforebegin','<button type="button" class="filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="property-filters">Mostrar u ocultar filtros</button>');baseDoc.querySelector('.filtros-sidebar').id='property-filters';baseDoc.getElementById('res-count').setAttribute('aria-live','polite');
-  baseDoc.querySelector('.hero-content').insertAdjacentHTML('beforeend',`<p class="hero-sub">Casas, departamentos y terrenos en Luján y alrededores. Encontrá tu próxima propiedad con el acompañamiento de Di Martino.</p><a class="media-opt-in" href="https://www.youtube.com/watch?v=61FhjbsgGiw" target="_blank" rel="noopener">Ver recorrido de una propiedad ↗</a>`);
   const hero=properties.find(p=>p.is_starred_on_web&&p.photos.length)||properties.find(p=>p.photos.length);baseDoc.documentElement.style.setProperty('--hero-photo',`url("${hero.photos[0].image}")`);
   baseDoc.querySelector('footer').remove();const footer=parseHTML(template).document.querySelector('footer');baseDoc.body.append(footer);
   for(const el of baseDoc.querySelectorAll('.des-card')){el.setAttribute('role','link');el.setAttribute('tabindex','0');el.setAttribute('onkeydown',"if(event.key==='Enter')irAHome('contacto')");}
