@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/search.test.mjs tests/build.test.mjs",
+    "test": "node --test tests/search.test.mjs tests/build.test.mjs tests/navigation.test.mjs",
     "preview": "node scripts/preview.mjs"
   },
   "dependencies": { "linkedom": "0.18.12" },
