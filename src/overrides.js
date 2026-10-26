@@ -37,6 +37,22 @@ function renderEmptySearch(empty){
   if(suggestion){const button=document.createElement('button');button.type='button';button.className='search-recovery';button.textContent='¿Quisiste buscar “'+suggestion+'”?';button.addEventListener('click',()=>corregirBusqueda(suggestion));empty.append(button);}
   const all=document.createElement('a');all.className='search-recovery';all.href=DM_ROOT+'propiedades/';all.textContent='Ver todas las propiedades';empty.append(all);
 }
+function actualizarMapaMarcadores(props){
+  if(!mapaLeaflet)return;
+  mapaLeaflet.eachLayer(layer=>{if(layer instanceof L.Marker)mapaLeaflet.removeLayer(layer);});
+  const valid=props.filter(p=>Number.isFinite(Number(p.geo_lat))&&Number.isFinite(Number(p.geo_long))&&Math.abs(Number(p.geo_lat))<=90&&Math.abs(Number(p.geo_long))<=180&&Number(p.geo_lat)!==0&&Number(p.geo_long)!==0);
+  const icon=L.divIcon({className:'dm-map-marker',iconSize:[30,42],iconAnchor:[15,42],popupAnchor:[0,-36],html:'<svg xmlns="http://www.w3.org/2000/svg" width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 40C12 35 2 23 2 15a13 13 0 1 1 26 0c0 8-10 20-13 25Z" fill="#c63529" stroke="white" stroke-width="2"/><circle cx="15" cy="15" r="5" fill="white"/></svg>'});
+  for(const p of valid){
+    const title=(p.type?.label||tradTitulo(p))+(p.address?' — '+p.address:'');
+    const price=offerPrice(DMSearch.selectedOffer(p,S));
+    const href=DMNavigation.resultURL(propertyPath(p),location.pathname+location.search,DM_ROOT,S.op);
+    const marker=L.marker([Number(p.geo_lat),Number(p.geo_long)],{icon,title,alt:title,keyboard:true}).addTo(mapaLeaflet);
+    marker.bindPopup(`<a class="map-property" href="${escapeHTML(href)}"><img src="${escapeHTML(getFoto(p))}" alt="${escapeHTML(title)}" width="220" height="120" loading="lazy"><strong>${escapeHTML(title)}</strong><span class="map-property-price">${escapeHTML(price)}</span><span>${escapeHTML(getUbic(p))}</span><span class="map-property-link">Ver propiedad →</span></a>`);
+    marker.getElement()?.setAttribute('aria-label',title);
+  }
+  if(valid.length)mapaLeaflet.fitBounds(L.latLngBounds(valid.map(p=>[Number(p.geo_lat),Number(p.geo_long)])),{padding:[40,40],maxZoom:16});
+}
+
 function enviarForm(btn,tipoForm){const container=btn.closest('.det-card, .formulario');const fields=[...container.querySelectorAll('input,textarea,select')];let valid=true;for(const el of fields){const required=el.name==='from_name'||el.name==='from_phone'||el.name==='message';el.required=required;if(!el.checkValidity()){el.reportValidity();valid=false;break;}}if(!valid)return;const lines=fields.filter(el=>el.name&&el.value.trim()).map(el=>(el.previousElementSibling?.textContent||el.name)+': '+el.value.trim());const url=document.querySelector('link[rel=canonical]')?.href||location.href;const message=[tipoForm||'Consulta',...lines,url].join('\n');window.open('https://wa.me/5492323652581?text='+encodeURIComponent(message),'_blank','noopener');mostrarToast('Se abrió WhatsApp. Confirmá el envío allí para completar tu consulta.');}
 function suggestions(){const input=document.getElementById('nav-search-input'),list=document.getElementById('search-suggestions');if(!list)return;input.addEventListener('input',async()=>{await cargarCache().catch(()=>{});const q=DMSearch.norm(input.value);const values=[...new Set(['Casa en venta','Departamento en alquiler','Terreno en Jáuregui','Casa con pileta',...todasLasProps.map(p=>p.location?.name).filter(Boolean),...todasLasProps.map(p=>p.reference_code).filter(Boolean)])];list.replaceChildren(...values.filter(v=>DMSearch.norm(v).includes(q)).slice(0,10).map(v=>{const opt=document.createElement('option');opt.value=v;return opt;}));});}
 function restoreSearchFilters(params){for(const k of ['op','desde','hasta','barrioTipo','moneda','kw','code'])if(params.has(k))S[k]=params.get(k);for(const k of ['tipos','ambs','rooms','tags','excluded','ops'])if(params.has(k))S[k]=(params.get(k)||'').split(',').filter(Boolean);if(params.has('barrios'))S.barrios=(params.get('barrios')||'').split('|').filter(Boolean);}
