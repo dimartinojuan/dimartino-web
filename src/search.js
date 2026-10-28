@@ -21,17 +21,17 @@
     // Consume contextual amenities before standalone property types.
     q=q.replace(/\b(con|sin)\s+(?:la\s+|el\s+)?(pileta|piscina|pool|cochera|garage|garaje|parrilla|asador|quincho|jardin|patio|seguridad|vigilancia|ascensor|calefaccion)\b/g,(_,polarity,word)=>{const key=Object.keys(features).find(k=>features[k].includes(word));(polarity==='sin'?r.excluded:r.tags).push(key||word);return ' ';});
     q=q.replace(/\b(barrio cerrado|barrio privado|country|countries|b cerrado|barrio abierto)\b/g,m=>{r.barrioTipo=m==='barrio abierto'?'abierto':'cerrado';return ' ';});
+    const locations=[...new Set(properties.map(p=>p.location?.name).filter(Boolean))];
+    for(const loc of locations.sort((a,b)=>b.length-a.length)){
+      const variants=[norm(loc),norm(String(loc).replace(/\s*\(.*?\)\s*/g,' ')),...(/jauregui/.test(norm(loc))?['jauregui','jose maria jauregui']:[])];
+      for(const candidate of variants){const re=new RegExp('(^|\\s)'+candidate.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=\\s|$)','g');if(re.test(q)){r.barrios.push(loc);q=q.replace(re,' ');break;}}
+    }
     let tokens=q.split(/\s+/).filter(Boolean);
     const blocked=new Set(['en','de','la','el','los','las','un','una','con','por','para','del','al','y','o','a','quiero','busco','necesito']);
     tokens=tokens.filter(t=>{if(blocked.has(t))return false;const op=ops[t]||(!types[t]?fuzzy(t,ops):null);if(op){if(!r.ops.includes(op))r.ops.push(op);return false;}return true;});
     if(r.ops.length===1)r.op=r.ops[0];
     tokens=tokens.filter(t=>{const type=fuzzy(t,types);if(type){if(!r.tipos.includes(type))r.tipos.push(type);return false;}return true;});
     q=tokens.join(' ');
-    const locations=[...new Set(properties.map(p=>p.location?.name).filter(Boolean))];
-    for(const loc of locations.sort((a,b)=>b.length-a.length)){
-      const variants=[norm(loc),...(/jauregui/.test(norm(loc))?['jauregui','jose maria jauregui']:[])];
-      for(const candidate of variants){const re=new RegExp('(^|\\s)'+candidate.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=\\s|$)','g');if(re.test(q)){r.barrios.push(loc);q=q.replace(re,' ');break;}}
-    }
     if(!r.barrios.length&&q){const matches=locations.filter(loc=>distance(q,norm(loc))<=1&&q.length>=5);if(matches.length===1){r.barrios=matches;q='';}}
     r.resto=q.replace(/\s+/g,' ').trim();return r;
   }
@@ -46,6 +46,7 @@
     }
     return null;
   }
+  function inLocation(p,v){const n=norm(v);if(n===norm(p.location?.name))return true;return String(p.location?.full_location||'').split('|').some(seg=>norm(seg)===n);}
   function searchable(p){return norm([p.title,p.description,p.short_description,p.address,p.reference_code,p.id,p.type?.name,p.type?.label,p.location?.name,p.location?.full_location,p.location?.parent_location?.name,...(p.tags||[]).map(t=>t.name),...(p.custom_tags||[]).map(t=>t.name)].filter(Boolean).join(' '));}
   function selectedOffer(p,state={}) {const wanted=state.ops?.length?state.ops:(state.op?[state.op]:[]);const names={'1':'Sale','2':'Rent','3':'Temporary Rental'};const operations=(p.operations||[]).filter(o=>!wanted.length||wanted.some(id=>o.operation_type===names[id]||(id==='2'&&o.operation_type==='Temporary Rental')));let offers=operations.flatMap(o=>(o.prices||[]).map(pr=>({...pr,operation_type:o.operation_type})));if(state.moneda){const matched=offers.filter(o=>o.currency===state.moneda);if(matched.length)return matched[0];if(state.desde||state.hasta)return null;}return offers[0]||null;}
   function filter(properties,state,exclude=[]) {return properties.filter(p=>{
@@ -56,7 +57,7 @@
     if(!exclude.includes('precio')&&(state.desde||state.hasta)){const offer=selectedOffer(p,state);if(!offer||!Number(offer.price)||Number(offer.price)<Number(state.desde||0)||(state.hasta&&Number(offer.price)>Number(state.hasta)))return false;}
     if(!exclude.includes('ambs')&&state.ambs?.length&&!state.ambs.some(v=>v==='4'?Number(p.suite_amount)>=4:Number(p.suite_amount)===Number(v)))return false;
     if(state.rooms?.length&&!state.rooms.some(v=>Number(p.room_amount)===Number(v)))return false;
-    if(!exclude.includes('barrios')&&state.barrios?.length&&!state.barrios.some(v=>norm(v)===norm(p.location?.name)))return false;
+    if(!exclude.includes('barrios')&&state.barrios?.length&&!state.barrios.some(v=>inLocation(p,v)))return false;
     const hay=searchable(p);
     if(!exclude.includes('barrioTipo')&&state.barrioTipo){const closed=/countries|country|b\.cerrado|cerrado|privado/.test(norm(p.location?.full_location));if((state.barrioTipo==='cerrado')!==closed)return false;}
     const hasFeature=tag=>{if(tag==='cochera'&&(Number(p.garage_amount)>0||Number(p.parking_lot_amount)>0))return true;return (features[tag]||[tag]).some(t=>hay.includes(norm(t)));};
