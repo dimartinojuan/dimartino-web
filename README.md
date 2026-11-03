@@ -19,6 +19,14 @@ GitHub Pages usa GitHub Actions. El workflow publica al actualizar `master`, man
 
 El snapshot público solo contiene campos elegidos para la web. No incluye notas internas, dirección real separada, datos de sucursal ni datos privados del responsable. La integración se concentra en `scripts/build.mjs`; un futuro proveedor puede entregar el mismo contrato público sin modificar buscador ni diseño.
 
+## Dominio propio
+
+La dirección pública sale de la variable de Actions `SITE_URL` (Settings → Secrets and variables → Actions → Variables). Sin variable se usa `https://dimartinojuan.github.io/dimartino-web`. Para publicar en el dominio: configurar `www.dimartinoprop.com.ar` en Settings → Pages, cargar `SITE_URL=https://www.dimartinoprop.com.ar`, apuntar el DNS (A del dominio a 185.199.108–111.153 y CNAME de `www` a `dimartinojuan.github.io`) y ejecutar el workflow. Las direcciones de la web anterior (`/propiedad/ID`, `/busqueda`, `/tasaciones`, `/consultas`, `/desarrollos`, `/nosotros`) redirigen a las nuevas.
+
+## Marca
+
+Solo colores del manual: azul `#0B3042`, rojo `#D3282F`, gris `#BCBEC0`, crema `#EDEDE4` (más blanco y transparencias). Tipografía Poppins publicada con el sitio. Una prueba falla si aparece otro color.
+
 ## Estructura
 
 - `src/template.html`: estructura y estilos de referencia del diseño original, sin credenciales.
@@ -31,7 +39,7 @@ El snapshot público solo contiene campos elegidos para la web. No incluye notas
 
 ## SEO
 
-Cada propiedad tiene URL persistente, título, descripción, canonical, imagen Open Graph/Twitter, JSON-LD y fotos en el HTML inicial. El sitemap incluye páginas de categoría, paginación y fotos. Los enlaces antiguos `dimartino_v2.html?prop=ID` resuelven al nuevo enlace mediante un mapa local, sin consultar Tokko.
+Cada zona tiene su página (`/zonas/<zona>/` y, con 2 o más publicaciones, `/zonas/<zona>/casas-en-venta/`, etc.), enlazada desde el pie. Las fichas muestran solo la descripción original de Tokko. Cada propiedad tiene URL persistente, título, descripción, canonical, imagen Open Graph/Twitter, JSON-LD y fotos en el HTML inicial. El sitemap incluye páginas de categoría, paginación y fotos. Los enlaces antiguos `dimartino_v2.html?prop=ID` resuelven al nuevo enlace mediante un mapa local, sin consultar Tokko.
 
 En Search Console se debe verificar la propiedad de prefijo `https://dimartinojuan.github.io/dimartino-web/` y enviar `sitemap.xml`. Google decide cuándo indexar y qué imagen o miniatura mostrar. El archivo robots del proyecto no sustituye al robots del origen `dimartinojuan.github.io`, que GitHub sirve desde la raíz del dominio.
 
