@@ -13,3 +13,6 @@ function abrirLightboxVideo(){
 
 // Video and 360° tours load only when the visitor asks for them, keeping the page fast.
 document.addEventListener('click',e=>{const button=e.target.closest?.('.media-facade');if(!button)return;const frame=document.createElement('iframe');frame.src=button.dataset.src;frame.setAttribute('allow',button.dataset.allow||'fullscreen');frame.setAttribute('allowfullscreen','');frame.title=button.getAttribute('aria-label')||'Contenido multimedia';frame.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';button.replaceWith(frame);});
+
+// The floating Instagram button steps aside while the footer is on screen.
+if(typeof window!=='undefined'&&!window.DM_BUILD&&'IntersectionObserver' in window){const ig=document.querySelector('.ig-float'),foot=document.querySelector('footer');if(ig&&foot)new IntersectionObserver(([e])=>ig.classList.toggle('is-hidden',e.isIntersecting)).observe(foot);}

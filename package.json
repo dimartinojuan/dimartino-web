@@ -8,6 +8,11 @@
     "test": "node --test tests/search.test.mjs tests/build.test.mjs tests/navigation.test.mjs",
     "preview": "node scripts/preview.mjs"
   },
-  "dependencies": { "linkedom": "0.18.12" },
-  "engines": { "node": ">=20" }
+  "dependencies": {
+    "@fontsource/poppins": "^5.3.0",
+    "linkedom": "0.18.12"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }
