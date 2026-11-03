@@ -32,3 +32,9 @@ body[data-view=search] .related{display:none}.page-intro{padding-top:32px}.prop-
 @media(max-width:768px){.des-grid{grid-template-columns:1fr}.des-card{height:260px}.development-page{padding-top:140px}.development-heading{align-items:flex-start;flex-direction:column}.development-gallery{grid-template-columns:1fr}.development-contact{width:100%;justify-content:center}}
 /* Instagram flotante: en celular queda solo el ícono y no tapa la ficha */
 @media(max-width:768px){.ig-float span{display:none}.ig-float{padding:11px;bottom:16px;right:16px}body[data-view="detail"] .ig-float{display:none}}
+
+/* Video y recorrido 360°: portada clara hasta que el visitante decide reproducir */
+.media-facade{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:0;border-radius:inherit;cursor:pointer;color:#fff;font:inherit;background:var(--azul) center/cover no-repeat;box-shadow:inset 0 0 0 2000px rgba(0,0,0,.35)}
+.media-facade-play{display:flex;align-items:center;justify-content:center;min-width:72px;height:72px;padding:0 14px;border-radius:999px;background:var(--rojo);font-size:22px;font-weight:800}
+.media-facade-text{font-size:16px;font-weight:700;letter-spacing:.2px}
+.media-facade:hover .media-facade-play,.media-facade:focus-visible .media-facade-play{transform:scale(1.06)}

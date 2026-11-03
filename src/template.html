@@ -2340,7 +2340,8 @@ function renderDetalle(p) {
     'very_good':'Muy bueno','good':'Bueno','excellent':'Excelente',
     'to recover':'A recuperar','to_recover':'A recuperar','recyclable':'Reciclable',
     // Situación
-    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'','for rent':'En alquiler',
+    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'','for rent':'En alquiler','in use':'Habitada','tenant':'Alquilada','owner':'Habitada por el propietario','---':'',
+    'to refurbish':'A refaccionar','regular':'Regular',
     // Antigüedad
     'a estrenar':'A estrenar','0':'A estrenar',
     '1 to 5':'1 a 5 años','1-5':'1 a 5 años',
@@ -2399,7 +2400,8 @@ function renderDetalle(p) {
   if (cocheras)
     kf += kfItem('coche', cocheras, `coch.`);
   const edadTrad = trad(p.age);
-  if (edadTrad && edadTrad !== '-') {
+  // Tokko stores 0 when the age was never loaded; only real ages are shown.
+  if (edadTrad && edadTrad !== '-' && p.age > 0) {
     // Si el valor es numérico, agregar "años"; si ya viene con "años" (rango), no duplicar
     const edadVal = isNaN(p.age) ? edadTrad : (p.age == 0 ? 'A estrenar' : `${p.age} años`);
     if (edadVal && edadVal !== 'A estrenar')
@@ -2426,7 +2428,7 @@ function renderDetalle(p) {
     ['Código',            p.reference_code ? `#${p.reference_code}` : null],
     ['Barrio / Zona',     ubic],
     ['Dirección',         p.address || null],
-    ['Antigüedad',        p.age == 0 ? 'A estrenar' : (trad(p.age) || (p.age ? `${p.age} años` : null))],
+    ['Antigüedad',        p.age > 0 ? `${p.age} años` : null],
     ['Estado',            trad(p.property_condition || p.condition)],
     ['Situación',         trad(p.situation)],
     ['Orientación',       trad(p.orientation)],
