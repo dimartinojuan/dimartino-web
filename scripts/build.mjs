@@ -11,6 +11,8 @@ import {loadDevelopments} from './developments.mjs';
 export const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export const ORIGIN=(process.env.SITE_URL||'https://dimartinojuan.github.io/dimartino-web').replace(/\/$/,'');
 const BASE=new URL(ORIGIN).pathname.replace(/\/$/,'')+'/';
+// While the site lives on github.io it is a private preview: search engines are asked not to index it.
+export const PREVIEW=new URL(ORIGIN).hostname.endsWith('github.io');
 const out=path.join(ROOT,'dist');
 const text=v=>String(v??'').replace(/<[^>]*>/g,' ').replace(/[<>`]/g,'').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -41,12 +43,21 @@ export function normalize(p){
 async function liveCatalog(){
   const key=process.env.TOKKO_API_KEY;if(!key)return null;
   let result=[],offset=0,total=Infinity;
-  while(offset<total){const endpoint=new URL('https://tokkobroker.com/api/v1/property/');endpoint.search=new URLSearchParams({key,format:'json',limit:'100',offset:String(offset)});let response;for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt===2)throw Error('No se pudo actualizar Tokko; se conserva la publicación anterior.');}if(!response?.ok)throw Error('Tokko no disponible.');const page=await response.json();const rows=page.objects||page.results||[];total=Number(page.meta?.total_count??page.count??rows.length);if(!rows.length&&offset<total)throw Error('Catálogo incompleto; no se publicará.');result.push(...rows);offset+=rows.length;if(offset>20000)throw Error('Catálogo demasiado grande.');}
+  while(offset<total){const endpoint=new URL('https://tokkobroker.com/api/v1/property/');endpoint.search=new URLSearchParams({key,format:'json',limit:'100',offset:String(offset)});let response;for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt<2)await new Promise(r=>setTimeout(r,3000*(attempt+1)));if(attempt===2)throw Error('No se pudo actualizar Tokko; se conserva la publicación anterior.');}if(!response?.ok)throw Error('Tokko no disponible.');const page=await response.json();const rows=page.objects||page.results||[];total=Number(page.meta?.total_count??page.count??rows.length);if(!rows.length&&offset<total)throw Error('Catálogo incompleto; no se publicará.');result.push(...rows);offset+=rows.length;if(offset>20000)throw Error('Catálogo demasiado grande.');}
   if(!result.length)throw Error('Tokko devolvió un catálogo vacío; revisar antes de publicar.');
   // The list endpoint can omit the listing text; complete it from each property's detail without blocking the publication.
   const missing=result.filter(p=>!descriptionOf(p));
-  for(let i=0;i<missing.length;i+=5)await Promise.all(missing.slice(i,i+5).map(async p=>{try{const detail=new URL('https://tokkobroker.com/api/v1/property/'+encodeURIComponent(p.id)+'/');detail.search=new URLSearchParams({key,format:'json'});const r=await fetch(detail,{signal:AbortSignal.timeout(20000)});if(!r.ok)return;const d=await r.json();for(const f of ['description','rich_description','description_only','short_description'])if(!p[f]&&d[f])p[f]=d[f];}catch{}}));
-  if(missing.length)console.log(`Descripciones completadas desde la ficha: ${missing.filter(p=>descriptionOf(p)).length} de ${missing.length}.`);
+  // Field names only (no values) help confirm where this Tokko account keeps the listing text.
+  const textFields=Object.keys(result[0]||{}).filter(k=>/desc|text|title|comment/i.test(k));
+  console.log('Campos de texto del listado de Tokko: '+textFields.map(k=>k+'('+String(result[0][k]??'').length+')').join(', '));
+  // Details are fetched one by one with a pause, so Tokko never throttles the rest of the publication.
+  let fetched=0,useful=0;
+  for(const p of missing){
+    if(fetched>=5&&!useful)break; // the detail endpoint does not carry the text either: stop asking
+    try{const detail=new URL('https://tokkobroker.com/api/v1/property/'+encodeURIComponent(p.id)+'/');detail.search=new URLSearchParams({key,format:'json'});const r=await fetch(detail,{signal:AbortSignal.timeout(20000)});fetched++;if(!r.ok){console.log('Ficha de Tokko no disponible: HTTP '+r.status);continue;}const d=await r.json();if(fetched===1)console.log('Campos de texto de la ficha de Tokko: '+Object.keys(d).filter(k=>/desc|text|title|comment/i.test(k)).map(k=>k+'('+String(d[k]??'').length+')').join(', '));for(const f of ['description','rich_description','description_only','short_description'])if(!p[f]&&d[f])p[f]=d[f];if(descriptionOf(p))useful++;}catch{fetched++;}
+    await new Promise(r=>setTimeout(r,350));
+  }
+  if(missing.length)console.log(`Descripciones completadas desde la ficha: ${missing.filter(p=>descriptionOf(p)).length} de ${missing.length} (consultas: ${fetched}).`);
   // This public endpoint is the published inventory. Its deleted_at field can be
   // populated on currently published records, so it is not a publication flag.
   const properties=result.map(normalize);
@@ -56,7 +67,7 @@ const write=async(rel,value)=>{const dest=path.join(out,rel);await fs.mkdir(path
 function meta(doc,{title,description,canonical,image,noindex=false,schema=[]}){
   doc.title=title;for(const n of [...doc.head.querySelectorAll('meta[name=description],meta[name=robots],meta[property],meta[name^=twitter],link[rel=canonical],script[type="application/ld+json"]')])n.remove();
   const add=(tag,attrs)=>{const el=doc.createElement(tag);for(const [key,v]of Object.entries(attrs))el.setAttribute(key,v);doc.head.append(el);};
-  add('meta',{name:'description',content:description.slice(0,180)});add('meta',{name:'robots',content:(noindex?'noindex,follow':'index,follow')+',max-image-preview:large,max-snippet:-1,max-video-preview:-1'});add('link',{rel:'canonical',href:canonical});
+  add('meta',{name:'description',content:description.slice(0,180)});add('meta',{name:'robots',content:(noindex||PREVIEW?'noindex,follow':'index,follow')+',max-image-preview:large,max-snippet:-1,max-video-preview:-1'});add('link',{rel:'canonical',href:canonical});
   for(const [key,value]of Object.entries({'og:type':'website','og:locale':'es_AR','og:site_name':'Di Martino Propiedades','og:title':title,'og:description':description,'og:url':canonical,'og:image':image,'og:image:alt':title}))add('meta',{property:key,content:value});
   add('meta',{name:'twitter:card',content:'summary_large_image'});add('meta',{name:'twitter:title',content:title});add('meta',{name:'twitter:description',content:description});add('meta',{name:'twitter:image',content:image});
   if(schema.length){const el=doc.createElement('script');el.type='application/ld+json';el.textContent=json({'@context':'https://schema.org','@graph':schema});doc.head.append(el);}
@@ -201,6 +212,6 @@ async function main(){
   const redirect=target=>`<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Di Martino Propiedades</title><meta name="robots" content="noindex,follow"><link rel="canonical" href="${esc(target)}"><meta http-equiv="refresh" content="0;url=${esc(target)}"><script>location.replace(${json(target)}+location.hash)</script></head><body><p><a href="${esc(target)}">Continuar a Di Martino Propiedades</a></p></body></html>`;
   for(const [from,to]of [['busqueda/','propiedades/'],['desarrollos/','#desarrollos'],['tasaciones/','#tasaciones'],['consultas/','#contacto'],['nosotros/','']])await write(from+'index.html',redirect(ORIGIN+'/'+to));
   for(const p of properties)await write('propiedad/'+p.id+'/index.html',redirect(ORIGIN+'/'+p.path));
-  await write('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">'+urls.map(({loc,images})=>'<url><loc>'+esc(loc)+'</loc><lastmod>'+String(snapshot.generatedAt||new Date().toISOString()).slice(0,10)+'</lastmod>'+images.map(src=>'<image:image><image:loc>'+esc(src)+'</image:loc></image:image>').join('')+'</url>').join('')+'</urlset>');await write('robots.txt','User-agent: *\nAllow: /\nSitemap: '+ORIGIN+'/sitemap.xml\n');await write('build-info.json',json({version:'3.0.0',generatedAt:snapshot.generatedAt,properties:properties.length,developments:developments.length,pages:urls.length}));console.log(`Build: ${properties.length} propiedades, ${developments.length} desarrollos, ${urls.length} páginas indexables. Sin credenciales en la publicación.`);
+  await write('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">'+urls.map(({loc,images})=>'<url><loc>'+esc(loc)+'</loc><lastmod>'+String(snapshot.generatedAt||new Date().toISOString()).slice(0,10)+'</lastmod>'+images.map(src=>'<image:image><image:loc>'+esc(src)+'</image:loc></image:image>').join('')+'</url>').join('')+'</urlset>');await write('robots.txt',PREVIEW?'User-agent: *\nDisallow: /\n':'User-agent: *\nAllow: /\nSitemap: '+ORIGIN+'/sitemap.xml\n');await write('build-info.json',json({version:'3.0.0',generatedAt:snapshot.generatedAt,properties:properties.length,developments:developments.length,pages:urls.length}));console.log(`Build: ${properties.length} propiedades, ${developments.length} desarrollos, ${urls.length} páginas indexables. Sin credenciales en la publicación.`);
 }
 if(process.env.DM_TEST_IMPORT!=='1')await main();
