@@ -8,14 +8,14 @@
 <title>Di Martino Propiedades | Luján, Buenos Aires</title>
 <style>
 :root{
-  --azul:#0a2f42;--azul-mid:#0e3d56;--azul-light:#155c7a;
-  --rojo:#c0392b;--rojo-h:#a93226;
-  --blanco:#fff;--gris-bg:#f2f4f7;--gris-borde:#dde2e8;
-  --gris-txt:#6b7a8d;--negro:#1a2332;
+  --azul:#0B3042;--azul-mid:#0B3042;--azul-light:#0B3042;
+  --rojo:#D3282F;--rojo-h:#D3282F;
+  --blanco:#fff;--gris-bg:#EDEDE4;--gris-borde:#BCBEC0;
+  --gris-txt:rgba(11,48,66,.72);--negro:#0B3042;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--negro);background:var(--blanco)}
+body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--negro);background:var(--blanco)}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:inherit}
@@ -47,7 +47,7 @@ button,input,select,textarea{font-family:inherit}
 .hero{
   position:relative;height:100vh;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:80px 5%;overflow:hidden;background:#0a2f42;
+  text-align:center;padding:80px 5%;overflow:hidden;background:#0B3042;
 }
 .hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
 .hero-video-wrap iframe,
@@ -61,7 +61,7 @@ button,input,select,textarea{font-family:inherit}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.32)}
 .hero-bg{
   position:absolute;inset:0;z-index:0;display:none;
-  background:linear-gradient(160deg,rgba(10,47,66,.88) 0%,rgba(10,47,66,.62) 50%,rgba(10,47,66,.82) 100%),
+  background:linear-gradient(160deg,rgba(11,48,66,.88) 0%,rgba(11,48,66,.62) 50%,rgba(11,48,66,.82) 100%),
     url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80') center/cover no-repeat;
 }
 .hero-content{position:relative;z-index:2;max-width:740px}
@@ -101,7 +101,7 @@ button,input,select,textarea{font-family:inherit}
 .cat-card{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;aspect-ratio:3/4;display:block;min-height:160px}
 .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
 .cat-card:hover img{transform:scale(1.07)}
-.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,47,66,.85) 0%,rgba(10,47,66,.1) 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px 14px}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,48,66,.85) 0%,rgba(11,48,66,.1) 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px 14px}
 .cat-card h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;line-height:1.2}
 .cat-card p{font-size:11px;color:rgba(255,255,255,.65)}
 
@@ -116,7 +116,7 @@ button,input,select,textarea{font-family:inherit}
 .prop-foto-track img{flex:none;width:100%;height:100%;object-fit:cover}
 
 /* Flechas — aparecen al hacer hover en la card */
-.pf-prev,.pf-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.88);border:none;color:#333;width:30px;height:30px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .18s;z-index:4;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+.pf-prev,.pf-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.88);border:none;color:#0B3042;width:30px;height:30px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .18s;z-index:4;box-shadow:0 1px 5px rgba(0,0,0,.18)}
 .pf-prev{left:8px}
 .pf-next{right:8px}
 .prop-card:hover .pf-prev,.prop-card:hover .pf-next{opacity:1}
@@ -129,10 +129,10 @@ button,input,select,textarea{font-family:inherit}
 .prop-titulo{font-size:14px;font-weight:600;color:var(--negro);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .prop-precio-ml{font-size:16px;font-weight:800;color:var(--negro);margin-top:3px;line-height:1}
 .prop-feats-ml{font-size:12px;color:var(--gris-txt);margin-top:3px}
-.prop-ubicacion-ml{font-size:11px;color:#9eaab6;margin-top:2px;flex:1}
+.prop-ubicacion-ml{font-size:11px;color:#BCBEC0;margin-top:2px;flex:1}
 /* WhatsApp en card — sutil */
-.prop-wsp-card{display:flex;align-items:center;justify-content:center;gap:6px;background:#f4f8ff;color:#1a4a6b;padding:9px;border-radius:8px;font-size:13px;font-weight:600;margin-top:10px;text-decoration:none;transition:background .18s}
-.prop-wsp-card:hover{background:#e4edf8}
+.prop-wsp-card{display:flex;align-items:center;justify-content:center;gap:6px;background:#EDEDE4;color:#0B3042;padding:9px;border-radius:8px;font-size:13px;font-weight:600;margin-top:10px;text-decoration:none;transition:background .18s}
+.prop-wsp-card:hover{background:#EDEDE4}
 
 /* ══ VISTA BUSCADOR ══ */
 #vista-busqueda{padding-top:68px;min-height:100vh;background:var(--blanco)}
@@ -154,7 +154,7 @@ button,input,select,textarea{font-family:inherit}
 .busq-tab{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s}
 .busq-tab.active{background:var(--blanco);color:var(--azul)}
 
-.busq-body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 68px)}
+.busq-body{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 68px)}
 
 /* Sidebar sin scroll */
 .filtros-sidebar{background:var(--blanco);border-right:1px solid var(--gris-borde);padding:20px 16px;position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto;scrollbar-width:none}
@@ -174,18 +174,18 @@ button,input,select,textarea{font-family:inherit}
 
 /* ── Precio ML-style ── */
 .moneda-toggle{display:flex;align-items:center;gap:0;margin-bottom:10px;border:1.5px solid var(--gris-borde);border-radius:8px;overflow:hidden;width:fit-content}
-.moneda-btn{padding:5px 14px;font-size:13px;font-weight:600;background:none;border:none;cursor:pointer;color:#777;transition:all .15s}
+.moneda-btn{padding:5px 14px;font-size:13px;font-weight:600;background:none;border:none;cursor:pointer;color:rgba(11,48,66,.72);transition:all .15s}
 .moneda-btn.activo{background:var(--azul);color:#fff}
 .moneda-sep{color:var(--gris-borde);font-size:13px;padding:0 2px}
 .precio-rangos{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .precio-rango{background:none;border:none;text-align:left;font-size:13px;color:var(--negro);cursor:pointer;padding:4px 0;border-radius:4px;transition:color .15s}
 .precio-rango:hover{color:var(--azul)}
 .precio-rango.activo{color:var(--azul);font-weight:700}
-.precio-rango span{color:#999;font-size:12px}
+.precio-rango span{color:rgba(11,48,66,.72);font-size:12px}
 .precio-manual{display:grid;grid-template-columns:1fr auto 1fr;gap:4px;align-items:center;margin-top:6px}
 .precio-manual input{width:100%;padding:7px 9px;border:1.5px solid var(--gris-borde);border-radius:7px;font-size:13px;color:var(--negro);outline:none}
 .precio-manual input:focus{border-color:var(--azul)}
-.precio-manual span{color:#999;font-size:13px;text-align:center}
+.precio-manual span{color:rgba(11,48,66,.72);font-size:13px;text-align:center}
 /* ── Dormitorios multi-toggle ── */
 .dorm-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .dorm-btn{padding:6px 14px;border:1.5px solid var(--gris-borde);border-radius:20px;font-size:13px;background:#fff;cursor:pointer;color:var(--negro);transition:all .15s;display:flex;align-items:center;gap:5px}
@@ -238,7 +238,7 @@ button,input,select,textarea{font-family:inherit}
 /* ── Galería estilo MercadoLibre ── */
 .det-galeria{background:var(--blanco);border-radius:14px;overflow:hidden;border:1px solid var(--gris-borde);margin-bottom:20px}
 .galeria-layout{display:grid;grid-template-columns:1fr 196px;gap:3px;height:430px}
-.galeria-main{position:relative;background:#000;overflow:hidden;height:100%}
+.galeria-main{position:relative;background:#0B3042;overflow:hidden;height:100%}
 .galeria-track{display:flex;height:100%;transition:transform .32s ease}
 .galeria-img{flex:none;width:100%;height:100%;object-fit:cover;cursor:zoom-in}
 .galeria-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:var(--blanco);width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer;transition:background .18s;display:flex;align-items:center;justify-content:center;z-index:5}
@@ -270,9 +270,9 @@ button,input,select,textarea{font-family:inherit}
 
 /* Badge operación */
 .det-tipo-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
-.det-tipo-badge.venta{background:rgba(10,47,66,.1);color:var(--azul)}
-.det-tipo-badge.alquiler{background:rgba(192,57,43,.1);color:var(--rojo)}
-.det-status{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;margin-left:6px;background:rgba(39,174,96,.12);color:#1e8449}
+.det-tipo-badge.venta{background:rgba(11,48,66,.1);color:var(--azul)}
+.det-tipo-badge.alquiler{background:rgba(211,40,47,.1);color:var(--rojo)}
+.det-status{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;margin-left:6px;background:#EDEDE4;color:#0B3042}
 
 /* Título / precio */
 .det-titulo{font-size:21px;font-weight:900;color:var(--azul);line-height:1.25;margin-bottom:7px}
@@ -318,18 +318,18 @@ button,input,select,textarea{font-family:inherit}
 /* Amenidades / tags */
 .det-tags{display:flex;flex-wrap:wrap;gap:8px}
 .det-tag{display:inline-flex;align-items:center;gap:5px;background:var(--gris-bg);border:1px solid var(--gris-borde);color:var(--negro);font-size:13px;padding:6px 12px;border-radius:30px}
-.det-tag::before{content:'✓';color:#27ae60;font-weight:700;font-size:11px}
+.det-tag::before{content:'✓';color:#D3282F;font-weight:700;font-size:11px}
 
 /* Descripción */
 .det-desc-txt{font-size:14px;color:var(--gris-txt);line-height:1.8;white-space:pre-wrap}
 .det-desc-ver-mas{background:none;border:none;color:var(--azul);font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;padding:0}
 
 /* Video */
-.det-video-wrap{position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;background:#000}
+.det-video-wrap{position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;background:#0B3042}
 .det-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
 
 /* Tour virtual — altura fija para Kuula */
-.det-tour-wrap{position:relative;width:100%;height:520px;border-radius:10px;overflow:hidden;background:#111}
+.det-tour-wrap{position:relative;width:100%;height:520px;border-radius:10px;overflow:hidden;background:#0B3042}
 .det-tour-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
 
 /* Lightbox */
@@ -357,8 +357,8 @@ button,input,select,textarea{font-family:inherit}
 .btn-agente{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;transition:all .18s;cursor:pointer;border:none}
 .btn-agente-tel{background:var(--gris-bg);color:var(--negro)}
 .btn-agente-tel:hover{background:var(--gris-borde)}
-.btn-agente-wsp{background:#25d366;color:var(--blanco)}
-.btn-agente-wsp:hover{background:#1eb358}
+.btn-agente-wsp{background:#D3282F;color:var(--blanco)}
+.btn-agente-wsp:hover{background:#D3282F}
 
 /* Sidebar sticky */
 .det-sidebar{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}
@@ -370,8 +370,8 @@ button,input,select,textarea{font-family:inherit}
 .det-sidebar .det-card{margin-bottom:0}
 
 /* Botones contacto */
-.btn-det-wsp{display:flex;align-items:center;justify-content:center;gap:9px;background:#25d366;color:var(--blanco);padding:14px;border-radius:10px;font-size:15px;font-weight:700;transition:background .18s;text-decoration:none;margin-bottom:8px}
-.btn-det-wsp:hover{background:#1eb358}
+.btn-det-wsp{display:flex;align-items:center;justify-content:center;gap:9px;background:#D3282F;color:var(--blanco);padding:14px;border-radius:10px;font-size:15px;font-weight:700;transition:background .18s;text-decoration:none;margin-bottom:8px}
+.btn-det-wsp:hover{background:#D3282F}
 .btn-det-tel{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--blanco);padding:12px;border-radius:10px;font-size:14px;font-weight:600;transition:background .18s;text-decoration:none;margin-bottom:8px}
 .btn-det-tel:hover{background:var(--azul-light)}
 
@@ -398,7 +398,7 @@ button,input,select,textarea{font-family:inherit}
 .des-card--grande{grid-row:span 2}
 .des-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .des-card:hover img{transform:scale(1.06)}
-.des-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,47,66,.9) 0%,rgba(10,47,66,.05) 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px}
+.des-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,48,66,.9) 0%,rgba(11,48,66,.05) 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px}
 .des-tag{display:inline-block;background:var(--rojo);color:var(--blanco);font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:10px;align-self:flex-start}
 .des-nombre{color:var(--blanco);font-size:18px;font-weight:800;margin-bottom:4px}
 .des-desc{color:rgba(255,255,255,.7);font-size:13px}
@@ -408,7 +408,7 @@ button,input,select,textarea{font-family:inherit}
 .vender-card--dest{background:var(--azul);border-color:var(--azul)}
 .vender-card--dest h3{color:var(--blanco)}
 .vender-card--dest p{color:rgba(255,255,255,.65)}
-.vender-ico{font-size:32px}
+.vender-ico{color:var(--rojo);line-height:0}
 .vender-card h3{font-size:18px;font-weight:800;color:var(--azul);margin:0}
 .vender-card p{font-size:14px;color:var(--gris-txt);line-height:1.65;flex:1;margin:0}
 .btn-vender{display:inline-flex;align-items:center;justify-content:center;background:var(--azul);color:var(--blanco);padding:12px 20px;border-radius:8px;font-size:14px;font-weight:700;transition:background .18s;margin-top:4px}
@@ -423,7 +423,7 @@ button,input,select,textarea{font-family:inherit}
 .tas-nums{display:flex;gap:32px;margin-top:32px}
 .tas-num b{display:block;font-size:1.7rem;font-weight:900;color:var(--azul)}
 .tas-num small{font-size:12px;color:var(--gris-txt)}
-.formulario{background:var(--blanco);border-radius:16px;padding:28px 24px;box-shadow:0 6px 36px rgba(10,47,66,.1);border:1px solid var(--gris-borde)}
+.formulario{background:var(--blanco);border-radius:16px;padding:28px 24px;box-shadow:0 6px 36px rgba(11,48,66,.1);border:1px solid var(--gris-borde)}
 .formulario h3{font-size:18px;font-weight:800;color:var(--azul);margin-bottom:4px}
 .formulario>p{font-size:13px;color:var(--gris-txt);margin-bottom:20px}
 .formulario--dark{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04);box-shadow:none}
@@ -440,17 +440,17 @@ button,input,select,textarea{font-family:inherit}
 .contacto-info>p{color:rgba(255,255,255,.6);font-size:15px;line-height:1.75;margin-bottom:32px}
 .datos{display:flex;flex-direction:column;gap:16px}
 .dato{display:flex;align-items:center;gap:13px}
-.dato-ico{width:42px;height:42px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dato-ico{width:42px;height:42px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:var(--blanco)}
 .dato-texto b{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.45);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
 .dato-texto a,.dato-texto span{font-size:14px;color:var(--blanco)}
 .dato-texto a:hover{color:rgba(255,255,255,.75)}
-.btn-wsp{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:var(--blanco);padding:13px 24px;border-radius:8px;font-size:15px;font-weight:700;margin-top:28px;transition:background .18s}
-.btn-wsp:hover{background:#1eb358}
-footer{background:#071a27;padding:56px 5% 26px}
+.btn-wsp{display:inline-flex;align-items:center;gap:8px;background:#D3282F;color:var(--blanco);padding:13px 24px;border-radius:8px;font-size:15px;font-weight:700;margin-top:28px;transition:background .18s}
+.btn-wsp:hover{background:#D3282F}
+footer{background:#0B3042;padding:56px 5% 26px}
 .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:26px}
 .footer-brand-desc{color:rgba(255,255,255,.4);font-size:13px;line-height:1.75;margin-top:14px;max-width:240px}
 .socials{display:flex;gap:8px;margin-top:18px}
-.social{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.6);transition:all .18s}
+.social{height:34px;padding:0 12px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.6);transition:all .18s}
 .social:hover{background:var(--rojo);color:var(--blanco)}
 .footer-col h4{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
@@ -467,15 +467,15 @@ footer{background:#071a27;padding:56px 5% 26px}
 .nlp-hint{font-size:11px;color:var(--gris-txt);padding:0 0 6px;font-style:italic}
 
 /* ── Instagram flotante ── */
-.ig-float{position:fixed;bottom:22px;right:22px;display:flex;align-items:center;gap:9px;padding:11px 18px 11px 14px;border-radius:50px;background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.28);z-index:9999;transition:transform .18s,box-shadow .18s;letter-spacing:.01em}
+.ig-float{position:fixed;bottom:22px;right:22px;display:flex;align-items:center;gap:9px;padding:11px 18px 11px 14px;border-radius:50px;background:var(--azul);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.28);z-index:9999;transition:transform .18s,box-shadow .18s;letter-spacing:.01em}
 .ig-float:hover{transform:scale(1.06);box-shadow:0 7px 28px rgba(0,0,0,.36)}
 @media(max-width:480px){.ig-float span{display:none}.ig-float{padding:12px}}
 
 /* ══ SKELETON LOADER ══ */
 .skel-card{background:var(--blanco);border:1px solid var(--gris-borde);border-radius:14px;overflow:hidden}
-.skel-img{height:200px;background:linear-gradient(90deg,#e9edf1 25%,#f4f6f9 50%,#e9edf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.skel-img{height:200px;background:linear-gradient(90deg,#EDEDE4 25%,#EDEDE4 50%,#EDEDE4 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 .skel-body{padding:16px}
-.skel-line{height:13px;border-radius:4px;margin-bottom:10px;background:linear-gradient(90deg,#e9edf1 25%,#f4f6f9 50%,#e9edf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.skel-line{height:13px;border-radius:4px;margin-bottom:10px;background:linear-gradient(90deg,#EDEDE4 25%,#EDEDE4 50%,#EDEDE4 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 .skel-line.s60{width:60%}.skel-line.s40{width:40%}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
@@ -487,7 +487,7 @@ footer{background:#071a27;padding:56px 5% 26px}
   .des-card--grande{grid-row:auto}.des-card{height:280px}
   .tas-split,.contacto-split,.vender-grid{grid-template-columns:1fr;gap:24px}
   .footer-top{grid-template-columns:1fr 1fr;gap:32px}
-  .busq-body{grid-template-columns:200px 1fr}
+  .busq-body{grid-template-columns:225px 1fr}
   .det-wrap{grid-template-columns:1fr 320px}
 }
 @media(max-width:768px){
@@ -660,19 +660,19 @@ footer{background:#071a27;padding:56px 5% 26px}
     </div>
     <div class="vender-grid">
       <div class="vender-card">
-        <div class="vender-ico">🏷️</div>
+        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></div>
         <h3>Tasación gratuita</h3>
         <p>Conocé el valor real de tu propiedad con un análisis de mercado sin costo ni compromiso.</p>
         <a class="btn-vender" href="https://wa.me/5492323652581?text=Hola%2C+me+gustar%C3%ADa+tasar+mi+propiedad." target="_blank">Solicitar tasación</a>
       </div>
       <div class="vender-card vender-card--dest">
-        <div class="vender-ico">📢</div>
+        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></div>
         <h3>Publicá con nosotros</h3>
         <p>Difundimos tu propiedad en los principales portales inmobiliarios y nuestra base de clientes activos.</p>
         <a class="btn-vender btn-vender--blanco" href="https://wa.me/5492323652581?text=Hola%2C+quiero+publicar+mi+propiedad." target="_blank">Quiero publicar</a>
       </div>
       <div class="vender-card">
-        <div class="vender-ico">🤝</div>
+        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></div>
         <h3>Gestión integral</h3>
         <p>Nos encargamos de visitas, negociación y escritura. Vos solo tomás la decisión final.</p>
         <a class="btn-vender" href="https://wa.me/5492323652581?text=Hola%2C+quiero+info+sobre+la+gesti%C3%B3n+de+venta." target="_blank">Saber más</a>
@@ -685,7 +685,7 @@ footer{background:#071a27;padding:56px 5% 26px}
       <div class="tas-texto">
         <span class="sec-label">Valuaciones profesionales</span>
         <h2>¿Sabés cuánto vale tu propiedad?</h2>
-        <p>Tasaciones precisas basadas en datos reales del mercado de Luján. Sin cargo y sin compromiso.</p>
+        <p>Tasaciones precisas basadas en datos reales del mercado. Sin cargo y sin compromiso.</p>
         <a href="#" class="btn-primary" onclick="irAHome('tasaciones-form');return false">Solicitar tasación gratuita →</a>
         <div class="tas-nums"><div class="tas-num"><b>24hs</b><small>Respuesta</small></div><div class="tas-num"><b>Gratis</b><small>Sin cargo</small></div><div class="tas-num"><b>15+ años</b><small>Experiencia</small></div></div>
       </div>
@@ -695,7 +695,7 @@ footer{background:#071a27;padding:56px 5% 26px}
         <div class="campo"><label>Tu nombre</label><input type="text" name="from_name" placeholder="Ej: María García"/></div>
         <div class="campo"><label>Teléfono / WhatsApp</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
         <div class="campo"><label>Tipo de propiedad</label><select name="prop_tipo"><option value="">Seleccioná</option><option>Casa</option><option>Departamento</option><option>Terreno / Lote</option><option>Local comercial</option><option>Chacra / Quinta</option></select></div>
-        <div class="campo"><label>Dirección aproximada</label><textarea name="message" placeholder="Ej: calle Las Heras al 400, Luján..."></textarea></div>
+        <div class="campo"><label>Dirección aproximada</label><textarea name="message" placeholder="Ej: calle Las Heras al 400"></textarea></div>
         <button class="btn-form" onclick="enviarForm(this,'Solicitud de tasación')">Enviar solicitud →</button>
       </div>
     </div>
@@ -706,12 +706,12 @@ footer{background:#071a27;padding:56px 5% 26px}
       <div class="contacto-info">
         <span class="sec-label" style="color:rgba(255,255,255,.4)">Estamos para ayudarte</span>
         <h2>Hablemos de tu próxima propiedad</h2>
-        <p>Respondemos consultas sobre venta, alquiler, inversiones y desarrollos en Luján y la zona.</p>
+        <p>Respondemos consultas sobre venta, alquiler, inversiones y desarrollos.</p>
         <div class="datos">
-          <div class="dato"><div class="dato-ico">📍</div><div class="dato-texto"><b>Dirección</b><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján (BA)</a></div></div>
-          <div class="dato"><div class="dato-ico">📞</div><div class="dato-texto"><b>Teléfono</b><a href="tel:+5492323426040">(02323) 426040</a></div></div>
-          <div class="dato"><div class="dato-ico">📱</div><div class="dato-texto"><b>WhatsApp</b><a href="https://wa.me/5492323652581" target="_blank">2323-652581</a></div></div>
-          <div class="dato"><div class="dato-ico">🕐</div><div class="dato-texto"><b>Horarios</b><span>Lun–Vie 9:00–18:00 · Sáb 9:00–13:00</span></div></div>
+          <div class="dato"><div class="dato-ico"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div class="dato-texto"><b>Dirección</b><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján (BA)</a></div></div>
+          <div class="dato"><div class="dato-ico"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg></div><div class="dato-texto"><b>Teléfono</b><a href="tel:+5492323426040">(02323) 426040</a></div></div>
+          <div class="dato"><div class="dato-ico"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4A8 8 0 1 1 8.5 19z"/></svg></div><div class="dato-texto"><b>WhatsApp</b><a href="https://wa.me/5492323652581" target="_blank">2323-652581</a></div></div>
+          <div class="dato"><div class="dato-ico"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="dato-texto"><b>Horarios</b><span>Lun–Vie 9:00–18:00 · Sáb 9:00–13:00</span></div></div>
         </div>
         <a href="https://wa.me/5492323652581" class="btn-wsp" target="_blank">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -722,7 +722,6 @@ footer{background:#071a27;padding:56px 5% 26px}
         <h3>Envianos tu consulta</h3>
         <p>Te respondemos en 24 horas hábiles.</p>
         <div class="campo"><label>Nombre</label><input type="text" name="from_name" placeholder="Tu nombre"/></div>
-        <div class="campo"><label>Email</label><input type="email" name="from_email" placeholder="tu@email.com"/></div>
         <div class="campo"><label>Teléfono</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
         <div class="campo"><label>Mensaje</label><textarea id="msg-contacto" name="message" placeholder="Contanos qué necesitás..."></textarea></div>
         <button class="btn-form" onclick="enviarForm(this,'Consulta general')">Enviar consulta →</button>
@@ -734,15 +733,15 @@ footer{background:#071a27;padding:56px 5% 26px}
     <div class="footer-top">
       <div>
         <div class="brand" onclick="irAHome()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABuwAAAJ7CAYAAAAImreFAAAACXBIWXMAAC4jAAAuIwF4pT92AAAgAElEQVR4nOzd3W0cSZY24HcXc09+FpBzOcAA4lqgEtoAaS1QtQWttqBzLGi2BV2yYNQGNFS0YChggLnckgVLWjDfRahWav2SxYiMrMznAQRpd6ST0VXFyp83TsR//Pvf/w4AAAAAAADQx3/2HgAAAAAAAAAsmcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAAOhLYAQAAAAAAQEcCOwAAAAAAAOhIYAcAAAAAAAAdCewAAAAAAACgI4EdAAAAAAAAdCSwAwAAAAAAgI4EdgAAAAAAANCRwA4AAAAAAAA6EtgBAAAAAABARwI7AAAAAAAA6EhgBwAAAAAAAB0J7AAAAAAAAKAjgR0AAAAAAAB0JLADAAAAAACAjgR2AAAAAAAA0JHADgAAAAAAADoS2AEAAAAAAEBHAjsAAAAAAADoSGAHAAAAAAAAHQnsAAAAAAAAoCOBHQAAAAAAAHQksAMAAAAAAICOBHYAAAAAAADQkcAOAAAAAAAA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AAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAAhwQ4AAAAAAABCgh0AAAAAAACEBDsAAAAAAAAICXYAAAAAAAAQEuwAAAAAAAAgJNgBAAAAAABASLADAAAAAACAkGAHAAAAAAAAIcEOAAAAAAAAQoIdAAAAAAAAhAQ7AAAAAAAACAl2AAAAAAAAEBLsAAAAAAAAICTYAQAAAAAAQEiwAwAAAAAAgJBgBwAAAAAAACHBDgAAAAAAAEKCHQAAAAAAAIQEOwAAAAAAAAgJdgAAAAAAABAS7AAAAAAAACAk2AEAAAAAAEBIsAMAAAAAAICQYAcAAAAAAAChH275jDeCOkv3AAAAAElFTkSuQmCC" alt="Di Martino Propiedades" class="brand-logo"/></div>
-        <p class="footer-brand-desc">Más de 15 años acompañando a familias y empresas en sus decisiones inmobiliarias en Luján.</p>
-        <div class="socials"><a href="https://www.facebook.com/dimartinopropiedades" class="social" target="_blank">f</a><a href="https://www.instagram.com/dimartinopropiedades/" class="social" target="_blank">◻</a><a href="https://www.youtube.com/channel/UCECkXsvrDSwIi_x11e5b3Ew" class="social" target="_blank">▶</a></div>
+        <p class="footer-brand-desc">Más de 15 años acompañando a familias y empresas en sus decisiones inmobiliarias.</p>
+        <div class="socials"><a href="https://www.facebook.com/dimartinopropiedades" class="social" target="_blank">Facebook</a><a href="https://www.instagram.com/dimartinopropiedades/" class="social" target="_blank">Instagram</a><a href="https://www.youtube.com/channel/UCECkXsvrDSwIi_x11e5b3Ew" class="social" target="_blank">YouTube</a></div>
       </div>
       <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="irAHome('desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
       <div class="footer-col"><h4>Categorías</h4><ul><li><a onclick="abrirBuscador('',{op:'1'})">Casas en venta</a></li><li><a onclick="abrirBuscador('',{op:'2'})">Alquileres</a></li><li><a onclick="abrirBuscador('',{op:'1',tipos:['1']})">Terrenos</a></li><li><a onclick="abrirBuscador('',{})">Ver todo</a></li></ul></div>
       <div class="footer-col"><h4>Contacto</h4><ul><li><a href="tel:+5492323426040">(02323) 426040</a></li><li><a href="https://wa.me/5492323652581" target="_blank">WA: 2323-652581</a></li><li><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján</a></li></ul></div>
     </div>
     <!-- Mapa de la oficina -->
-    <div style="margin-bottom:26px;border-radius:10px;overflow:hidden;height:200px;border:1px solid rgba(255,255,255,.06)">
+    <div style="margin-bottom:26px;border-radius:10px;overflow:hidden;height:200px;border:1px solid rgba(255,255,255,.06);background:var(--azul)">
       <iframe
         src="https://maps.google.com/maps?q=-34.566198,-59.111510&z=17&output=embed&hl=es"
         width="100%" height="100%" frameborder="0" style="border:0;display:block;filter:grayscale(30%) invert(5%)" loading="lazy"
@@ -886,7 +885,7 @@ footer{background:#071a27;padding:56px 5% 26px}
             <button class="galeria-btn prev" id="gal-prev" onclick="galNav(-1)">‹</button>
             <button class="galeria-btn next" id="gal-next" onclick="galNav(1)">›</button>
             <div class="galeria-counter" id="gal-counter">1 / 1</div>
-            <div class="galeria-compartir"><button class="gal-btn-compartir" onclick="compartir()">⬆ Compartir</button></div>
+            <div class="galeria-compartir"><button class="gal-btn-compartir" onclick="compartir()"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg> Compartir</button></div>
             <div class="galeria-acciones" id="gal-acciones"></div>
           </div>
           <!-- Miniaturas derecha -->
@@ -938,7 +937,7 @@ footer{background:#071a27;padding:56px 5% 26px}
 
       <!-- Tour virtual -->
       <div class="det-card" id="det-tour-card" style="display:none">
-        <div class="det-card-titulo">🔵 Recorrido virtual 360°</div>
+        <div class="det-card-titulo">Recorrido virtual 360°</div>
         <div id="det-tour-wrap"></div>
       </div>
 
@@ -946,7 +945,7 @@ footer{background:#071a27;padding:56px 5% 26px}
       <div class="det-card" id="det-ubic-card">
         <div class="det-card-titulo">Ubicación</div>
         <a class="det-mapa-link" id="det-mapa-link" href="#" target="_blank">
-          📍 <span id="det-mapa-txt">Ver en Google Maps</span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> <span id="det-mapa-txt">Ver en Google Maps</span>
         </a>
       </div>
 
@@ -959,7 +958,7 @@ footer{background:#071a27;padding:56px 5% 26px}
             <div class="det-agente-nombre" id="det-agente-nombre">Di Martino Propiedades</div>
             <div class="det-agente-cargo" id="det-agente-cargo">Asesor inmobiliario</div>
             <div class="det-agente-contactos">
-              <a href="tel:+5492323426040" class="btn-agente btn-agente-tel">📞 426040</a>
+              <a href="tel:+5492323426040" class="btn-agente btn-agente-tel"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg> 426040</a>
               <a href="https://wa.me/5492323652581" target="_blank" class="btn-agente btn-agente-wsp">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                 WhatsApp
@@ -977,7 +976,7 @@ footer{background:#071a27;padding:56px 5% 26px}
       <div class="det-card">
         <div id="det-badge"></div>
         <h1 class="det-titulo" id="det-titulo"></h1>
-        <div class="det-ubic" id="det-ubic-top">📍 <span id="det-ubic-txt"></span></div>
+        <div class="det-ubic" id="det-ubic-top"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> <span id="det-ubic-txt"></span></div>
         <div class="det-precio-row">
           <div class="det-precio" id="det-precio"></div>
         </div>
@@ -993,7 +992,7 @@ footer{background:#071a27;padding:56px 5% 26px}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           Consultar por WhatsApp
         </a>
-        <a href="tel:+5492323426040" class="btn-det-tel">📞 (02323) 426040</a>
+        <a href="tel:+5492323426040" class="btn-det-tel"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg> (02323) 426040</a>
 
         <!-- Formulario -->
         <div style="border-top:1px solid var(--gris-bg);padding-top:16px;margin-top:4px">
@@ -1660,9 +1659,9 @@ function actualizarMapaMarcadores(props) {
         <div style="width:200px;cursor:pointer" onclick="abrirDetalle(${p.id})">
           <img src="${foto}" style="width:100%;height:110px;object-fit:cover;border-radius:6px;display:block;margin-bottom:8px" onerror="this.style.display='none'"/>
           <b style="font-size:13px">${titulo}</b><br>
-          <span style="font-size:14px;font-weight:800;color:#0a2f42">${precio || 'Consultar'}</span><br>
-          <span style="font-size:11px;color:#777">${getUbic(p)}</span><br>
-          <span style="font-size:12px;color:#0a2f42;font-weight:600">Ver detalle →</span>
+          <span style="font-size:14px;font-weight:800;color:#0B3042">${precio || 'Consultar'}</span><br>
+          <span style="font-size:11px;color:rgba(11,48,66,.72)">${getUbic(p)}</span><br>
+          <span style="font-size:12px;color:#0B3042;font-weight:600">Ver detalle →</span>
         </div>`);
   });
   if (validos.length) {
@@ -1834,7 +1833,7 @@ function actualizarOpcionesDinamicas() {
     dormHTML += `<button class="dorm-btn${activo?' activo':''}" onclick="toggleDorm('${val}')">${lbl} <span class="dorm-count">(${cnt})</span></button>`;
   });
   const dormEl = document.getElementById('filtro-dorm-opts');
-  if (dormEl) dormEl.innerHTML = dormHTML || '<span style="font-size:12px;color:#999">Sin opciones disponibles</span>';
+  if (dormEl) dormEl.innerHTML = dormHTML || '<span style="font-size:12px;color:rgba(11,48,66,.72)">Sin opciones disponibles</span>';
 
   // ── Opciones de barrios ──
   const sinBarrio = aplicarFiltrosSin(todasLasProps, ['barrios']);
@@ -2232,7 +2231,7 @@ function renderCard(p) {
       ${feats ? `<div class="prop-feats-ml">${feats}</div>` : ''}
       <div class="prop-ubicacion-ml">${ubic}</div>
       <a class="prop-wsp-card" href="${wsp}" target="_blank" onclick="event.stopPropagation()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D3282F"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         WhatsApp
       </a>
     </div>
@@ -2262,7 +2261,7 @@ async function cargarDetalle(id) {
     const es404 = e.message === '404' || e.message === '400';
     document.getElementById('det-loading').innerHTML = `
       <div style="text-align:center;padding:80px 5%;max-width:480px;margin:0 auto">
-        <div style="font-size:4rem;margin-bottom:16px">${es404 ? '🏠' : '⚠️'}</div>
+        <div style="font-size:4rem;margin-bottom:16px">${es404 ? '404' : '!'}</div>
         <h2 style="color:var(--azul);font-size:1.6rem;margin-bottom:10px">
           ${es404 ? 'Propiedad no encontrada' : 'Error de conexión'}
         </h2>
@@ -2276,7 +2275,7 @@ async function cargarDetalle(id) {
           <button onclick="abrirBuscador('',{})" style="padding:11px 22px;background:none;color:var(--azul);border:2px solid var(--azul);border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">Ver otras propiedades</button>
         </div>
         <a href="https://wa.me/5492323652581?text=Hola%2C+busco+una+propiedad+en+Lu%C3%ADan" target="_blank"
-          style="display:inline-flex;align-items:center;gap:7px;margin-top:18px;color:#25d366;font-size:14px;font-weight:600">
+          style="display:inline-flex;align-items:center;gap:7px;margin-top:18px;color:#D3282F;font-size:14px;font-weight:600">
           ¿Necesitás ayuda? Escribinos por WhatsApp →
         </a>
       </div>`;
@@ -2340,7 +2339,8 @@ function renderDetalle(p) {
     'very_good':'Muy bueno','good':'Bueno','excellent':'Excelente',
     'to recover':'A recuperar','to_recover':'A recuperar','recyclable':'Reciclable',
     // Situación
-    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'','for rent':'En alquiler',
+    'rented':'Alquilado','inhabited':'Habitado','empty':'','null':'','for rent':'En alquiler','in use':'Habitada','tenant':'Alquilada','owner':'Habitada por el propietario','---':'',
+    'to refurbish':'A refaccionar','regular':'Regular',
     // Antigüedad
     'a estrenar':'A estrenar','0':'A estrenar',
     '1 to 5':'1 a 5 años','1-5':'1 a 5 años',
@@ -2399,7 +2399,8 @@ function renderDetalle(p) {
   if (cocheras)
     kf += kfItem('coche', cocheras, `coch.`);
   const edadTrad = trad(p.age);
-  if (edadTrad && edadTrad !== '-') {
+  // Tokko stores 0 when the age was never loaded; only real ages are shown.
+  if (edadTrad && edadTrad !== '-' && p.age > 0) {
     // Si el valor es numérico, agregar "años"; si ya viene con "años" (rango), no duplicar
     const edadVal = isNaN(p.age) ? edadTrad : (p.age == 0 ? 'A estrenar' : `${p.age} años`);
     if (edadVal && edadVal !== 'A estrenar')
@@ -2426,7 +2427,7 @@ function renderDetalle(p) {
     ['Código',            p.reference_code ? `#${p.reference_code}` : null],
     ['Barrio / Zona',     ubic],
     ['Dirección',         p.address || null],
-    ['Antigüedad',        p.age == 0 ? 'A estrenar' : (trad(p.age) || (p.age ? `${p.age} años` : null))],
+    ['Antigüedad',        p.age > 0 ? `${p.age} años` : null],
     ['Estado',            trad(p.property_condition || p.condition)],
     ['Situación',         trad(p.situation)],
     ['Orientación',       trad(p.orientation)],
@@ -2538,7 +2539,7 @@ function renderDetalle(p) {
         src = src.replace('kuula.co/post/', 'kuula.co/share/');
       }
       return `
-        <div style="position:relative;width:100%;height:520px;border-radius:10px;overflow:hidden;background:#111">
+        <div style="position:relative;width:100%;height:520px;border-radius:10px;overflow:hidden;background:#0B3042">
           <iframe src="${src}"
             width="100%" height="100%"
             frameborder="0" scrolling="no"
@@ -2599,7 +2600,7 @@ function buildGaleria() {
       const total = galFotos.length;
       const s1 = galFotos[1] || galFotos[0];
       const s2 = galFotos[2] || galFotos[0];
-      const labelVerTodas = `📷 ${total} fotos`;
+      const labelVerTodas = `${total} fotos`;
       gridDer.innerHTML = `
         <div class="galeria-grid-item" onclick="galIr(1); abrirLightbox(1)">
           <img src="${s1}" alt="Foto 2" loading="lazy" onerror="this.src='${FALLBACK}'">
@@ -2787,7 +2788,7 @@ function mostrarToast(msg) {
   if (!t) {
     t = document.createElement('div');
     t.id = 'share-toast';
-    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;z-index:99999;opacity:0;transition:opacity .25s';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#0B3042;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;z-index:99999;opacity:0;transition:opacity .25s';
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -2817,12 +2818,12 @@ async function enviarForm(btn, tipoForm) {
   const inputs = container.querySelectorAll('input,textarea,select');
   let ok = true;
   inputs.forEach(i => {
-    if (!i.value.trim()) { i.style.borderColor = '#c0392b'; ok = false; }
+    if (!i.value.trim()) { i.style.borderColor = '#D3282F'; ok = false; }
     else i.style.borderColor = '';
   });
   if (!ok) {
     const orig = btn.textContent;
-    btn.textContent = '⚠️ Completá todos los campos';
+    btn.textContent = 'Completá todos los campos';
     setTimeout(() => btn.textContent = orig, 2500);
     return;
   }
@@ -2847,7 +2848,7 @@ async function enviarForm(btn, tipoForm) {
       form_tipo  : tipo,
     });
     btn.textContent = '✓ ¡Enviado!';
-    btn.style.background = '#27ae60';
+    btn.style.background = '#D3282F';
     inputs.forEach(i => { i.value = ''; i.style.borderColor = ''; });
     setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 4000);
   } catch(e) {
@@ -3015,7 +3016,7 @@ function onYouTubeIframeAPIReady() {
   <div id="lb-iframe-wrap" style="display:none;align-items:center;justify-content:center;width:100%;height:100%;flex-direction:column;gap:12px">
     <iframe id="lb-iframe" src="" frameborder="0" allowfullscreen
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; vr; xr-spatial-tracking"
-      style="width:92vw;max-width:1100px;height:82vh;border:none;border-radius:8px;background:#000"></iframe>
+      style="width:92vw;max-width:1100px;height:82vh;border:none;border-radius:8px;background:#0B3042"></iframe>
     <button onclick="volverAFotos()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
       Ver fotos
@@ -3024,9 +3025,9 @@ function onYouTubeIframeAPIReady() {
   <!-- Modo video YouTube (thumbnail + play, porque embedding está bloqueado por el canal) -->
   <div id="lb-yt-wrap" style="display:none;align-items:center;justify-content:center;width:100%;height:100%;flex-direction:column;gap:14px">
     <div id="lb-yt-card" style="position:relative;cursor:pointer;border-radius:12px;overflow:hidden;width:min(92vw,900px)" onclick="window.open(lbYtUrl,'_blank','noopener')">
-      <img id="lb-yt-thumb" src="" alt="Video" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#111">
+      <img id="lb-yt-thumb" src="" alt="Video" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#0B3042">
       <div style="position:absolute;inset:0;background:rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center">
-        <div style="width:72px;height:72px;background:rgba(220,30,30,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
+        <div style="width:72px;height:72px;background:rgba(211,40,47,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5)">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
         </div>
       </div>
