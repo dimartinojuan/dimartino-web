@@ -77,7 +77,7 @@ function setupPropertyTrail(property){
   const current=document.createElement('span');current.textContent=property.address||property.type.label;current.setAttribute('aria-current','page');nav.append(current);
   if(from){const back=document.createElement('a');back.className='search-return';back.href=from;back.textContent='← Volver a mi búsqueda';nav.before(back);}
 }
-function initUpgrade(){const development=document.getElementById('development-data');if(development){galProp=JSON.parse(development.textContent);galFotos=galProp.photos.map(p=>p.image);galIdx=0;}const json=document.getElementById('property-data');if(json){galProp=JSON.parse(json.textContent);galFotos=(galProp.photos||[]).map(p=>p.image);if(!galFotos.length)galFotos=[DM_ROOT+'assets/property-placeholder.svg'];galIdx=0;const op=new URLSearchParams(location.search).get('op');if(op){const offer=DMSearch.selectedOffer(galProp,{op});document.getElementById('det-precio').textContent=offerPrice(offer);document.getElementById('det-badge').textContent=offerLabel(offer);}document.getElementById('det-msg').value='Hola, me interesa '+document.getElementById('det-titulo').textContent+'. Ref. '+(galProp.reference_code||galProp.id)+'. '+location.href;}
+function initUpgrade(){const development=document.getElementById('development-data');if(development){galProp=JSON.parse(development.textContent);galFotos=galProp.photos.map(p=>p.image);galIdx=0;}const json=document.getElementById('property-data');if(json){galProp=JSON.parse(json.textContent);galFotos=(galProp.photos||[]).map(p=>p.image);if(!galFotos.length)galFotos=[DM_ROOT+'assets/property-placeholder.svg'];galIdx=0;const op=new URLSearchParams(location.search).get('op');if(op){const offer=DMSearch.selectedOffer(galProp,{op});document.getElementById('det-precio').textContent=offerPrice(offer);document.getElementById('det-badge').textContent=offerLabel(offer);}document.getElementById('det-msg').value='Hola, me interesa '+(galProp.type?.id===1?'el terreno':'la propiedad')+' de '+(galProp.address||galProp.location?.name||'')+' (código '+(galProp.reference_code||galProp.id)+'). ¿Me pasan más información?';}
 if(json)setupPropertyTrail(galProp);
 const legacy=new URLSearchParams(location.search).get('prop');if(location.pathname.endsWith('/dimartino_v2.html')&&!legacy){location.replace(DM_ROOT);return;}if(legacy&&/^\d+$/.test(legacy)){fetch(DM_ROOT+'data/routes.json').then(r=>r.json()).then(routes=>{if(routes[legacy])location.replace(DM_ROOT+routes[legacy]);else location.replace(DM_ROOT+'404.html');});return;}
 if(document.body.dataset.view==='search'){cargarCache().then(()=>{Object.assign(S,JSON.parse(document.body.dataset.initialFilters||'{}'));propsFiltradas=aplicarFiltros(todasLasProps);ultimasProps=propsFiltradas;propsMostradas=document.querySelectorAll('#busq-grid .prop-card').length;renderChips();actualizarOpcionesDinamicas();const p=new URLSearchParams(location.search);if(p.has('q')){document.getElementById('nav-search-input').value=p.get('q');aplicarNLP(p.get('q'));return;}restoreSearchFilters(p);document.getElementById('nav-search-input').value=S.kw||'';if(p.size)cargarResultados();});}
@@ -87,3 +87,20 @@ document.querySelectorAll('.galeria-main,.lightbox').forEach(el=>{let x=0;el.add
 document.addEventListener('keydown',e=>{const lb=document.getElementById('lightbox');if(e.key==='Tab'&&lb.classList.contains('open')){const controls=[...lb.querySelectorAll('button,a,[tabindex]')].filter(n=>n.getAttribute('tabindex')!=='-1'&&n.getClientRects().length);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){last?.focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===last){first?.focus();e.preventDefault();}}});
 window.addEventListener('popstate',()=>location.reload());
 setupScrollInfinito();}
+
+// Compartir: en celulares abre el menú nativo del teléfono; en la compu, un menú con WhatsApp, Facebook, email y copiar enlace.
+function compartir(){
+  const url=document.querySelector('link[rel=canonical]')?.href||location.href.split('?')[0];
+  const title=(document.getElementById('det-titulo')?.textContent||document.title).trim();
+  const touch=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
+  if(touch&&navigator.share){navigator.share({title,text:title,url}).catch(()=>{});return;}
+  const old=document.getElementById('share-menu');if(old){old.remove();return;}
+  const enc=encodeURIComponent,text=title+' '+url;
+  const items=[['WhatsApp','https://wa.me/?text='+enc(text)],['Facebook','https://www.facebook.com/sharer/sharer.php?u='+enc(url)],['Email','mailto:?subject='+enc(title)+'&body='+enc(text)]];
+  const menu=document.createElement('div');menu.id='share-menu';menu.className='share-menu';menu.setAttribute('role','menu');
+  menu.innerHTML=items.map(([n,h])=>`<a role="menuitem" href="${h}" target="_blank" rel="noopener">${n}</a>`).join('')+'<button type="button" role="menuitem" data-copy>Copiar enlace</button>';
+  menu.querySelector('[data-copy]').onclick=()=>{(navigator.clipboard?.writeText(url)||Promise.reject()).then(()=>mostrarToast('Enlace copiado')).catch(()=>mostrarToast('Copiá la dirección desde la barra del navegador'));menu.remove();};
+  menu.addEventListener('click',e=>{if(e.target.closest('a'))menu.remove();});
+  document.querySelector('.galeria-compartir').append(menu);
+  setTimeout(()=>document.addEventListener('click',function close(e){if(!e.target.closest('.galeria-compartir')){menu.remove();document.removeEventListener('click',close);}}),0);
+}

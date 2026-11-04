@@ -141,3 +141,12 @@ body{background:#fff}
 .det-kf-lab{text-transform:none!important;font-size:11px!important}
 /* Descripción: texto justificado */
 #det-desc-txt{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+
+/* Menú de compartir */
+.share-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:190px;background:#fff;border:1px solid var(--gris-borde);border-radius:10px;box-shadow:0 10px 30px rgba(11,48,66,.18);padding:6px;display:flex;flex-direction:column;z-index:20}
+.share-menu a,.share-menu button{display:block;text-align:left;padding:10px 12px;border-radius:7px;color:var(--azul);font:inherit;font-size:14px;font-weight:600;background:none;border:0;cursor:pointer}
+.share-menu a:hover,.share-menu button:hover{background:var(--gris-bg)}
+/* Ruta de navegación alineada con la foto y la columna de datos */
+#vista-detalle .det-breadcrumb{max-width:1240px;margin:0 auto;padding-left:5%;padding-right:5%;box-sizing:border-box}
+/* Mensaje del formulario: se lee completo */
+#det-msg{min-height:92px;resize:vertical}
