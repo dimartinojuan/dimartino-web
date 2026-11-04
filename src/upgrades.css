@@ -133,3 +133,11 @@ body{background:#fff}
 @media(max-width:768px){.hero{padding-left:6%;padding-right:6%}.hero h1.hero-titulo{font-size:clamp(2.6rem,13vw,3.6rem)}.hero-accesos{align-items:stretch}}
 /* Grilla fina del manual sobre los fondos azules */
 .seccion--azul,footer{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:88px 88px}
+/* Datos principales: grilla pareja de 4 columnas (4 u 8 datos) */
+.det-key-feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 0!important}
+.det-kf{min-width:0!important;padding:8px 4px!important}
+.det-kf:not(:last-child)::after{display:none}
+.det-kf:not(:nth-child(4n)):not(:last-child)::after{content:'';display:block;position:absolute;right:0;top:15%;height:70%;width:1px;background:var(--gris-borde)}
+.det-kf-lab{text-transform:none!important;font-size:11px!important}
+/* Descripción: texto justificado */
+#det-desc-txt{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
