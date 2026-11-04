@@ -83,8 +83,8 @@ body{background:#fff}
 .seccion--gris:not(.propietarios){background:#fff}
 .sec-label{display:none!important}
 .sec-cabecera{align-items:flex-end}
-/* Motivo: la pieza inclinada del isotipo, en rojo, bajo cada título de sección */
-.sec-titulo::after,.contacto-info h2::after{content:'';display:block;width:54px;height:7px;margin-top:16px;background:var(--rojo);transform:skewX(-40deg);transform-origin:left bottom}
+/* Cota (línea de medida de plano, del manual) en rojo bajo cada título de sección */
+.sec-titulo::after,.contacto-info h2::after{content:'';display:block;width:72px;height:12px;margin-top:16px;border-left:2px solid var(--rojo);border-right:2px solid var(--rojo);background:linear-gradient(var(--rojo),var(--rojo)) center/100% 2px no-repeat}
 .sec-sub{font-size:16px;color:rgba(11,48,66,.8);margin-top:12px}
 :root{--gris-txt:rgba(11,48,66,.78)}
 
@@ -123,3 +123,13 @@ body{background:#fff}
 .propietarios .formulario{position:sticky;top:96px;border:0;box-shadow:0 18px 50px rgba(11,48,66,.14)}
 .propietarios .formulario h3{font-size:20px;color:var(--azul)}
 @media(max-width:900px){.prop-split{grid-template-columns:1fr;gap:36px}.propietarios .formulario{position:static}}
+
+/* Portada: composición tipográfica del manual, mayúsculas apiladas */
+.hero{align-items:flex-start;text-align:left;padding-left:max(5%,calc((100vw - 1240px)/2 + 5%))}
+.hero-content{max-width:900px}
+.hero h1.hero-titulo{display:flex;flex-direction:column;font-size:clamp(2.9rem,8vw,6.6rem);font-weight:800;line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:34px}
+.hero h1.hero-titulo span:last-child::after{content:'';display:block;width:min(46%,260px);height:14px;margin-top:20px;border-left:3px solid var(--rojo);border-right:3px solid var(--rojo);background:linear-gradient(var(--rojo),var(--rojo)) center/100% 3px no-repeat}
+.hero-accesos{justify-content:flex-start}
+@media(max-width:768px){.hero{padding-left:6%;padding-right:6%}.hero h1.hero-titulo{font-size:clamp(2.6rem,13vw,3.6rem)}.hero-accesos{align-items:stretch}}
+/* Grilla fina del manual sobre los fondos azules */
+.seccion--azul,footer{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:88px 88px}
