@@ -582,7 +582,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
     <div class="hero-overlay"></div>
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <h1>Cada historia<br><em>tiene un lugar.</em></h1>
+      <h1 class="hero-titulo"><span>Cada historia</span><span>tiene un</span><span>lugar</span></h1>
       <div class="hero-accesos">
         <button class="hero-acc-btn hero-acc-principal" onclick="abrirBuscador('',{})">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -651,47 +651,23 @@ footer{background:#0B3042;padding:56px 5% 26px}
     </div>
   </section>
 
-  <!-- ══ SECCIÓN VENDER / ALQUILAR ══ -->
-  <section class="seccion" id="vender">
-    <div style="text-align:center;margin-bottom:48px">
-      <span class="sec-label">Para propietarios</span>
-      <h2 class="sec-titulo">¿Querés vender o alquilar tu propiedad?</h2>
-      <p class="sec-sub">Te acompañamos en cada paso del proceso con más de 15 años de experiencia en el mercado.</p>
-    </div>
-    <div class="vender-grid">
-      <div class="vender-card">
-        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></div>
-        <h3>Tasación gratuita</h3>
-        <p>Conocé el valor real de tu propiedad con un análisis de mercado sin costo ni compromiso.</p>
-        <a class="btn-vender" href="https://wa.me/5492323652581?text=Hola%2C+me+gustar%C3%ADa+tasar+mi+propiedad." target="_blank">Solicitar tasación</a>
-      </div>
-      <div class="vender-card vender-card--dest">
-        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></div>
-        <h3>Publicá con nosotros</h3>
-        <p>Difundimos tu propiedad en los principales portales inmobiliarios y nuestra base de clientes activos.</p>
-        <a class="btn-vender btn-vender--blanco" href="https://wa.me/5492323652581?text=Hola%2C+quiero+publicar+mi+propiedad." target="_blank">Quiero publicar</a>
-      </div>
-      <div class="vender-card">
-        <div class="vender-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></div>
-        <h3>Gestión integral</h3>
-        <p>Nos encargamos de visitas, negociación y escritura. Vos solo tomás la decisión final.</p>
-        <a class="btn-vender" href="https://wa.me/5492323652581?text=Hola%2C+quiero+info+sobre+la+gesti%C3%B3n+de+venta." target="_blank">Saber más</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="seccion seccion--gris" id="tasaciones">
-    <div class="tas-split">
-      <div class="tas-texto">
-        <span class="sec-label">Valuaciones profesionales</span>
-        <h2>¿Sabés cuánto vale tu propiedad?</h2>
-        <p>Tasaciones precisas basadas en datos reales del mercado. Sin cargo y sin compromiso.</p>
-        <a href="#" class="btn-primary" onclick="irAHome('tasaciones-form');return false">Solicitar tasación gratuita →</a>
-        <div class="tas-nums"><div class="tas-num"><b>24hs</b><small>Respuesta</small></div><div class="tas-num"><b>Gratis</b><small>Sin cargo</small></div><div class="tas-num"><b>15+ años</b><small>Experiencia</small></div></div>
+  <!-- ══ PROPIETARIOS: vender, alquilar y tasar en un solo lugar ══ -->
+  <section class="seccion propietarios" id="tasaciones">
+    <span id="vender" class="ancla"></span>
+    <div class="prop-split">
+      <div class="prop-texto">
+        <h2 class="sec-titulo">¿Querés vender o alquilar tu propiedad?</h2>
+        <p class="prop-lead">Hace más de 15 años acompañamos a propietarios en cada paso: tasamos, publicamos y nos ocupamos de todo hasta la firma.</p>
+        <ul class="prop-pasos">
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></span><div><h3>Tasación sin cargo</h3><p>Te decimos cuánto vale tu propiedad hoy, con datos reales del mercado y sin compromiso.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></span><div><h3>Difusión en los principales portales</h3><p>Publicamos con fotos y fichas profesionales, y la ofrecemos a nuestra base de clientes activos.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><div><h3>Gestión integral</h3><p>Coordinamos visitas, negociación y escritura. Vos solo tomás la decisión final.</p></div></li>
+        </ul>
+        <div class="tas-nums"><div class="tas-num"><b>En el día</b><small>Respuesta</small></div><div class="tas-num"><b>Sin cargo</b><small>Tasación</small></div><div class="tas-num"><b>15+ años</b><small>De experiencia</small></div></div>
       </div>
       <div class="formulario" id="tasaciones-form">
-        <h3>Solicitá tu tasación</h3>
-        <p>Completá el formulario y te contactamos pronto.</p>
+        <h3>Pedí tu tasación sin cargo</h3>
+        <p>Dejanos tus datos y te respondemos en el día.</p>
         <div class="campo"><label>Tu nombre</label><input type="text" name="from_name" placeholder="Ej: María García"/></div>
         <div class="campo"><label>Teléfono / WhatsApp</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
         <div class="campo"><label>Tipo de propiedad</label><select name="prop_tipo"><option value="">Seleccioná</option><option>Casa</option><option>Departamento</option><option>Terreno / Lote</option><option>Local comercial</option><option>Chacra / Quinta</option></select></div>
