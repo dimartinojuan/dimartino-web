@@ -126,7 +126,7 @@ async function main(){
   await fs.mkdir(path.join(out,'assets'),{recursive:true});
   // Write image bytes synchronously with the rest of the build, avoiding async replacements.
   const originals=[...((await fs.readFile(path.join(ROOT,'src/template.html'),'utf8')).matchAll(/data:image\/png;base64,([A-Za-z0-9+/=]+)/g))];await write('assets/favicon-source.png',Buffer.from(originals[0][1],'base64'));await write('assets/logo.png',Buffer.from(originals[1][1],'base64'));
-  for(const name of ['favicon.png','social-cover.jpg','logo-schema.png']){try{await write('assets/'+name,await fs.readFile(path.join(ROOT,'assets',name)));}catch{if(name==='favicon.png')await write('assets/favicon.png',Buffer.from(originals[0][1],'base64'));}}
+  for(const name of ['favicon.png','social-cover.jpg','logo-schema.png','iso-color.svg']){try{await write('assets/'+name,await fs.readFile(path.join(ROOT,'assets',name)));}catch{if(name==='favicon.png')await write('assets/favicon.png',Buffer.from(originals[0][1],'base64'));}}
   template=template.replaceAll('favicon-source.png','favicon.png');
   // Poppins is self-hosted so every phone and computer shows the same brand typeface, with no third-party requests.
   const weights=[400,500,600,700,800];let fontFaces='';
@@ -180,6 +180,9 @@ async function main(){
   // Locality links live at the very bottom of every page: useful for Google, out of the way for visitors.
   const seoZones=zonePages.filter(z=>!z.route.split('/')[2]);
   baseDoc.querySelector('.footer-bottom').insertAdjacentHTML('beforebegin',`<nav class="footer-zonas" aria-label="Propiedades por zona"><h4>Propiedades por zona</h4><p>Casas, departamentos, terrenos y quintas en venta y alquiler en Luján y alrededores.</p><ul>${seoZones.map(z=>`<li><a href="${BASE+z.route}">${esc(z.name.replace(/^Propiedades en /,''))}</a></li>`).join('')}</ul><ul class="footer-zonas-tipos">${zonePages.filter(z=>z.route.split('/')[2]&&z.count>=3).map(z=>`<li><a href="${BASE+z.route}">${esc(z.name)}</a></li>`).join('')}</ul></nav>`);
+  // Owners section: official isotipo file and the live number of listings.
+  for(const img of baseDoc.querySelectorAll('img[data-iso]'))img.setAttribute('src',BASE+'assets/iso-color.svg');
+  for(const el of baseDoc.querySelectorAll('[data-total-props]'))el.textContent=String(properties.length);
   const bodyBase=baseDoc.toString();
   function runtime(doc){const context={document:doc,window:{DM_BUILD:true,scrollTo(){},location:{href:ORIGIN+'/',origin:new URL(ORIGIN).origin},addEventListener(){}},location:{origin:new URL(ORIGIN).origin,href:ORIGIN+'/'},DM_ROOT:BASE,DMSearch,URL,URLSearchParams,Intl,console,requestAnimationFrame(){},setTimeout(){},clearTimeout(){},navigator:{},IntersectionObserver:class{observe(){}},fetch(){throw Error('Network forbidden during render');}};context.globalThis=context;vm.createContext(context);vm.runInContext(app,context);return context;}
   function newDoc(view){const {document}=parseHTML(bodyBase);document.body.dataset.view=view;document.querySelectorAll('.vista').forEach(v=>v.classList.toggle('activa',v.id==='vista-'+(view==='detail'?'detalle':view==='search'?'busqueda':view)));return document;}
