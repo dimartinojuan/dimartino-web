@@ -903,7 +903,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <div class="det-tabs-nav" id="det-tabs-nav">
           <button class="det-tab-btn activo" onclick="cambiarTab('general',this)">General</button>
           <button class="det-tab-btn" onclick="cambiarTab('medidas',this)">Medidas</button>
-          <button class="det-tab-btn" id="tab-btn-amenidades" onclick="cambiarTab('amenidades',this)">Amenidades</button>
+          <button class="det-tab-btn" id="tab-btn-amenidades" onclick="cambiarTab('amenidades',this)">Comodidades</button>
         </div>
         <div class="det-tab-pane activo" id="tab-general"><div class="det-feats-grid" id="tab-general-grid"></div></div>
         <div class="det-tab-pane" id="tab-medidas"><div class="det-feats-grid" id="tab-medidas-grid"></div></div>
@@ -925,7 +925,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
 
       <!-- Amenidades / Tags -->
       <div class="det-card" id="det-tags-card" style="display:none">
-        <div class="det-card-titulo">Amenidades y comodidades</div>
+        <div class="det-card-titulo">Comodidades</div>
         <div class="det-tags" id="det-tags"></div>
       </div>
 
@@ -2160,6 +2160,8 @@ const TRAD_TAGS = {
   // ── Accesibilidad / crédito ──
   'accessible':'Accesible para discapacitados',
 };
+// Tokko amenities that were still arriving in English.
+Object.assign(TRAD_TAGS,{"dresser": "Vestidor", "double glazing windows": "Ventanas con doble vidrio", "lift": "Ascensor", "pvc enclosures": "Aberturas de PVC", "combined kitchen": "Cocina integrada", "exclusiveness": "Exclusividad", "library": "Biblioteca", "corner plot": "Lote en esquina", "radiator heating": "Calefacción por radiadores", "aluminium carpentry": "Carpintería de aluminio", "pre-installed air-conditioning": "Preinstalación de aire acondicionado", "water to be connected": "Agua a conectar", "route": "Sobre ruta", "newly built": "A estrenar", "aluminium windows": "Ventanas de aluminio", "individual hot water tank": "Termotanque individual", "zinc roof": "Techo de chapa", "fitted wardrobes": "Placares empotrados", "hot water by electricity": "Agua caliente eléctrica", "public laundry": "Lavadero común", "biodigesters": "Biodigestores", "underground electricity": "Tendido eléctrico subterráneo", "as-built drawings": "Planos aprobados", "bedroom(s) with closet": "Dormitorios con placard", "condominium": "Condominio", "solarium": "Solárium", "community pool": "Pileta común", "air heating": "Calefacción por aire", "tile roof": "Techo de tejas", "under construction": "En construcción", "smoke extractor": "Extractor de humo", "game room": "Sala de juegos", "internal land": "Lote interno", "entrance security": "Seguridad en el acceso", "trifasic energy": "Energía trifásica", "perimeter enclosure": "Cerco perimetral", "kitchenette": "Kitchenette", "gas storage": "Gas envasado", "automatic watering": "Riego automático", "night security": "Seguridad nocturna", "24 hour security": "Seguridad 24 horas", "green areas": "Espacios verdes", "tenis court": "Cancha de tenis", "covered bbq": "Parrilla techada", "private urbanization": "Urbanización privada", "sport center": "Centro deportivo", "recreational area": "Área recreativa", "clubhouse": "Club house", "soccer field": "Cancha de fútbol", "paddle tennis court": "Cancha de pádel", "fixed garage": "Cochera fija", "semi-floor": "Semipiso", "individual grill in the apartment": "Parrilla propia en el departamento", "forest barrier": "Cortina forestal", "financed": "Con financiación", "vehicular entrance": "Acceso vehicular", "internet": "Internet", "toilette": "Toilette", "deck": "Deck", "jacuzzi": "Jacuzzi", "sum": "SUM", "landing": "Palier", "commercial able": "Apto uso comercial", "diary dining": "Comedor diario", "dining lounge": "Living comedor", "backyard": "Patio"});
 function tradTag(tag) { return TRAD_TAGS[(tag||'').toLowerCase()] || tag; }
 
 // Alias para búsqueda por texto — "dpto" → "departamento", etc.
@@ -2454,8 +2456,13 @@ function renderDetalle(p) {
   ].filter(Boolean);
   const amenBtn = document.getElementById('tab-btn-amenidades');
   if (allTags.length) {
-    document.getElementById('tab-amenidades-tags').innerHTML =
-      allTags.map(t => `<span class="det-tag-item">${t}</span>`).join('');
+    // Two clear groups instead of a cloud of pills: services first, then the rest.
+    const SERV = /^(agua|electricidad|luz|gas|cloaca|pavimento|asfalto|tv cable|cable|internet|tel[eé]fono|alumbrado|desag|energ[ií]a trif|tendido)/i;
+    const uniq = [...new Set(allTags)];
+    const serv = uniq.filter(t => SERV.test(t)), rest = uniq.filter(t => !SERV.test(t));
+    const ck = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17 19 7"/></svg>';
+    const group = (title, items) => items.length ? `<div class="amen-grupo"><h4>${title}</h4><ul>${items.map(t => `<li>${ck}<span>${t}</span></li>`).join('')}</ul></div>` : '';
+    document.getElementById('tab-amenidades-tags').innerHTML = group('Comodidades', rest) + group('Servicios', serv);
     amenBtn.style.display = '';
   } else {
     amenBtn.style.display = 'none';

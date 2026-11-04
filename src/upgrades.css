@@ -68,3 +68,12 @@ body[data-view=search] .related{display:none}.page-intro{padding-top:32px}.prop-
 .vender-card.vender-card--dest h3{color:#fff}.vender-card.vender-card--dest p{color:rgba(255,255,255,.78)}
 .btn-vender:hover,.btn-primary:hover,.btn-form:hover,.btn-wsp:hover,.btn-det-wsp:hover{filter:brightness(1.15)}
 .precio-rango span{white-space:nowrap}
+
+/* Comodidades: lista ordenada en columnas, sin nube de etiquetas */
+#tab-amenidades-tags{display:block}
+.amen-grupo+.amen-grupo{margin-top:18px}
+.amen-grupo h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-txt);margin:0 0 10px;font-weight:700}
+.amen-grupo ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px}
+.amen-grupo li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--azul);line-height:1.35}
+.amen-grupo li svg{flex:0 0 auto;margin-top:2px;color:var(--rojo)}
+@media(max-width:768px){.amen-grupo ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
