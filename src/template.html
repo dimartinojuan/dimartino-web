@@ -651,19 +651,16 @@ footer{background:#0B3042;padding:56px 5% 26px}
     </div>
   </section>
 
-  <!-- ══ PROPIETARIOS: vender, alquilar y tasar en un solo lugar ══ -->
+  <!-- ══ PROPIETARIOS: concepto de marca + tasación (sistema de diseño: panel crema, isotipo, tarjetas) ══ -->
   <section class="seccion propietarios" id="tasaciones">
     <span id="vender" class="ancla"></span>
     <div class="prop-split">
-      <div class="prop-texto">
-        <h2 class="sec-titulo">¿Querés vender o alquilar tu propiedad?</h2>
-        <p class="prop-lead">Hace más de 15 años acompañamos a propietarios en cada paso: tasamos, publicamos y nos ocupamos de todo hasta la firma.</p>
-        <ul class="prop-pasos">
-          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></span><div><h3>Tasación sin cargo</h3><p>Te decimos cuánto vale tu propiedad hoy, con datos reales del mercado y sin compromiso.</p></div></li>
-          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></span><div><h3>Difusión en los principales portales</h3><p>Publicamos con fotos y fichas profesionales, y la ofrecemos a nuestra base de clientes activos.</p></div></li>
-          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><div><h3>Gestión integral</h3><p>Coordinamos visitas, negociación y escritura. Vos solo tomás la decisión final.</p></div></li>
-        </ul>
-        <div class="tas-nums"><div class="tas-num"><b>En el día</b><small>Respuesta</small></div><div class="tas-num"><b>Sin cargo</b><small>Tasación</small></div><div class="tas-num"><b>15+ años</b><small>De experiencia</small></div></div>
+      <div class="prop-panel">
+        <img class="prop-iso" data-iso src="assets/iso-color.svg" alt="" width="120" height="120">
+        <p class="prop-rotulo"><span class="cuadradito" aria-hidden="true"></span>PROPIETARIOS</p>
+        <h2 class="owners-titulo"><span>¿Tu propiedad</span><span>busca un</span><span>nuevo dueño?</span></h2>
+        <p class="prop-lead">Con un profundo conocimiento del mercado y un enfoque innovador, conectamos a los propietarios con los compradores ideales. Cada operación, con integridad y compromiso.</p>
+        <p class="prop-cierre">¡Permitinos escribir tu próxima historia!</p>
       </div>
       <div class="formulario" id="tasaciones-form">
         <h3>Pedí tu tasación sin cargo</h3>
@@ -674,6 +671,12 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <div class="campo"><label>Dirección aproximada</label><textarea name="message" placeholder="Ej: calle Las Heras al 400"></textarea></div>
         <button class="btn-form" onclick="enviarForm(this,'Solicitud de tasación')">Enviar solicitud →</button>
       </div>
+    </div>
+    <div class="prop-tarjetas">
+      <div class="tarjeta"><b>+15</b><small>AÑOS DE EXPERIENCIA</small></div>
+      <div class="tarjeta"><b>Sin cargo</b><small>TASACIÓN</small></div>
+      <div class="tarjeta"><b>En el día</b><small>RESPUESTA</small></div>
+      <div class="tarjeta"><b data-total-props>100+</b><small>PROPIEDADES PUBLICADAS</small></div>
     </div>
   </section>
 
@@ -873,19 +876,6 @@ footer{background:#0B3042;padding:56px 5% 26px}
       <!-- Barra de medios disponibles -->
       <div id="det-media-bar" class="det-media-bar" style="display:none"></div>
 
-      <!-- Características con tabs -->
-      <div class="det-card" id="det-caract-card">
-        <div class="det-card-titulo">Características</div>
-        <div class="det-tabs-nav" id="det-tabs-nav">
-          <button class="det-tab-btn activo" onclick="cambiarTab('general',this)">General</button>
-          <button class="det-tab-btn" onclick="cambiarTab('medidas',this)">Medidas</button>
-          <button class="det-tab-btn" id="tab-btn-amenidades" onclick="cambiarTab('amenidades',this)">Comodidades</button>
-        </div>
-        <div class="det-tab-pane activo" id="tab-general"><div class="det-feats-grid" id="tab-general-grid"></div></div>
-        <div class="det-tab-pane" id="tab-medidas"><div class="det-feats-grid" id="tab-medidas-grid"></div></div>
-        <div class="det-tab-pane" id="tab-amenidades"><div class="det-tags-tab" id="tab-amenidades-tags"></div></div>
-      </div>
-
       <!-- Descripción -->
       <div class="det-card" id="det-desc-card" style="display:none">
         <div class="det-card-titulo">Descripción</div>
@@ -897,6 +887,19 @@ footer{background:#0B3042;padding:56px 5% 26px}
           Leer descripción completa
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
+      </div>
+
+      <!-- Características con tabs -->
+      <div class="det-card" id="det-caract-card">
+        <div class="det-card-titulo">Características</div>
+        <div class="det-tabs-nav" id="det-tabs-nav">
+          <button class="det-tab-btn activo" onclick="cambiarTab('general',this)">General</button>
+          <button class="det-tab-btn" onclick="cambiarTab('medidas',this)">Medidas</button>
+          <button class="det-tab-btn" id="tab-btn-amenidades" onclick="cambiarTab('amenidades',this)">Comodidades</button>
+        </div>
+        <div class="det-tab-pane activo" id="tab-general"><div class="det-feats-grid" id="tab-general-grid"></div></div>
+        <div class="det-tab-pane" id="tab-medidas"><div class="det-feats-grid" id="tab-medidas-grid"></div></div>
+        <div class="det-tab-pane" id="tab-amenidades"><div class="det-tags-tab" id="tab-amenidades-tags"></div></div>
       </div>
 
       <!-- Amenidades / Tags -->
@@ -956,7 +959,6 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <div class="det-precio-row">
           <div class="det-precio" id="det-precio"></div>
         </div>
-        <div class="det-precio-m2" id="det-precio-m2"></div>
         <div class="det-gastos" id="det-gastos"></div>
         <!-- Barra de iconos clave -->
         <div class="det-key-feats" id="det-key-feats"></div>
@@ -2286,7 +2288,7 @@ function renderDetalle(p) {
   document.getElementById('det-precio').textContent = precio || 'Consultar precio';
 
   // Precio por m²
-  const pm2El = document.getElementById('det-precio-m2');
+  const pm2El = { textContent:'', style:{} }; // Precio por m²: no se publica
   const op0 = (p.operations||[])[0];
   const pr0 = (op0?.prices||[])[0];
   const sup_r = parseFloat(p.roofed_surface||0);
@@ -2338,7 +2340,8 @@ function renderDetalle(p) {
     if (v == null) return null;
     const s = String(v).trim();
     if (!s || ['empty','null','undefined','-'].includes(s.toLowerCase())) return null;
-    return TRAD[s.toLowerCase()] ?? s;
+    // A value without a Spanish name is left out rather than shown in English; numbers pass as they are.
+    return TRAD[s.toLowerCase()] ?? (/^[\d\s.,+-]+$/.test(s) ? s : null);
   }
 
   /* ── Barra de características estilo ZonaProp ── */
@@ -2358,38 +2361,30 @@ function renderDetalle(p) {
     return `<div class="det-kf"><span class="det-kf-ico">${ICO[ico]}</span><span class="det-kf-val">${val}</span><span class="det-kf-lab">${lab}</span></div>`;
   }
   const supCub = p.roofed_surface || p.surface;
-  let kf = '';
-  if (p.total_surface && p.total_surface !== supCub)
-    kf += kfItem('supTot', `${Math.round(p.total_surface)} m²`, 'tot.');
-  if (supCub)
-    kf += kfItem('supCub', `${Math.round(supCub)} m²`, 'cub.');
-  if (p.surface && !supCub && !p.total_surface)
-    kf += kfItem('supLot', `${Math.round(p.surface)} m²`, 'sup.');
-  if (p.room_amount)
-    kf += kfItem('amb', p.room_amount, `amb.`);
-  if (p.suite_amount)
-    kf += kfItem('dorm', p.suite_amount, `dorm.`);
-  if (p.bathroom_amount)
-    kf += kfItem('bano', p.bathroom_amount, `baño${p.bathroom_amount>1?'s':''}`);
-  if (p.toilet_amount)
-    kf += kfItem('toilet', p.toilet_amount, 'toilette');
+  // Main features in a fixed priority. Always 8 or 4 (or all of them when there are fewer than 4),
+  // so the block is an even grid and never a row with gaps.
+  const m2 = v => `${Math.round(v).toLocaleString('es-AR')} m²`;
   const cocheras = (p.garage_amount||0) + (p.parking_lot_amount||0);
-  if (cocheras)
-    kf += kfItem('coche', cocheras, `coch.`);
-  const edadTrad = trad(p.age);
-  // Tokko stores 0 when the age was never loaded; only real ages are shown.
-  if (edadTrad && edadTrad !== '-' && p.age > 0) {
-    // Si el valor es numérico, agregar "años"; si ya viene con "años" (rango), no duplicar
-    const edadVal = isNaN(p.age) ? edadTrad : (p.age == 0 ? 'A estrenar' : `${p.age} años`);
-    if (edadVal && edadVal !== 'A estrenar')
-      kf += kfItem('edad', edadVal, 'antigüedad');
-    else if (edadVal === 'A estrenar')
-      kf += kfItem('edad', 'Estreno', 'a estrenar');
-  }
+  const terreno = Number(p.surface)||0, total = Number(p.total_surface)||0, cub = Number(p.roofed_surface)||0;
+  const cand = [];
+  if (cub) cand.push(['supCub', m2(cub), 'cubiertos']);
+  if (terreno && terreno !== cub) cand.push(['supLot', m2(terreno), 'terreno']);
+  else if (total && total !== cub) cand.push(['supTot', m2(total), 'totales']);
+  if (p.room_amount) cand.push(['amb', p.room_amount, p.room_amount > 1 ? 'ambientes' : 'ambiente']);
+  if (p.suite_amount) cand.push(['dorm', p.suite_amount, p.suite_amount > 1 ? 'dormitorios' : 'dormitorio']);
+  if (p.bathroom_amount) cand.push(['bano', p.bathroom_amount, p.bathroom_amount > 1 ? 'baños' : 'baño']);
+  if (cocheras) cand.push(['coche', cocheras, cocheras > 1 ? 'cocheras' : 'cochera']);
+  if (p.age > 0) cand.push(['edad', p.age, p.age > 1 ? 'años' : 'año']);
   const orientTrad = trad(p.orientation);
-  if (orientTrad)
-    kf += kfItem('orient', orientTrad, 'orientación');
+  if (orientTrad) cand.push(['orient', orientTrad, 'orientación']);
+  if (p.toilet_amount) cand.push(['toilet', p.toilet_amount, 'toilette']);
+  if (terreno && total && total !== cub && total !== terreno) cand.push(['supTot', m2(total), 'totales']);
+  const n = cand.length >= 8 ? 8 : cand.length >= 4 ? 4 : cand.length;
+  let kf = cand.slice(0, n).map(([i, v, l]) => kfItem(i, v, l)).join('');
   document.getElementById('det-key-feats').innerHTML = kf;
+  // Fewer than 4 data (lots, garages): they share the full width evenly.
+  document.getElementById('det-key-feats').style.gridTemplateColumns = n && n < 4 ? `repeat(${n},minmax(0,1fr))` : '';
+  document.getElementById('det-key-feats').style.display = n ? '' : 'none';
 
   /* ── Características en tabs ── */
   const creditoTrad = trad(p.credit_eligible);
@@ -2427,7 +2422,9 @@ function renderDetalle(p) {
   ]);
   // Tab Amenidades (tags)
   const allTags = [
-    ...(p.tags||[]).map(t => tradTag(t.name||t)),
+    // Tokko's standard amenities are shown only when there is a Spanish name for them, so nothing appears in English.
+    // Custom tags are written by the agency in Spanish and are shown as they are.
+    ...(p.tags||[]).map(t => TRAD_TAGS[String(t.name||t).toLowerCase()]).filter(Boolean),
     ...(p.custom_tags||[]).map(t => tradTag(t.name||t)),
   ].filter(Boolean);
   const amenBtn = document.getElementById('tab-btn-amenidades');
