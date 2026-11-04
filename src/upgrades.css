@@ -83,8 +83,6 @@ body{background:#fff}
 .seccion--gris:not(.propietarios){background:#fff}
 .sec-label{display:none!important}
 .sec-cabecera{align-items:flex-end}
-/* Cota (línea de medida de plano, del manual) en rojo bajo cada título de sección */
-.sec-titulo::after,.contacto-info h2::after{content:'';display:block;width:72px;height:12px;margin-top:16px;border-left:2px solid var(--rojo);border-right:2px solid var(--rojo);background:linear-gradient(var(--rojo),var(--rojo)) center/100% 2px no-repeat}
 .sec-sub{font-size:16px;color:rgba(11,48,66,.8);margin-top:12px}
 :root{--gris-txt:rgba(11,48,66,.78)}
 
@@ -116,7 +114,7 @@ body{background:#fff}
 .prop-iso{display:block;width:96px;height:96px;margin-bottom:30px}
 .prop-rotulo{display:flex;align-items:center;gap:12px;color:var(--rojo);font-size:12px;font-weight:600;letter-spacing:.42em;margin:0 0 14px}
 .cuadradito{width:11px;height:11px;background:var(--rojo);display:inline-block;flex:0 0 auto}
-.prop-titulo{display:flex;flex-direction:column;font-size:clamp(2.1rem,4.2vw,3.5rem);font-weight:800;line-height:.98;letter-spacing:-.01em;text-transform:uppercase;color:var(--azul);margin:0 0 26px}
+.owners-titulo{display:flex;flex-direction:column;font-size:clamp(2.1rem,4.2vw,3.5rem);font-weight:800;line-height:.98;letter-spacing:-.01em;text-transform:uppercase;color:var(--azul);margin:0 0 26px}
 .prop-lead{font-size:16px;line-height:1.7;color:var(--azul);max-width:520px;margin:0 0 14px}
 .prop-cierre{font-size:16px;font-weight:700;color:var(--azul);margin:0}
 .propietarios .formulario{border:0;border-left:1px solid var(--azul);border-radius:0;box-shadow:none;padding:44px 40px;background:#fff;position:static}
@@ -133,10 +131,9 @@ body{background:#fff}
 /* Portada: composición tipográfica del manual, mayúsculas apiladas */
 .hero{align-items:flex-start;text-align:left;padding-left:max(5%,calc((100vw - 1240px)/2 + 5%))}
 .hero-content{max-width:900px}
-.hero h1.hero-titulo{display:flex;flex-direction:column;font-size:clamp(2.9rem,8vw,6.6rem);font-weight:800;line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:34px}
-.hero h1.hero-titulo span:last-child::after{content:'';display:block;width:min(46%,260px);height:14px;margin-top:20px;border-left:3px solid var(--rojo);border-right:3px solid var(--rojo);background:linear-gradient(var(--rojo),var(--rojo)) center/100% 3px no-repeat}
+.hero h1.hero-titulo{display:flex;flex-direction:column;font-size:clamp(2.1rem,4.6vw,3.9rem);font-weight:800;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:34px}
 .hero-accesos{justify-content:flex-start}
-@media(max-width:768px){.hero{padding-left:6%;padding-right:6%}.hero h1.hero-titulo{font-size:clamp(2.6rem,13vw,3.6rem)}.hero-accesos{align-items:stretch}}
+@media(max-width:768px){.hero{padding-left:6%;padding-right:6%}.hero h1.hero-titulo{font-size:clamp(2rem,9.5vw,2.6rem)}.hero-accesos{align-items:stretch}}
 /* Grilla fina del manual sobre los fondos azules */
 .seccion--azul,footer{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:88px 88px}
 /* Datos principales: grilla pareja de 4 columnas (4 u 8 datos) */
@@ -156,3 +153,17 @@ body{background:#fff}
 #vista-detalle .det-breadcrumb{max-width:1240px;margin:0 auto;padding-left:5%;padding-right:5%;box-sizing:border-box}
 /* Mensaje del formulario: se lee completo */
 #det-msg{min-height:92px;resize:vertical}
+
+/* Logo más visible en la barra y el pie */
+.navbar .brand-logo{height:auto!important;width:190px;max-width:none}
+footer .brand-logo{height:auto!important;width:210px}
+@media(max-width:768px){.navbar .brand-logo{width:150px!important;max-width:150px}}
+/* Tarjetas: WhatsApp como botón chico abajo a la derecha que se despliega al pasar el mouse */
+.prop-body{position:relative;padding-bottom:20px}
+.prop-wsp-card{position:absolute;right:16px;bottom:16px;margin:0!important;width:44px;height:44px;padding:0!important;border-radius:22px!important;border:0!important;background:var(--azul)!important;color:#fff!important;display:flex;align-items:center;justify-content:flex-start;gap:8px;overflow:hidden;white-space:nowrap;transition:width .25s ease,padding .25s ease}
+.prop-wsp-card svg{flex:0 0 20px;margin-left:12px}
+.prop-wsp-card span{opacity:0;font-size:13px;font-weight:700;transition:opacity .15s}
+.prop-wsp-card:hover,.prop-wsp-card:focus-visible{width:228px}
+.prop-wsp-card:hover span,.prop-wsp-card:focus-visible span{opacity:1;transition-delay:.08s}
+.prop-feats-ml,.prop-ubicacion-ml{padding-right:56px}
+@media (prefers-reduced-motion:reduce){.prop-wsp-card,.prop-wsp-card span{transition:none}}
