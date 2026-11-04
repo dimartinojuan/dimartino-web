@@ -26,7 +26,12 @@ jobs:
         run: npm run build
         env:
           TOKKO_API_KEY: ${{ secrets.TOKKO_API_KEY }}
+          # Dirección pública del sitio. Para usar el dominio propio, cargar la variable SITE_URL
+          # (Settings → Secrets and variables → Actions → Variables) con https://www.dimartinoprop.com.ar
+          SITE_URL: ${{ vars.SITE_URL || 'https://dimartinojuan.github.io/dimartino-web' }}
       - run: npm test
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://dimartinojuan.github.io/dimartino-web' }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

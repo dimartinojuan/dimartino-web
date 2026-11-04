@@ -47,7 +47,7 @@ function actualizarMapaMarcadores(props){
   if(!mapaLeaflet)return;
   mapaLeaflet.eachLayer(layer=>{if(layer instanceof L.Marker)mapaLeaflet.removeLayer(layer);});
   const valid=props.filter(p=>Number.isFinite(Number(p.geo_lat))&&Number.isFinite(Number(p.geo_long))&&Math.abs(Number(p.geo_lat))<=90&&Math.abs(Number(p.geo_long))<=180&&Number(p.geo_lat)!==0&&Number(p.geo_long)!==0);
-  const icon=L.divIcon({className:'dm-map-marker',iconSize:[30,42],iconAnchor:[15,42],popupAnchor:[0,-36],html:'<svg xmlns="http://www.w3.org/2000/svg" width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 40C12 35 2 23 2 15a13 13 0 1 1 26 0c0 8-10 20-13 25Z" fill="#c63529" stroke="white" stroke-width="2"/><circle cx="15" cy="15" r="5" fill="white"/></svg>'});
+  const icon=L.divIcon({className:'dm-map-marker',iconSize:[30,42],iconAnchor:[15,42],popupAnchor:[0,-36],html:'<svg xmlns="http://www.w3.org/2000/svg" width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 40C12 35 2 23 2 15a13 13 0 1 1 26 0c0 8-10 20-13 25Z" fill="#D3282F" stroke="white" stroke-width="2"/><circle cx="15" cy="15" r="5" fill="white"/></svg>'});
   for(const p of valid){
     const title=(p.type?.label||tradTitulo(p))+(p.address?' — '+p.address:'');
     const price=offerPrice(DMSearch.selectedOffer(p,S));

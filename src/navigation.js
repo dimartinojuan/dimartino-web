@@ -3,7 +3,7 @@
   const typeNames={'1':'Terrenos y lotes','2':'Departamentos','3':'Casas','4':'Quintas','5':'Oficinas','7':'Locales','9':'Campos','10':'Cocheras','13':'PH','14':'Depósitos','24':'Galpones','31':'Monoambientes'};
   function safeReturn(value,base){
     if(!value||value.length>6000)return '';
-    try{const u=new URL(value,'https://navigation.invalid');if(u.origin!=='https://navigation.invalid')return '';const path=u.pathname.slice(base.length);if(!u.pathname.startsWith(base)||!/^(propiedades|casas-en-venta-lujan|alquileres-lujan|terrenos-en-venta-lujan|propiedades-jauregui|propiedades-open-door)\/(?:pagina\/\d+\/)?$/.test(path))return '';return u.pathname+u.search;}catch{return '';}
+    try{const u=new URL(value,'https://navigation.invalid');if(u.origin!=='https://navigation.invalid')return '';const path=u.pathname.slice(base.length);if(!u.pathname.startsWith(base)||!/^(?:(propiedades|casas-en-venta-lujan|alquileres-lujan|terrenos-en-venta-lujan|propiedades-jauregui|propiedades-open-door)|zonas\/[a-z0-9-]+(?:\/(?:casas-en-venta|departamentos|terrenos-en-venta|alquileres))?)\/(?:pagina\/\d+\/)?$/.test(path))return '';return u.pathname+u.search;}catch{return '';}
   }
   function resultURL(path,from,base,op=''){
     const back=safeReturn(from,base);if(!back)return path;
