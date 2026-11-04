@@ -107,22 +107,28 @@ body{background:#fff}
 .cat-card img{transition:transform .5s}
 .cat-card:hover img{transform:scale(1.05)}
 
-/* Propietarios: una sola sección con la propuesta y el formulario de tasación */
-.propietarios{background:var(--gris-bg)}
+/* Propietarios, según el sistema de diseño: panel crema, isotipo grande, rótulo rojo espaciado,
+   título en mayúsculas, tarjetas con franja azul/roja. Esquinas rectas, sin sombras. */
+.propietarios{background:#fff}
 .propietarios .ancla{position:relative;top:-90px;display:block}
-.prop-split{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:start;max-width:1240px;margin:0 auto}
-.prop-lead{font-size:17px;line-height:1.65;color:rgba(11,48,66,.85);margin:20px 0 30px;max-width:560px}
-.prop-pasos{list-style:none;margin:0;padding:0;display:grid;gap:22px}
-.prop-pasos li{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start}
-.prop-ico{width:52px;height:52px;border-radius:12px;background:#fff;border:1px solid rgba(188,190,192,.7);display:flex;align-items:center;justify-content:center;color:var(--rojo)}
-.prop-ico svg{width:26px;height:26px}
-.prop-pasos h3{font-size:16px;font-weight:700;color:var(--azul);margin:2px 0 4px}
-.prop-pasos p{font-size:14px;line-height:1.6;color:rgba(11,48,66,.78);margin:0}
-.propietarios .tas-nums{margin-top:34px;padding-top:24px;border-top:1px solid rgba(188,190,192,.8)}
-.propietarios .tas-num b{color:var(--azul)}
-.propietarios .formulario{position:sticky;top:96px;border:0;box-shadow:0 18px 50px rgba(11,48,66,.14)}
+.prop-split{display:grid;grid-template-columns:1.1fr .9fr;gap:0;max-width:1240px;margin:0 auto;border:1px solid var(--azul)}
+.prop-panel{background:var(--gris-bg);padding:48px 48px 44px}
+.prop-iso{display:block;width:96px;height:96px;margin-bottom:30px}
+.prop-rotulo{display:flex;align-items:center;gap:12px;color:var(--rojo);font-size:12px;font-weight:600;letter-spacing:.42em;margin:0 0 14px}
+.cuadradito{width:11px;height:11px;background:var(--rojo);display:inline-block;flex:0 0 auto}
+.prop-titulo{display:flex;flex-direction:column;font-size:clamp(2.1rem,4.2vw,3.5rem);font-weight:800;line-height:.98;letter-spacing:-.01em;text-transform:uppercase;color:var(--azul);margin:0 0 26px}
+.prop-lead{font-size:16px;line-height:1.7;color:var(--azul);max-width:520px;margin:0 0 14px}
+.prop-cierre{font-size:16px;font-weight:700;color:var(--azul);margin:0}
+.propietarios .formulario{border:0;border-left:1px solid var(--azul);border-radius:0;box-shadow:none;padding:44px 40px;background:#fff;position:static}
 .propietarios .formulario h3{font-size:20px;color:var(--azul)}
-@media(max-width:900px){.prop-split{grid-template-columns:1fr;gap:36px}.propietarios .formulario{position:static}}
+.propietarios .formulario input,.propietarios .formulario select,.propietarios .formulario textarea,.propietarios .btn-form{border-radius:0}
+.prop-tarjetas{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1240px;margin:12px auto 0}
+.tarjeta{position:relative;background:var(--gris-bg);padding:22px 20px 18px;display:flex;flex-direction:column;gap:6px}
+.tarjeta::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--azul)}
+.tarjeta:nth-child(even)::before{background:var(--rojo)}
+.tarjeta b{font-size:26px;font-weight:700;color:var(--azul);line-height:1.1}
+.tarjeta small{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--gris-txt)}
+@media(max-width:900px){.prop-split{grid-template-columns:1fr}.propietarios .formulario{border-left:0;border-top:1px solid var(--azul);padding:32px 22px}.prop-panel{padding:32px 22px}.prop-tarjetas{grid-template-columns:repeat(2,1fr)}}
 
 /* Portada: composición tipográfica del manual, mayúsculas apiladas */
 .hero{align-items:flex-start;text-align:left;padding-left:max(5%,calc((100vw - 1240px)/2 + 5%))}
