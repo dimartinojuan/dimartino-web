@@ -46,18 +46,16 @@ async function liveCatalog(){
   while(offset<total){const endpoint=new URL('https://tokkobroker.com/api/v1/property/');endpoint.search=new URLSearchParams({key,format:'json',limit:'100',offset:String(offset)});let response;for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt<2)await new Promise(r=>setTimeout(r,3000*(attempt+1)));if(attempt===2)throw Error('No se pudo actualizar Tokko; se conserva la publicación anterior.');}if(!response?.ok)throw Error('Tokko no disponible.');const page=await response.json();const rows=page.objects||page.results||[];total=Number(page.meta?.total_count??page.count??rows.length);if(!rows.length&&offset<total)throw Error('Catálogo incompleto; no se publicará.');result.push(...rows);offset+=rows.length;if(offset>20000)throw Error('Catálogo demasiado grande.');}
   if(!result.length)throw Error('Tokko devolvió un catálogo vacío; revisar antes de publicar.');
   // The list endpoint can omit the listing text; complete it from each property's detail without blocking the publication.
+  // Listing texts are written in Spanish in Tokko and only come back when that language is requested.
+  // Only the text fields are taken from this pass; the rest of the data keeps Tokko's standard format.
   const missing=result.filter(p=>!descriptionOf(p));
-  // Field names only (no values) help confirm where this Tokko account keeps the listing text.
-  const textFields=Object.keys(result[0]||{}).filter(k=>/desc|text|title|comment/i.test(k));
-  console.log('Campos de texto del listado de Tokko: '+textFields.map(k=>k+'('+String(result[0][k]??'').length+')').join(', '));
-  // Details are fetched one by one with a pause, so Tokko never throttles the rest of the publication.
-  let fetched=0,useful=0;
-  for(const p of missing){
-    if(fetched>=5&&!useful)break; // the detail endpoint does not carry the text either: stop asking
-    try{const detail=new URL('https://tokkobroker.com/api/v1/property/'+encodeURIComponent(p.id)+'/');detail.search=new URLSearchParams({key,format:'json'});const r=await fetch(detail,{signal:AbortSignal.timeout(20000)});fetched++;if(!r.ok){console.log('Ficha de Tokko no disponible: HTTP '+r.status);continue;}const d=await r.json();if(fetched===1)console.log('Campos de texto de la ficha de Tokko: '+Object.keys(d).filter(k=>/desc|text|title|comment/i.test(k)).map(k=>k+'('+String(d[k]??'').length+')').join(', '));for(const f of ['description','rich_description','description_only','short_description'])if(!p[f]&&d[f])p[f]=d[f];if(descriptionOf(p))useful++;}catch{fetched++;}
-    await new Promise(r=>setTimeout(r,350));
+  if(missing.length){
+    const byId=new Map();let off=0,tot=Infinity;
+    try{while(off<tot){const endpoint=new URL('https://tokkobroker.com/api/v1/property/');endpoint.search=new URLSearchParams({key,format:'json',lang:'es_ar',limit:'100',offset:String(off)});const r=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(!r.ok){console.log('Textos en español no disponibles: HTTP '+r.status);break;}const page=await r.json();const rows=page.objects||page.results||[];tot=Number(page.meta?.total_count??rows.length);if(!rows.length)break;for(const row of rows)byId.set(String(row.id),row);off+=rows.length;await new Promise(r=>setTimeout(r,500));}}catch(e){console.log('Textos en español no disponibles: '+e.message);}
+    for(const p of missing){const es=byId.get(String(p.id));if(es)for(const f of ['description','rich_description','description_only','short_description','seo_description'])if(!p[f]&&es[f])p[f]=es[f];}
+    const sample=byId.values().next().value;if(sample)console.log('Campos de texto en español: '+Object.keys(sample).filter(k=>/desc/i.test(k)).map(k=>k+'('+String(sample[k]??'').length+')').join(', '));
+    console.log(`Descripciones originales en español: ${missing.filter(p=>descriptionOf(p)).length} de ${missing.length}.`);
   }
-  if(missing.length)console.log(`Descripciones completadas desde la ficha: ${missing.filter(p=>descriptionOf(p)).length} de ${missing.length} (consultas: ${fetched}).`);
   // This public endpoint is the published inventory. Its deleted_at field can be
   // populated on currently published records, so it is not a publication flag.
   const properties=result.map(normalize);
