@@ -13,7 +13,7 @@ export async function loadDevelopments(root,key){
   while(offset<total){
     const endpoint=new URL('https://tokkobroker.com/api/v1/development/');endpoint.search=new URLSearchParams({key,format:'json',limit:'100',offset:String(offset)});
     let response;
-    for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt===2)throw Error('No se pudieron actualizar los desarrollos; se conserva la publicación anterior.');}
+    for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt<2)await new Promise(r=>setTimeout(r,3000*(attempt+1)));if(attempt===2)throw Error('No se pudieron actualizar los desarrollos; se conserva la publicación anterior.');}
     const page=await response.json(),items=page.objects||page.results;
     if(!Array.isArray(items))throw Error('Respuesta inválida de desarrollos.');
     total=Number(page.meta?.total_count??page.count??items.length);if(!items.length&&offset<total)throw Error('Desarrollos incompletos.');
