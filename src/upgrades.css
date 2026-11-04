@@ -167,3 +167,15 @@ footer .brand-logo{height:auto!important;width:210px}
 .prop-wsp-card:hover span,.prop-wsp-card:focus-visible span{opacity:1;transition-delay:.08s}
 .prop-feats-ml,.prop-ubicacion-ml{padding-right:56px}
 @media (prefers-reduced-motion:reduce){.prop-wsp-card,.prop-wsp-card span{transition:none}}
+
+/* Listado: encabezado compacto, sin espacio perdido */
+#vista-busqueda{padding-top:68px}
+#vista-busqueda .search-links{display:flex;align-items:center;gap:8px;padding:0 0 10px;font-size:13px;color:var(--gris-txt)}
+#vista-busqueda .search-links a{color:var(--gris-txt);text-decoration:none}
+#vista-busqueda .search-links a:hover{color:var(--azul);text-decoration:underline}
+.nlp-hint{display:none!important}
+.resultados-top{align-items:center;padding-bottom:12px;margin-bottom:18px}
+.res-izq{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;min-width:0}
+.res-izq .nlp-bar{padding:0}
+.resultados-panel{padding-top:16px}
+@media(max-width:768px){#vista-busqueda{padding-top:120px}}
