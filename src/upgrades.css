@@ -174,3 +174,12 @@ footer .brand-logo{height:auto!important;width:210px}
 .res-izq .nlp-bar{padding:0}
 .resultados-panel{padding-top:16px}
 @media(max-width:768px){#vista-busqueda{padding-top:120px}}
+
+/* Ficha: código junto a la operación, y formulario de llamada claramente distinto de WhatsApp */
+.det-badge-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.det-cod{font-size:12px;font-weight:600;color:var(--gris-txt)}
+.det-form-titulo{font-size:15px;font-weight:700;color:var(--azul);margin:0 0 2px}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.det-sidebar .btn-form{background:var(--azul)!important}
+.form-estado{font-size:13px;color:var(--azul);margin-top:8px;min-height:0}
+.form-estado:empty{display:none}

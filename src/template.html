@@ -951,7 +951,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
 
       <!-- Precio y datos clave -->
       <div class="det-card">
-        <div id="det-badge"></div>
+        <div class="det-badge-row"><div id="det-badge"></div><span class="det-cod" id="det-ref"></span></div>
         <h1 class="det-titulo" id="det-titulo"></h1>
         <div class="det-ubic" id="det-ubic-top"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> <span id="det-ubic-txt"></span></div>
         <div class="det-precio-row">
@@ -972,7 +972,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
 
         <!-- Formulario -->
         <div style="border-top:1px solid var(--gris-bg);padding-top:16px;margin-top:4px">
-          <p style="font-size:13px;color:var(--gris-txt);margin-bottom:14px">O dejanos tus datos y te contactamos:</p>
+          <p class="det-form-titulo">¿Preferís que te llamemos?</p><p style="font-size:13px;color:var(--gris-txt);margin-bottom:14px">Dejanos tus datos y te contactamos.</p>
           <div class="campo"><label>Nombre</label><input type="text" name="from_name" placeholder="Tu nombre"/></div>
           <div class="campo"><label>Teléfono</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
           <div class="campo"><label>Mensaje</label><textarea id="det-msg" name="message" placeholder="Me interesa esta propiedad…"></textarea></div>
@@ -980,8 +980,6 @@ footer{background:#0B3042;padding:56px 5% 26px}
         </div>
       </div>
 
-      <!-- Ref ID -->
-      <div style="text-align:center;font-size:12px;color:var(--gris-txt)" id="det-ref"></div>
     </div>
   </div>
 </div>
@@ -2550,7 +2548,7 @@ function renderDetalle(p) {
   document.getElementById('det-msg').value = `Hola, me interesa la propiedad: ${titulo}. ¿Pueden darme más información?`;
 
   /* ── Ref ID ── */
-  document.getElementById('det-ref').textContent = `Ref: #${p.id}`;
+  document.getElementById('det-ref').textContent = p.reference_code ? `Cód. ${p.reference_code}` : '';
 
   /* ── Galería ── */
   galFotos = (p.photos||[]).map(x => x.image||x.thumb).filter(Boolean);
