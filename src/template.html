@@ -651,32 +651,30 @@ footer{background:#0B3042;padding:56px 5% 26px}
     </div>
   </section>
 
-  <!-- ══ PROPIETARIOS: concepto de marca + tasación (sistema de diseño: panel crema, isotipo, tarjetas) ══ -->
+  <!-- ══ PROPIETARIOS: vender, alquilar y tasar en un solo lugar ══ -->
   <section class="seccion propietarios" id="tasaciones">
     <span id="vender" class="ancla"></span>
     <div class="prop-split">
-      <div class="prop-panel">
-        <img class="prop-iso" data-iso src="assets/iso-color.svg" alt="" width="120" height="120">
-        <p class="prop-rotulo"><span class="cuadradito" aria-hidden="true"></span>PROPIETARIOS</p>
-        <h2 class="owners-titulo"><span>¿Tu propiedad</span><span>busca un</span><span>nuevo dueño?</span></h2>
-        <p class="prop-lead">Con un profundo conocimiento del mercado y un enfoque innovador, conectamos a los propietarios con los compradores ideales. Cada operación, con integridad y compromiso.</p>
+      <div class="prop-texto">
+        <h2 class="sec-titulo">¿Tu propiedad está buscando un nuevo dueño?</h2>
+        <p class="prop-lead">Cada casa guarda una historia, y la que sigue empieza cuando alguien la elige. Nosotros nos ocupamos de encontrar a esa persona: conocemos el mercado, cuidamos cada detalle y te acompañamos hasta el final.</p>
+        <ul class="prop-pasos">
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></span><div><h3>Empezamos por escucharte</h3><p>Qué querés lograr, en qué tiempos y qué historia tiene tu propiedad. Con eso te damos un valor real de mercado, sin cargo.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></span><div><h3>La mostramos como merece</h3><p>Fotos, ficha y difusión pensadas para que llegue a quien la está buscando, no a cualquiera.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><div><h3>Te acompañamos hasta la firma</h3><p>Visitas, negociación y escritura de nuestro lado. Vos solo tomás la decisión.</p></div></li>
+        </ul>
         <p class="prop-cierre">¡Permitinos escribir tu próxima historia!</p>
+        <div class="tas-nums"><div class="tas-num"><b>En el día</b><small>Respuesta</small></div><div class="tas-num"><b>Sin cargo</b><small>Tasación</small></div><div class="tas-num"><b>15+ años</b><small>De experiencia</small></div></div>
       </div>
       <div class="formulario" id="tasaciones-form">
         <h3>Pedí tu tasación sin cargo</h3>
-        <p>Dejanos tus datos y te respondemos en el día.</p>
+        <p>Contanos de tu propiedad y te respondemos en el día.</p>
         <div class="campo"><label>Tu nombre</label><input type="text" name="from_name" placeholder="Ej: María García"/></div>
         <div class="campo"><label>Teléfono / WhatsApp</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
         <div class="campo"><label>Tipo de propiedad</label><select name="prop_tipo"><option value="">Seleccioná</option><option>Casa</option><option>Departamento</option><option>Terreno / Lote</option><option>Local comercial</option><option>Chacra / Quinta</option></select></div>
         <div class="campo"><label>Dirección aproximada</label><textarea name="message" placeholder="Ej: calle Las Heras al 400"></textarea></div>
         <button class="btn-form" onclick="enviarForm(this,'Solicitud de tasación')">Enviar solicitud →</button>
       </div>
-    </div>
-    <div class="prop-tarjetas">
-      <div class="tarjeta"><b>+15</b><small>AÑOS DE EXPERIENCIA</small></div>
-      <div class="tarjeta"><b>Sin cargo</b><small>TASACIÓN</small></div>
-      <div class="tarjeta"><b>En el día</b><small>RESPUESTA</small></div>
-      <div class="tarjeta"><b data-total-props>100+</b><small>PROPIEDADES PUBLICADAS</small></div>
     </div>
   </section>
 
