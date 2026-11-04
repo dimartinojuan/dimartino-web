@@ -145,7 +145,8 @@ async function main(){
   baseDoc.querySelector('.busq-body').insertAdjacentHTML('beforebegin','<button type="button" class="filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="property-filters">Filtros</button>');baseDoc.querySelector('.filtros-sidebar').id='property-filters';baseDoc.getElementById('res-count').setAttribute('aria-live','polite');
   const hero=properties.find(p=>p.is_starred_on_web&&p.photos.length)||properties.find(p=>p.photos.length);baseDoc.documentElement.style.setProperty('--hero-photo',`url("${hero.photos[0].image}")`);
   // Category artwork comes from the active public inventory, never stock photos.
-  const categoryPhotos=[{id:538270,state:{op:'1',tipos:['3']}},{id:190994,state:{op:'2'}},{id:2253192,photo:2,state:{op:'1',tipos:['1']}},{id:2334703,state:{tipos:['2']}},{id:176359,state:{}}];
+  // Chosen by looking at every cover in the catalog: bright, wide, no signs or logos. If one is sold, the next property of that category is used.
+  const categoryPhotos=[{id:1052996,state:{op:'1',tipos:['3']}},{id:8067131,state:{op:'2'}},{id:5936796,state:{op:'1',tipos:['1']}},{id:7276672,state:{tipos:['2']}},{id:4858288,state:{}}];
   const usedCategoryProperties=new Set();
   for(const [i,card]of [...baseDoc.querySelectorAll('.cat-card')].entries()){
     const choice=categoryPhotos[i],candidates=DMSearch.filter(properties,choice.state).filter(p=>p.photos?.length);
