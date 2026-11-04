@@ -60,7 +60,21 @@ function actualizarMapaMarcadores(props){
   if(valid.length)mapaLeaflet.fitBounds(L.latLngBounds(valid.map(p=>[Number(p.geo_lat),Number(p.geo_long)])),{padding:[40,40],maxZoom:16});
 }
 
-function enviarForm(btn,tipoForm){const container=btn.closest('.det-card, .formulario');const fields=[...container.querySelectorAll('input,textarea,select')];let valid=true;for(const el of fields){const required=el.name==='from_name'||el.name==='from_phone'||el.name==='message';el.required=required;if(!el.checkValidity()){el.reportValidity();valid=false;break;}}if(!valid)return;const lines=fields.filter(el=>el.name&&el.value.trim()).map(el=>(el.previousElementSibling?.textContent||el.name)+': '+el.value.trim());const url=document.querySelector('link[rel=canonical]')?.href||location.href;const message=[tipoForm||'Consulta',...lines,url].join('\n');window.open('https://wa.me/5492323652581?text='+encodeURIComponent(message),'_blank','noopener');mostrarToast('Se abrió WhatsApp. Confirmá el envío allí para completar tu consulta.');}
+function enviarForm(btn,tipoForm){
+  const container=btn.closest('.det-card, .formulario');const fields=[...container.querySelectorAll('input,textarea,select')].filter(el=>el.name!=='website');
+  let valid=true;for(const el of fields){el.required=el.name==='from_name'||el.name==='from_phone';if(!el.checkValidity()){el.reportValidity();valid=false;break;}}if(!valid)return;
+  const estado=container.querySelector('.form-estado');const val=n=>(container.querySelector(`[name="${n}"]`)?.value||'').trim();
+  const url=document.querySelector('link[rel=canonical]')?.href||location.href;const prop=(typeof galProp!=='undefined'&&galProp&&document.getElementById('property-data'))?galProp.id:'';
+  const extra=fields.filter(el=>!['from_name','from_phone','from_email','message'].includes(el.name)&&el.value.trim()).map(el=>(el.previousElementSibling?.textContent||el.name)+': '+el.value.trim());
+  const mensaje=[val('message'),...extra].filter(Boolean).join('\n');
+  const whatsapp=()=>{const lines=fields.filter(el=>el.name&&el.value.trim()).map(el=>(el.previousElementSibling?.textContent||el.name)+': '+el.value.trim());window.open('https://wa.me/5492323652581?text='+encodeURIComponent([tipoForm||'Consulta',...lines,url].join('\n')),'_blank','noopener');};
+  // Without the domain's own server (preview), the inquiry continues on WhatsApp.
+  if(typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL){whatsapp();return;}
+  btn.disabled=true;const label=btn.textContent;btn.textContent='Enviando…';if(estado)estado.textContent='';
+  fetch(DM_CONTACT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:val('from_name'),telefono:val('from_phone'),email:val('from_email'),mensaje,tipo:tipoForm||'Consulta',propiedad:prop,url,website:container.querySelector('[name=website]')?.value||''})})
+    .then(r=>r.ok?r.json():Promise.reject()).then(r=>{if(!r.ok)throw 0;fields.forEach(el=>{if(el.id!=='det-msg')el.value='';});btn.textContent='Consulta enviada';if(estado)estado.textContent='Gracias. Te vamos a contactar a la brevedad.';})
+    .catch(()=>{btn.disabled=false;btn.textContent=label;if(estado)estado.textContent='No pudimos enviar la consulta. Probá de nuevo o escribinos por WhatsApp.';});
+}
 function suggestions(){const input=document.getElementById('nav-search-input'),list=document.getElementById('search-suggestions');if(!list)return;input.addEventListener('input',async()=>{await cargarCache().catch(()=>{});const q=DMSearch.norm(input.value);const values=[...new Set(['Casa en venta','Departamento en alquiler','Terreno en Jáuregui','Casa con pileta',...todasLasProps.map(p=>p.location?.name).filter(Boolean),...todasLasProps.map(p=>p.reference_code).filter(Boolean)])];list.replaceChildren(...values.filter(v=>DMSearch.norm(v).includes(q)).slice(0,10).map(v=>{const opt=document.createElement('option');opt.value=v;return opt;}));});}
 function restoreSearchFilters(params){for(const k of ['op','desde','hasta','barrioTipo','moneda','kw','code'])if(params.has(k))S[k]=params.get(k);for(const k of ['tipos','ambs','rooms','tags','excluded','ops'])if(params.has(k))S[k]=(params.get(k)||'').split(',').filter(Boolean);if(params.has('barrios'))S.barrios=(params.get('barrios')||'').split('|').filter(Boolean);}
 function prepareResultNavigation(event){
