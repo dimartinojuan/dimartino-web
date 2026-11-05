@@ -1827,6 +1827,24 @@ function actualizarOpcionesDinamicas() {
   const barrioGrupo = document.getElementById('filtro-barrio-grupo');
   if (barrioEl) barrioEl.innerHTML = barrioHTML;
   if (barrioGrupo) barrioGrupo.style.display = barriosSorted.length ? 'block' : 'none';
+
+  // ── Tipos de propiedad dinámicos ──
+  const sinTipos = aplicarFiltrosSin(todasLasProps, ['tipos']);
+  const tiposDisponibles = new Set(sinTipos.map(p => String(p.type?.id || '')).filter(Boolean));
+  const filtroTiposEl = document.getElementById('filtro-tipos');
+  if (filtroTiposEl) {
+    filtroTiposEl.querySelectorAll('label').forEach(label => {
+      const cb = label.querySelector('input[type="checkbox"]');
+      if (!cb) return;
+      const val = cb.value;
+      // Siempre mostrar si está activo (para poder desactivarlo); ocultar si no hay resultados
+      if (!tiposDisponibles.has(val) && !cb.checked) {
+        label.style.display = 'none';
+      } else {
+        label.style.display = '';
+      }
+    });
+  }
 }
 
 // ── CAMBIAR MONEDA ────────────────────────────────────────────────────────────
