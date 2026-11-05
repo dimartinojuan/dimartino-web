@@ -2524,14 +2524,14 @@ function renderCard(p) {
   const fotos = (p.photos||[]).map(x => x.image||x.thumb).filter(Boolean).slice(0,8);
   if (!fotos.length) fotos.push(FALLBACK);
 
-  const tituloCard = p.address ? `${tipo} — ${p.address}` : tipo;
+  const tituloCard = p.address ? `${tipo} | ${p.address}` : tipo;
   const feats = [
     rooms ? `${rooms} dorm.`                  : null,
     banos ? `${banos} baño${banos>1?'s':''}` : null,
     sup   ? `${sup} cubiertos`               : null,
   ].filter(Boolean).join(' · ');
 
-  const wsp = `https://wa.me/5492323652581?text=${encodeURIComponent(`Hola, me interesa: ${tipo} — ${ubic}. ¿Pueden darme más información?`)}`;
+  const wsp = `https://wa.me/5492323652581?text=${encodeURIComponent(`Hola, me interesa: ${tipo} | ${ubic}. ¿Pueden darme más información?`)}`;
 
   const slider = fotos.length > 1 ? `
     <button class="pf-prev" onclick="event.stopPropagation();cardNav(this,-1)">&#8249;</button>
