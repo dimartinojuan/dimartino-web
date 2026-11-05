@@ -27,12 +27,10 @@ button,input,select,textarea{font-family:inherit}
   position:fixed;inset:0 0 auto 0;z-index:900;height:68px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:0 4%;background:var(--azul);box-shadow:0 2px 16px rgba(0,0,0,.25);
-  transition:height .3s ease;
 }
-.navbar:not(.scrolled){height:100px}
-.navbar:not(.scrolled) .brand-logo{height:90px}
 .brand{display:flex;align-items:center;cursor:pointer;flex-shrink:0}
-.brand-logo{height:62px;width:auto;display:block;transition:height .3s ease,padding .3s ease}
+.brand-logo{height:62px;width:auto;display:block;transition:height .4s ease}
+.navbar:not(.scrolled) .brand-logo{height:88px}
 /* Buscador en navbar */
 .nav-search{flex:1;max-width:480px;display:flex;align-items:center;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.35);border-radius:8px;overflow:hidden;transition:all .2s}
 .nav-search:focus-within{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.6)}
