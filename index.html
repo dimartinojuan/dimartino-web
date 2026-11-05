@@ -799,12 +799,12 @@ footer{background:#0B3042;padding:56px 5% 26px}
           <input type="number" id="f-hasta" placeholder="Máximo" min="0" oninput="debounceSearch()"/>
         </div>
       </div>
-      <div class="filtro-grupo">
+      <div class="filtro-grupo" id="filtro-barrio-tipo-grupo">
         <h4>Tipo de barrio</h4>
         <div class="filtro-radio">
           <label><input type="radio" name="f-barrio-tipo" value="" onchange="setBarrioTipo('')" checked> Todos</label>
-          <label><input type="radio" name="f-barrio-tipo" value="abierto" onchange="setBarrioTipo('abierto')"> Barrio abierto</label>
-          <label><input type="radio" name="f-barrio-tipo" value="cerrado" onchange="setBarrioTipo('cerrado')"> Barrio cerrado / Country</label>
+          <label id="label-barrio-abierto"><input type="radio" name="f-barrio-tipo" value="abierto" onchange="setBarrioTipo('abierto')"> Barrio abierto</label>
+          <label id="label-barrio-cerrado"><input type="radio" name="f-barrio-tipo" value="cerrado" onchange="setBarrioTipo('cerrado')"> Barrio cerrado / Country</label>
         </div>
       </div>
       <div class="filtro-grupo" id="filtro-barrio-grupo" style="display:none">
@@ -1827,6 +1827,33 @@ function actualizarOpcionesDinamicas() {
   const barrioGrupo = document.getElementById('filtro-barrio-grupo');
   if (barrioEl) barrioEl.innerHTML = barrioHTML;
   if (barrioGrupo) barrioGrupo.style.display = barriosSorted.length ? 'block' : 'none';
+
+  // ── Barrio tipo dinámico (Abierto / Cerrado) ──
+  const sinBarrioTipo = aplicarFiltrosSin(todasLasProps, ['barrioTipo']);
+  const hayAbierto  = sinBarrioTipo.some(p => {
+    const fl = (p.location?.full_location || '').toLowerCase();
+    return !(fl.includes('countries') || fl.includes('b.cerrado') || fl.includes('cerrado'));
+  });
+  const hayCerrado  = sinBarrioTipo.some(p => {
+    const fl = (p.location?.full_location || '').toLowerCase();
+    return fl.includes('countries') || fl.includes('b.cerrado') || fl.includes('cerrado');
+  });
+  const labelAbierto  = document.getElementById('label-barrio-abierto');
+  const labelCerrado  = document.getElementById('label-barrio-cerrado');
+  if (labelAbierto)  labelAbierto.style.display  = hayAbierto  ? '' : 'none';
+  if (labelCerrado)  labelCerrado.style.display  = hayCerrado  ? '' : 'none';
+  // Si la opción activa quedó sin resultados, resetear a "Todos"
+  if (S.barrioTipo === 'abierto' && !hayAbierto) {
+    S.barrioTipo = '';
+    document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; });
+  }
+  if (S.barrioTipo === 'cerrado' && !hayCerrado) {
+    S.barrioTipo = '';
+    document.querySelectorAll('[name=f-barrio-tipo]').forEach(r => { r.checked = r.value === ''; });
+  }
+  // Ocultar toda la sección si ninguna opción específica tiene resultados
+  const grupoBarrioTipo = document.getElementById('filtro-barrio-tipo-grupo');
+  if (grupoBarrioTipo) grupoBarrioTipo.style.display = (hayAbierto || hayCerrado) ? '' : 'none';
 
   // ── Tipos de propiedad dinámicos ──
   const sinTipos = aplicarFiltrosSin(todasLasProps, ['tipos']);
