@@ -27,9 +27,12 @@ button,input,select,textarea{font-family:inherit}
   position:fixed;inset:0 0 auto 0;z-index:900;height:68px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:0 4%;background:var(--azul);box-shadow:0 2px 16px rgba(0,0,0,.25);
+  transition:height .3s ease;
 }
+.navbar:not(.scrolled){height:100px}
+.navbar:not(.scrolled) .brand-logo{height:90px}
 .brand{display:flex;align-items:center;cursor:pointer;flex-shrink:0}
-.brand-logo{height:62px;width:auto;display:block}
+.brand-logo{height:62px;width:auto;display:block;transition:height .3s ease,padding .3s ease}
 /* Buscador en navbar */
 .nav-search{flex:1;max-width:480px;display:flex;align-items:center;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.35);border-radius:8px;overflow:hidden;transition:all .2s}
 .nav-search:focus-within{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.6)}
@@ -659,16 +662,16 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <h2 class="sec-titulo">¿Tu propiedad está buscando un nuevo dueño?</h2>
         <p class="prop-lead">Cada casa guarda una historia, y la que sigue empieza cuando alguien la elige. Nosotros nos ocupamos de encontrar a esa persona: conocemos el mercado, cuidamos cada detalle y te acompañamos hasta el final.</p>
         <ul class="prop-pasos">
-          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></span><div><h3>Empezamos por escucharte</h3><p>Qué querés lograr, en qué tiempos y qué historia tiene tu propiedad. Con eso te damos un valor real de mercado, sin cargo.</p></div></li>
-          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></span><div><h3>La mostramos como merece</h3><p>Fotos, ficha y difusión pensadas para que llegue a quien la está buscando, no a cualquiera.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg></span><div><h3>Empezamos por escucharte</h3><p>Qué querés lograr, en qué tiempos y qué historia tiene tu propiedad. Con eso te damos un análisis real del mercado y el valor actual de tu propiedad.</p></div></li>
+          <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4h3l7 4V6L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M8 14l1.5 5h2.5l-1-4.4"/></svg></span><div><h3>La mostramos como merece</h3><p>Fotos, ficha y difusión pensadas para que llegue a quien de verdad está buscando lo que tu propiedad tiene para ofrecer.</p></div></li>
           <li><span class="prop-ico"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><div><h3>Te acompañamos hasta la firma</h3><p>Visitas, negociación y escritura de nuestro lado. Vos solo tomás la decisión.</p></div></li>
         </ul>
         <p class="prop-cierre">¡Permitinos escribir tu próxima historia!</p>
-        <div class="tas-nums"><div class="tas-num"><b>En el día</b><small>Respuesta</small></div><div class="tas-num"><b>Sin cargo</b><small>Tasación</small></div><div class="tas-num"><b>15+ años</b><small>De experiencia</small></div></div>
+        <div class="tas-nums"><div class="tas-num"><b>24hs</b><small>Respuesta</small></div><div class="tas-num"><b>+15 años</b><small>Experiencia</small></div><div class="tas-num"><b>Luján</b><small>y la región</small></div></div>
       </div>
       <div class="formulario" id="tasaciones-form">
-        <h3>Pedí tu tasación sin cargo</h3>
-        <p>Contanos de tu propiedad y te respondemos en el día.</p>
+        <h3>Pedí tu tasación</h3>
+        <p>Contanos de tu propiedad y te respondemos a la brevedad.</p>
         <div class="campo"><label>Tu nombre</label><input type="text" name="from_name" placeholder="Ej: María García"/></div>
         <div class="campo"><label>Teléfono / WhatsApp</label><input type="tel" name="from_phone" placeholder="2323-000000"/></div>
         <div class="campo"><label>Tipo de propiedad</label><select name="prop_tipo"><option value="">Seleccioná</option><option>Casa</option><option>Departamento</option><option>Terreno / Lote</option><option>Local comercial</option><option>Chacra / Quinta</option></select></div>
@@ -2885,8 +2888,14 @@ if (propId) {
 }
 
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').style.boxShadow =
-    window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,.35)' : '0 2px 16px rgba(0,0,0,.25)';
+  const nb = document.getElementById('navbar');
+  if (window.scrollY > 10) {
+    nb.classList.add('scrolled');
+    nb.style.boxShadow = '0 4px 24px rgba(0,0,0,.35)';
+  } else {
+    nb.classList.remove('scrolled');
+    nb.style.boxShadow = '0 2px 16px rgba(0,0,0,.25)';
+  }
 });
 
 /* ═══════════════════════════════
