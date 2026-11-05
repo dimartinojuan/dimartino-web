@@ -1016,12 +1016,14 @@ const OP_ID_A_STR = { '1':'Sale', '2':'Rent', '3':'Temporary Rental' };
 /* ═══════════════════════════════
    VISTAS
 ═══════════════════════════════ */
+let _isHomeView = true;
 function mostrarVista(id) {
   document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
   document.getElementById(id).classList.add('activa');
+  _isHomeView = (id === 'vista-home');
   window.scrollTo(0, 0);
   const nb = document.getElementById('navbar');
-  if (id === 'vista-home') {
+  if (_isHomeView) {
     nb.classList.remove('scrolled');
     nb.style.boxShadow = '0 2px 16px rgba(0,0,0,.25)';
   } else {
@@ -2896,6 +2898,7 @@ if (propId) {
 }
 
 window.addEventListener('scroll', () => {
+  if (!_isHomeView) return;
   const nb = document.getElementById('navbar');
   if (window.scrollY > 10) {
     nb.classList.add('scrolled');
