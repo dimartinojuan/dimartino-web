@@ -544,6 +544,73 @@ footer{background:#0B3042;padding:56px 5% 26px}
   .det-kf{min-width:60px;padding:8px 10px}
   .prop-card{border-radius:10px}
 }
+
+/* ══ VISTA DESARROLLOS ═══════════════════════════════════════════════════════ */
+#vista-desarrollos{padding-top:68px;min-height:100vh;background:var(--gris-bg)}
+.des-hub-hero{background:var(--azul);padding:72px 5% 56px;text-align:center;color:var(--blanco)}
+.des-hub-hero h1{font-size:clamp(26px,4.5vw,46px);font-weight:800;margin-bottom:14px;letter-spacing:-.5px}
+.des-hub-hero p{color:rgba(255,255,255,.65);font-size:15px;max-width:580px;margin:0 auto 28px;line-height:1.75}
+.des-hub-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.des-hub-tag{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:.3px}
+.des-seccion{padding:56px 5%}
+.des-seccion-tit{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--rojo);margin-bottom:8px}
+.des-seccion h2{font-size:clamp(20px,3vw,28px);font-weight:700;color:var(--azul);margin-bottom:32px}
+.des-activos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.des-activo-card{background:var(--blanco);border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s,box-shadow .22s;display:flex;flex-direction:column}
+.des-activo-card:hover{transform:translateY(-5px);box-shadow:0 10px 36px rgba(0,0,0,.13)}
+.des-activo-card img{width:100%;height:200px;object-fit:cover;display:block}
+.des-activo-info{padding:20px 22px 24px;flex:1;display:flex;flex-direction:column}
+.des-activo-tipo{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--rojo);margin-bottom:7px}
+.des-activo-nombre{font-size:19px;font-weight:700;color:var(--azul);margin-bottom:4px;line-height:1.2}
+.des-activo-loc{font-size:13px;color:#777;margin-bottom:14px}
+.des-activo-cta{margin-top:auto;display:inline-block;background:var(--azul);color:var(--blanco);padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;text-align:center;transition:opacity .18s}
+.des-activo-cta:hover{opacity:.82}
+.des-vendidos-seccion{padding:56px 5%;background:var(--blanco)}
+.des-carrusel-wrap{position:relative;overflow:hidden}
+.des-carrusel-track{display:flex;gap:20px;transition:transform .6s ease}
+.des-vendido-item{flex-shrink:0;width:160px;border-radius:10px;overflow:hidden;background:var(--gris-bg);opacity:.6;text-align:center}
+.des-vendido-item img{width:100%;height:100px;object-fit:cover;filter:grayscale(80%);display:block}
+.des-vendido-nombre{font-size:11px;color:#777;padding:8px 10px 4px;font-weight:600;line-height:1.3}
+.des-vendido-badge{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:#aaa;padding:0 10px 10px;display:block}
+.des-cta-terreno{padding:72px 5%;background:var(--crema);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.des-cta-terreno h2{font-size:clamp(20px,3vw,28px);font-weight:700;color:var(--azul);margin-bottom:16px;line-height:1.3}
+.des-cta-terreno>div>p{color:#444;line-height:1.8;margin-bottom:24px;font-size:15px}
+.des-cta-items{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.des-cta-item{display:flex;align-items:flex-start;gap:14px}
+.des-cta-item-ico{width:36px;height:36px;min-width:36px;background:var(--azul);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.des-cta-item-ico svg{color:var(--blanco)}
+.des-cta-item b{display:block;font-size:14px;font-weight:700;color:var(--azul);margin-bottom:3px}
+.des-cta-item span{font-size:13px;color:#666;line-height:1.5}
+.btn-des-wsp{display:inline-flex;align-items:center;gap:8px;background:var(--rojo);color:var(--blanco);padding:14px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity .18s}
+.btn-des-wsp:hover{opacity:.88}
+.des-cta-visual{position:relative;border-radius:16px;overflow:hidden;height:360px}
+.des-cta-visual img{width:100%;height:100%;object-fit:cover;display:block}
+.des-cta-badge{position:absolute;bottom:20px;left:20px;background:rgba(11,48,66,.88);color:var(--blanco);padding:14px 20px;border-radius:10px;backdrop-filter:blur(8px)}
+.des-cta-badge b{display:block;font-size:20px;font-weight:800}
+.des-cta-badge span{font-size:12px;color:rgba(255,255,255,.65)}
+/* Vista individual desarrollo */
+#vista-des-odiliaindustrial,#vista-des-laferme6,#vista-des-italia1364{padding-top:68px;min-height:100vh;background:var(--gris-bg)}
+.vista-dev-back{padding:16px 5% 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--azul);font-size:13px;font-weight:600;background:none;border:none}
+.vista-dev-back:hover{opacity:.7}
+.dev-hero{position:relative;height:380px;overflow:hidden}
+.dev-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.dev-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,48,66,.78) 0%,transparent 55%);display:flex;align-items:flex-end;padding:32px 5%}
+.dev-hero-info{color:var(--blanco)}
+.dev-hero-tipo{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px}
+.dev-hero-nombre{font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:4px}
+.dev-hero-loc{font-size:14px;color:rgba(255,255,255,.75)}
+.dev-contenido{padding:40px 5%;max-width:960px}
+.dev-proximamente{background:var(--blanco);border-radius:12px;padding:48px;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.dev-proximamente h3{font-size:20px;color:var(--azul);font-weight:700;margin-bottom:12px}
+.dev-proximamente p{color:#666;line-height:1.75;margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto}
+@media(max-width:900px){.des-activos-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .des-activos-grid{grid-template-columns:1fr}
+  .des-cta-terreno{grid-template-columns:1fr}
+  .des-cta-visual{display:none}
+  .dev-hero{height:260px}
+}
+@media(max-width:480px){.des-hub-hero{padding:56px 4% 44px}}
 </style>
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -567,6 +634,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
   <ul class="nav-links">
     <li><a onclick="irAHome()">Inicio</a></li>
     <li><a onclick="abrirBuscador('',{})">Propiedades</a></li>
+    <li><a onclick="mostrarVista('vista-desarrollos')">Desarrollos</a></li>
     <li><a onclick="irAHome('contacto')">Contacto</a></li>
     <li><a href="https://wa.me/5492323652581" class="nav-wsp" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -633,7 +701,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
   <section class="seccion seccion--azul" id="desarrollos">
     <div class="sec-cabecera">
       <div><span class="sec-label" style="color:rgba(255,255,255,.4)">Proyectos propios</span><h2 class="sec-titulo sec-titulo--blanco">Nuestros Desarrollos</h2><p class="sec-sub sec-sub--blanco">Emprendimientos con financiación propia.</p></div>
-      <button class="btn-link btn-link--blanco" onclick="irAHome('contacto')">Consultar →</button>
+      <button class="btn-link btn-link--blanco" onclick="mostrarVista('vista-desarrollos')">Ver todos →</button>
     </div>
     <div class="des-grid">
       <div class="des-card des-card--grande" onclick="irAHome('contacto')">
@@ -713,7 +781,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <p class="footer-brand-desc">Más de 15 años acompañando a familias y empresas en sus decisiones inmobiliarias.</p>
         <div class="socials"><a href="https://www.facebook.com/dimartinopropiedades" class="social" target="_blank">Facebook</a><a href="https://www.instagram.com/dimartinopropiedades/" class="social" target="_blank">Instagram</a><a href="https://www.youtube.com/channel/UCECkXsvrDSwIi_x11e5b3Ew" class="social" target="_blank">YouTube</a></div>
       </div>
-      <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="irAHome('desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="mostrarVista('vista-desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
       <div class="footer-col"><h4>Categorías</h4><ul><li><a onclick="abrirBuscador('',{op:'1'})">Casas en venta</a></li><li><a onclick="abrirBuscador('',{op:'2'})">Alquileres</a></li><li><a onclick="abrirBuscador('',{op:'1',tipos:['1']})">Terrenos</a></li><li><a onclick="abrirBuscador('',{})">Ver todo</a></li></ul></div>
       <div class="footer-col"><h4>Contacto</h4><ul><li><a href="tel:+5492323426040">(02323) 426040</a></li><li><a href="https://wa.me/5492323652581" target="_blank">WA: 2323-652581</a></li><li><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján</a></li></ul></div>
     </div>
@@ -984,6 +1052,213 @@ footer{background:#0B3042;padding:56px 5% 26px}
   </div>
 </div>
 
+<!-- ════════ VISTA DESARROLLOS ════════ -->
+<div id="vista-desarrollos" class="vista">
+
+  <section class="des-hub-hero">
+    <h1>Nuestros Desarrollos</h1>
+    <p>Más de 15 años transformando tierra en barrio. Cada proyecto respaldado por nuestra experiencia y el compromiso con cada cliente.</p>
+    <div class="des-hub-tags">
+      <span class="des-hub-tag">Barrios abiertos</span>
+      <span class="des-hub-tag">Edificios residenciales</span>
+      <span class="des-hub-tag">Lotes con escritura inmediata</span>
+    </div>
+  </section>
+
+  <section class="des-seccion">
+    <div class="des-seccion-tit">Proyectos activos</div>
+    <h2>En venta ahora</h2>
+    <div class="des-activos-grid">
+
+      <div class="des-activo-card" onclick="mostrarVista('vista-des-odiliaindustrial')">
+        <img src="https://static.tokkobroker.com/dev_pictures/108655749560047453343637754121787286252083767177577052878865861739056548420178.jpg" alt="Odilia Industrial — Barrio abierto en Hostería Sur" loading="lazy"/>
+        <div class="des-activo-info">
+          <div class="des-activo-tipo">Barrio Abierto · Lotes industriales</div>
+          <div class="des-activo-nombre">Odilia Industrial</div>
+          <div class="des-activo-loc">Hostería Sur · Luján</div>
+          <span class="des-activo-cta">Ver loteo →</span>
+        </div>
+      </div>
+
+      <div class="des-activo-card" onclick="mostrarVista('vista-des-laferme6')">
+        <img src="https://static.tokkobroker.com/dev_pictures/25482548017943222045740741226685711936555270604003627302440511758225613512737.jpg" alt="La Ferme 6 — Barrio abierto en Los Cardales" loading="lazy"/>
+        <div class="des-activo-info">
+          <div class="des-activo-tipo">Barrio Abierto</div>
+          <div class="des-activo-nombre">La Ferme 6</div>
+          <div class="des-activo-loc">Los Cardales</div>
+          <span class="des-activo-cta">Ver loteo →</span>
+        </div>
+      </div>
+
+      <div class="des-activo-card" onclick="mostrarVista('vista-des-italia1364')">
+        <img src="https://static.tokkobroker.com/dev_pictures/65648_109867226134790038369881496231094265195302666591737068411990291553161192791518.jpg" alt="Italia 1364 — Edificio residencial en Luján" loading="lazy"/>
+        <div class="des-activo-info">
+          <div class="des-activo-tipo">Edificio Residencial</div>
+          <div class="des-activo-nombre">Italia 1364</div>
+          <div class="des-activo-loc">Centro · Luján</div>
+          <span class="des-activo-cta">Ver proyecto →</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="des-vendidos-seccion">
+    <div class="des-seccion-tit">Historia</div>
+    <h2>Proyectos realizados</h2>
+    <div class="des-carrusel-wrap">
+      <div class="des-carrusel-track" id="des-carrusel-track">
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/108655749560047453343637754121787286252083767177577052878865861739056548420178.jpg" alt="Tierras de Villa Odilia" loading="lazy"/>
+          <div class="des-vendido-nombre">Tierras de Villa Odilia</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/84951275767869585588291646627534227845148759961741439973705907900840207552760.jpg" alt="La Ferme III" loading="lazy"/>
+          <div class="des-vendido-nombre">La Ferme III</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/15805232507494254237846669810463387759408925048869526422223327790824503184645.jpg" alt="La Ferme III" loading="lazy"/>
+          <div class="des-vendido-nombre">La Ferme III</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/25482548017943222045740741226685711936555270604003627302440511758225613512737.jpg" alt="La Ferme V" loading="lazy"/>
+          <div class="des-vendido-nombre">La Ferme V</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/98047336225454488627914937619086004619518322811170528500714720090904199076703.jpg" alt="Villa Odilia" loading="lazy"/>
+          <div class="des-vendido-nombre">Villa Odilia</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+        <div class="des-vendido-item">
+          <img src="https://static.tokkobroker.com/dev_pictures/110563549578943338748653607556234477807728895611236367182702822044386216815843.jpg" alt="Villa Odilia" loading="lazy"/>
+          <div class="des-vendido-nombre">Villa Odilia</div>
+          <span class="des-vendido-badge">Barrio abierto · Vendido</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="des-cta-terreno">
+    <div>
+      <div class="des-seccion-tit">Propietarios</div>
+      <h2>¿Tenés un terreno o campo?</h2>
+      <p>Si tu inmueble tiene potencial, hablemos. Contamos con la experiencia y el equipo para transformarlo en un proyecto que funcione — y lo demostramos con cada obra entregada.</p>
+      <div class="des-cta-items">
+        <div class="des-cta-item">
+          <div class="des-cta-item-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <div><b>Más de 15 años de trayectoria</b><span>Proyectos entregados en tiempo y forma, siempre.</span></div>
+        </div>
+        <div class="des-cta-item">
+          <div class="des-cta-item-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <div><b>Gestión integral</b><span>Desde la subdivisión hasta la escritura de cada lote.</span></div>
+        </div>
+        <div class="des-cta-item">
+          <div class="des-cta-item-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><b>Red de compradores activa</b><span>Acceso directo a nuestra base de clientes en la región.</span></div>
+        </div>
+      </div>
+      <button class="btn-des-wsp" onclick="window.open('https://wa.me/5492323652581?text=Hola%2C+tengo+un+terreno+o+campo+y+me+interesa+hablar+sobre+desarrollos+con+Di+Martino.','_blank')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Hablemos por WhatsApp
+      </button>
+    </div>
+    <div class="des-cta-visual">
+      <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Desarrollo Di Martino — loteo Luján" loading="lazy"/>
+      <div class="des-cta-badge"><b>+15 proyectos</b><span>entregados en la región</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ════════ VISTA DESARROLLO: ODILIA INDUSTRIAL ════════ -->
+<div id="vista-des-odiliaindustrial" class="vista">
+  <button class="vista-dev-back" onclick="mostrarVista('vista-desarrollos')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver a Desarrollos
+  </button>
+  <div class="dev-hero">
+    <img src="https://static.tokkobroker.com/dev_pictures/108655749560047453343637754121787286252083767177577052878865861739056548420178.jpg" alt="Odilia Industrial"/>
+    <div class="dev-hero-overlay">
+      <div class="dev-hero-info">
+        <div class="dev-hero-tipo">Barrio Abierto · Lotes industriales</div>
+        <div class="dev-hero-nombre">Odilia Industrial</div>
+        <div class="dev-hero-loc">Hostería Sur · Luján, Buenos Aires</div>
+      </div>
+    </div>
+  </div>
+  <div class="dev-contenido">
+    <div class="dev-proximamente">
+      <h3>Página del loteo en construcción</h3>
+      <p>Estamos preparando la página completa con el plano interactivo, disponibilidad de lotes y financiación. Mientras tanto, consultanos directamente.</p>
+      <button class="btn-des-wsp" onclick="window.open('https://wa.me/5492323652581?text=Hola%2C+me+interesa+el+desarrollo+Odilia+Industrial.','_blank')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Consultar por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ VISTA DESARROLLO: LA FERME 6 ════════ -->
+<div id="vista-des-laferme6" class="vista">
+  <button class="vista-dev-back" onclick="mostrarVista('vista-desarrollos')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver a Desarrollos
+  </button>
+  <div class="dev-hero">
+    <img src="https://static.tokkobroker.com/dev_pictures/25482548017943222045740741226685711936555270604003627302440511758225613512737.jpg" alt="La Ferme 6"/>
+    <div class="dev-hero-overlay">
+      <div class="dev-hero-info">
+        <div class="dev-hero-tipo">Barrio Abierto</div>
+        <div class="dev-hero-nombre">La Ferme 6</div>
+        <div class="dev-hero-loc">Los Cardales, Buenos Aires</div>
+      </div>
+    </div>
+  </div>
+  <div class="dev-contenido">
+    <div class="dev-proximamente">
+      <h3>Página del loteo en construcción</h3>
+      <p>Estamos preparando la página completa con el plano interactivo, disponibilidad de lotes y financiación. Mientras tanto, consultanos directamente.</p>
+      <button class="btn-des-wsp" onclick="window.open('https://wa.me/5492323652581?text=Hola%2C+me+interesa+el+desarrollo+La+Ferme+6.','_blank')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Consultar por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ VISTA DESARROLLO: ITALIA 1364 ════════ -->
+<div id="vista-des-italia1364" class="vista">
+  <button class="vista-dev-back" onclick="mostrarVista('vista-desarrollos')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver a Desarrollos
+  </button>
+  <div class="dev-hero">
+    <img src="https://static.tokkobroker.com/dev_pictures/65648_109867226134790038369881496231094265195302666591737068411990291553161192791518.jpg" alt="Italia 1364"/>
+    <div class="dev-hero-overlay">
+      <div class="dev-hero-info">
+        <div class="dev-hero-tipo">Edificio Residencial</div>
+        <div class="dev-hero-nombre">Italia 1364</div>
+        <div class="dev-hero-loc">Centro · Luján, Buenos Aires</div>
+      </div>
+    </div>
+  </div>
+  <div class="dev-contenido">
+    <div class="dev-proximamente">
+      <h3>Página del proyecto en construcción</h3>
+      <p>Estamos preparando la página completa con plantas, unidades disponibles y financiación. Mientras tanto, consultanos directamente.</p>
+      <button class="btn-des-wsp" onclick="window.open('https://wa.me/5492323652581?text=Hola%2C+me+interesa+el+proyecto+Italia+1364.','_blank')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Consultar por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+
 <script>
 /* ═══════════════════════════════
    CONFIG
@@ -1013,10 +1288,36 @@ const OP_ID_A_STR = { '1':'Sale', '2':'Rent', '3':'Temporary Rental' };
 /* ═══════════════════════════════
    VISTAS
 ═══════════════════════════════ */
+let _desCarruselTimer = null;
+function iniciarCarruselVendidos() {
+  const track = document.getElementById('des-carrusel-track');
+  if (!track || _desCarruselTimer) return;
+  const itemW = 180; // 160px + 20px gap
+  const visibleW = track.parentElement.clientWidth;
+  const totalW = track.scrollWidth;
+  if (totalW <= visibleW) return;
+  let pos = 0;
+  _desCarruselTimer = setInterval(() => {
+    pos += itemW;
+    if (pos >= totalW - visibleW + itemW) {
+      pos = 0;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0)';
+      requestAnimationFrame(() => { requestAnimationFrame(() => { track.style.transition = 'transform .6s ease'; }); });
+      return;
+    }
+    track.style.transform = 'translateX(-' + pos + 'px)';
+  }, 2800);
+}
 function mostrarVista(id) {
   document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
   document.getElementById(id).classList.add('activa');
   window.scrollTo(0, 0);
+  if (id === 'vista-desarrollos') {
+    setTimeout(iniciarCarruselVendidos, 400);
+  } else {
+    if (_desCarruselTimer) { clearInterval(_desCarruselTimer); _desCarruselTimer = null; }
+  }
 }
 
 function irAHome(ancla) {
