@@ -283,8 +283,8 @@ button,input,select,textarea{font-family:inherit}
 .det-gastos{font-size:13px;color:var(--gris-txt);margin-top:3px}
 
 /* Características clave — estilo ZonaProp con íconos SVG */
-.det-key-feats{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--gris-borde);margin-top:18px;padding-top:18px}
-.det-kf{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;min-width:72px;text-align:center;position:relative}
+.det-key-feats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--gris-borde);margin-top:18px;padding-top:18px}
+.det-kf{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;width:100%;text-align:center;position:relative;box-sizing:border-box}
 .det-kf:not(:last-child)::after{content:'';position:absolute;right:0;top:15%;height:70%;width:1px;background:var(--gris-borde)}
 .det-kf-ico{color:var(--negro);opacity:.7;display:flex;align-items:center;justify-content:center}
 .det-kf-val{font-size:14px;font-weight:800;color:var(--negro);line-height:1.1}
@@ -2508,7 +2508,9 @@ function tradTitulo(p) {
   if (porTipo) return porTipo;
   const t = (p.title || '').trim();
   if (!t) return 'Propiedad';
-  return TRAD_TIPO[t.toLowerCase()] ?? t;
+  // Reemplazar guión largo por pipe en títulos crudos de Tokko
+  const traduc = TRAD_TIPO[t.toLowerCase()] ?? t;
+  return traduc.replace(/ — /g, ' | ');
 }
 
 function renderCard(p) {
@@ -2725,7 +2727,7 @@ function renderDetalle(p) {
   let kf = cand.slice(0, n).map(([i, v, l]) => kfItem(i, v, l)).join('');
   document.getElementById('det-key-feats').innerHTML = kf;
   // Fewer than 4 data (lots, garages): they share the full width evenly.
-  document.getElementById('det-key-feats').style.gridTemplateColumns = n && n < 4 ? `repeat(${n},minmax(0,1fr))` : '';
+  if (n && n < 4) document.getElementById('det-key-feats').style.gridTemplateColumns = `repeat(${n},minmax(0,1fr))`;
   document.getElementById('det-key-feats').style.display = n ? '' : 'none';
 
   /* ── Características en tabs ── */
