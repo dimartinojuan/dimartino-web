@@ -33,6 +33,7 @@
     tokens=tokens.filter(t=>{const type=fuzzy(t,types);if(type){if(!r.tipos.includes(type))r.tipos.push(type);return false;}return true;});
     q=tokens.join(' ');
     if(!r.barrios.length&&q){const matches=locations.filter(loc=>distance(q,norm(loc))<=1&&q.length>=5);if(matches.length===1){r.barrios=matches;q='';}}
+    r.barriosAmplios=r.barrios.length>0;
     r.resto=q.replace(/\s+/g,' ').trim();return r;
   }
   // Suggest a correction only; do not silently broaden an unmatched search.
@@ -46,7 +47,12 @@
     }
     return null;
   }
-  function inLocation(p,v){const n=norm(v);if(n===norm(p.location?.name))return true;return String(p.location?.full_location||'').split('|').some(seg=>norm(seg)===n);}
+  // A neighbourhood filter matches the property's own neighbourhood only; "Luján" must not include every barrio of Luján.
+  // Written searches ("casa luján") take the whole town, including its barrios.
+  function inLocation(p,v,broad=false){const n=norm(v);if(n===norm(p.location?.name))return true;return broad&&String(p.location?.full_location||'').split('|').some(seg=>norm(seg)===n);}
+  // Words people use interchangeably find the same listings (pileta / piscina, parrilla / asador...).
+  const SYN=[['pileta','piscina','pool'],['parrilla','asador','barbacoa'],['cochera','garage','garaje'],['jardin','parque'],['departamento','depto','dpto','apartamento'],['quincho','sum'],['credito','apto credito']];
+  function synonyms(w){const g=SYN.find(group=>group.includes(w));return g||[w];}
   function searchable(p){return norm([p.title,p.description,p.short_description,p.address,p.reference_code,p.id,p.type?.name,p.type?.label,p.location?.name,p.location?.full_location,p.location?.parent_location?.name,...(p.tags||[]).map(t=>t.name),...(p.custom_tags||[]).map(t=>t.name)].filter(Boolean).join(' '));}
   function selectedOffer(p,state={}) {const wanted=state.ops?.length?state.ops:(state.op?[state.op]:[]);const names={'1':'Sale','2':'Rent','3':'Temporary Rental'};const operations=(p.operations||[]).filter(o=>!wanted.length||wanted.some(id=>o.operation_type===names[id]||(id==='2'&&o.operation_type==='Temporary Rental')));let offers=operations.flatMap(o=>(o.prices||[]).map(pr=>({...pr,operation_type:o.operation_type})));if(state.moneda){const matched=offers.filter(o=>o.currency===state.moneda);if(matched.length)return matched[0];if(state.desde||state.hasta)return null;}return offers[0]||null;}
   function filter(properties,state,exclude=[]) {return properties.filter(p=>{
@@ -57,13 +63,13 @@
     if(!exclude.includes('precio')&&(state.desde||state.hasta)){const offer=selectedOffer(p,state);if(!offer||!Number(offer.price)||Number(offer.price)<Number(state.desde||0)||(state.hasta&&Number(offer.price)>Number(state.hasta)))return false;}
     if(!exclude.includes('ambs')&&state.ambs?.length&&!state.ambs.some(v=>v==='4'?Number(p.suite_amount)>=4:Number(p.suite_amount)===Number(v)))return false;
     if(state.rooms?.length&&!state.rooms.some(v=>Number(p.room_amount)===Number(v)))return false;
-    if(!exclude.includes('barrios')&&state.barrios?.length&&!state.barrios.some(v=>inLocation(p,v)))return false;
+    if(!exclude.includes('barrios')&&state.barrios?.length&&!state.barrios.some(v=>inLocation(p,v,!!state.barriosAmplios)))return false;
     const hay=searchable(p);
     if(!exclude.includes('barrioTipo')&&state.barrioTipo){const closed=/countries|country|b\.cerrado|cerrado|privado/.test(norm(p.location?.full_location));if((state.barrioTipo==='cerrado')!==closed)return false;}
     const hasFeature=tag=>{if(tag==='cochera'&&(Number(p.garage_amount)>0||Number(p.parking_lot_amount)>0))return true;return (features[tag]||[tag]).some(t=>hay.includes(norm(t)));};
     if(!exclude.includes('tags')&&state.tags?.some(t=>!hasFeature(t)))return false;
     if(state.excluded?.some(hasFeature))return false;
-    if(!exclude.includes('kw')&&state.kw&&!norm(state.kw).split(/\s+/).every(w=>hay.includes(w)))return false;
+    if(!exclude.includes('kw')&&state.kw&&!norm(state.kw).split(/\s+/).every(w=>synonyms(w).some(x=>hay.includes(x))))return false;
     return true;
   });}
   root.DMSearch={norm,parse,suggest,filter,selectedOffer,distance,searchable};

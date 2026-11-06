@@ -183,3 +183,39 @@ footer .brand-logo{height:auto!important;width:210px}
 .det-sidebar .btn-form{background:var(--azul)!important}
 .form-estado{font-size:13px;color:var(--azul);margin-top:8px;min-height:0}
 .form-estado:empty{display:none}
+
+/* Hero video: slightly enlarged so YouTube's edges never show; it fades in only while it is actually playing. */
+.hero-video-wrap iframe{transform:translate(-50%,-50%) scale(1.2)!important}
+/* Ficha: a property offered for sale and for rent shows both prices. */
+.det-precio-extra{display:flex;flex-direction:column;gap:4px;margin-top:10px;font-size:15px;color:var(--azul)}
+.det-precio-extra strong{font-weight:700}
+/* Precio manual: sin flechitas, el número entra entero en la caja */
+.precio-manual{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.precio-manual input{padding:7px 6px;-moz-appearance:textfield;appearance:textfield}
+.precio-manual input::-webkit-outer-spin-button,.precio-manual input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+/* Ficha en celular: ninguna tarjeta más ancha que la pantalla */
+@media(max-width:768px){
+  #vista-detalle .det-wrap>*,#vista-detalle .det-wrap>div:first-child>*{min-width:0;max-width:100%;box-sizing:border-box}
+  .det-tabs-nav{overflow-x:auto;scrollbar-width:none}
+  .det-tab-btn{padding:9px 12px;white-space:nowrap}
+  .cat-overlay{padding:14px 12px}
+  .cat-card h3{font-size:clamp(15px,4.2vw,20px)}
+}
+/* Instagram: botón redondo y chico, para no tapar botones de la página */
+.ig-float{padding:12px;gap:0}
+.ig-float span{display:none}
+/* Desarrollos: el nombre va debajo de la foto, así nunca pisa el logo de la imagen */
+.des-card{display:flex!important;flex-direction:column;height:auto!important;background:rgba(255,255,255,.06)}
+.des-card img{height:250px!important;flex:none}
+.des-card:hover img{transform:none}
+.des-overlay{position:static!important;background:none!important;padding:16px 20px 18px!important}
+.des-ubic,.des-card p{color:rgba(255,255,255,.75)}
+/* Galería del desarrollo: si hay una cantidad impar, la primera va a todo el ancho */
+.development-gallery>button:first-child:nth-last-child(odd){grid-column:1/-1}
+.development-gallery img{width:100%;height:100%;object-fit:cover;border-radius:12px;display:block}
+.development-gallery>button{padding:0;border:0;background:none;cursor:zoom-in;aspect-ratio:3/2;overflow:hidden;border-radius:12px}
+.development-gallery>button:first-child:nth-last-child(odd){aspect-ratio:16/7}
+.development-facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 24px;color:var(--azul);font-size:15px}
+.development-props{margin-top:40px}
+.development-props h2{font-size:22px;color:var(--azul);margin-bottom:18px}
+.galeria-layout.galeria-layout--single{grid-template-columns:1fr}

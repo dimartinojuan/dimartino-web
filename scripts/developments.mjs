@@ -4,7 +4,7 @@ const clean=v=>String(v??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
 const https=v=>{try{const u=new URL(v);return u.protocol==='https:'?u.href:'';}catch{return '';}};
 export function normalizeDevelopment(d){
   const photos=(d.photos||[]).map(p=>({image:https(p.image||p.original),description:clean(p.description),cover:!!(p.is_front_cover||p.cover)})).filter(p=>p.image).sort((a,b)=>Number(b.cover)-Number(a.cover));
-  return {id:Number(d.id),name:clean(d.name||d.publication_title),address:clean(d.fake_address||d.address),location:{name:clean(d.location?.name)},type:{code:clean(d.type?.code),label:({BA:'Barrio abierto',BU:'Edificio'})[d.type?.code]||'Desarrollo'},description:clean(d.description),photos,path:'desarrollos/'+Number(d.id)+'/'};
+  return {id:Number(d.id),name:clean(d.name||d.publication_title),address:clean(d.fake_address||d.address),location:{name:clean(d.location?.name)},type:{code:clean(d.type?.code),label:({BA:'Barrio abierto',BU:'Edificio'})[d.type?.code]||'Desarrollo'},description:clean(d.description||d.publication_description||d.rich_description||d.web_description||d.short_description),photos,path:'desarrollos/'+Number(d.id)+'/'};
 }
 export async function loadDevelopments(root,key){
   const file=path.join(root,'data/developments.json');
@@ -16,7 +16,7 @@ export async function loadDevelopments(root,key){
     for(let attempt=0;attempt<3;attempt++){try{response=await fetch(endpoint,{signal:AbortSignal.timeout(30000)});if(response.ok)break;}catch{}if(attempt<2)await new Promise(r=>setTimeout(r,3000*(attempt+1)));if(attempt===2)throw Error('No se pudieron actualizar los desarrollos; se conserva la publicación anterior.');}
     const page=await response.json(),items=page.objects||page.results;
     if(!Array.isArray(items))throw Error('Respuesta inválida de desarrollos.');
-    total=Number(page.meta?.total_count??page.count??items.length);if(!items.length&&offset<total)throw Error('Desarrollos incompletos.');
+    const reported=Number(page.meta?.total_count??page.count);total=Number.isFinite(reported)&&reported>0?reported:(items.length===100?Infinity:offset+items.length);if(!items.length&&offset<total){if(!Number.isFinite(reported))break;throw Error('Desarrollos incompletos.');}
     rows.push(...items);offset+=items.length;if(offset>10000)throw Error('Límite de desarrollos excedido.');
   }
   const snapshot={generatedAt:new Date().toISOString(),developments:rows.filter(d=>d.display_on_web===true).map(normalizeDevelopment).filter(d=>d.id&&d.name)};

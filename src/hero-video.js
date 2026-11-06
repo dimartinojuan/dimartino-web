@@ -7,10 +7,11 @@
     window.onYouTubeIframeAPIReady=function(){
       new YT.Player(mount,{
         videoId:'61FhjbsgGiw',
-        playerVars:{autoplay:1,mute:1,loop:1,playlist:'61FhjbsgGiw',controls:0,rel:0,playsinline:1,iv_load_policy:3,cc_load_policy:0},
+        // No playlist: a playlist makes YouTube draw its previous/pause/next buttons over the video. The loop is done here.
+        playerVars:{autoplay:1,mute:1,controls:0,rel:0,playsinline:1,iv_load_policy:3,cc_load_policy:0,disablekb:1,fs:0,modestbranding:1},
         events:{
           onReady(event){event.target.mute();event.target.playVideo();},
-          onStateChange(event){if(event.data===1)document.querySelector('.hero-video-wrap')?.classList.add('is-playing');}
+          onStateChange(event){const wrap=document.querySelector('.hero-video-wrap');if(event.data===1)wrap?.classList.add('is-playing');else if(event.data===0){event.target.seekTo(0);event.target.playVideo();}else if(event.data===2||event.data===3)wrap?.classList.remove('is-playing');}
         }
       });
     };

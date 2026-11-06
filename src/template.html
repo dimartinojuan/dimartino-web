@@ -634,7 +634,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
   <ul class="nav-links">
     <li><a onclick="irAHome()">Inicio</a></li>
     <li><a onclick="abrirBuscador('',{})">Propiedades</a></li>
-    <li><a onclick="mostrarVista('vista-desarrollos')">Desarrollos</a></li>
+    <li><a onclick="irAHome('desarrollos')">Desarrollos</a></li>
     <li><a onclick="irAHome('contacto')">Contacto</a></li>
     <li><a href="https://wa.me/5492323652581" class="nav-wsp" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -701,7 +701,6 @@ footer{background:#0B3042;padding:56px 5% 26px}
   <section class="seccion seccion--azul" id="desarrollos">
     <div class="sec-cabecera">
       <div><span class="sec-label" style="color:rgba(255,255,255,.4)">Proyectos propios</span><h2 class="sec-titulo sec-titulo--blanco">Nuestros Desarrollos</h2><p class="sec-sub sec-sub--blanco">Emprendimientos con financiación propia.</p></div>
-      <button class="btn-link btn-link--blanco" onclick="mostrarVista('vista-desarrollos')">Ver todos →</button>
     </div>
     <div class="des-grid">
       <div class="des-card des-card--grande" onclick="irAHome('contacto')">
@@ -781,7 +780,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <p class="footer-brand-desc">Más de 15 años acompañando a familias y empresas en sus decisiones inmobiliarias.</p>
         <div class="socials"><a href="https://www.facebook.com/dimartinopropiedades" class="social" target="_blank">Facebook</a><a href="https://www.instagram.com/dimartinopropiedades/" class="social" target="_blank">Instagram</a><a href="https://www.youtube.com/channel/UCECkXsvrDSwIi_x11e5b3Ew" class="social" target="_blank">YouTube</a></div>
       </div>
-      <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="mostrarVista('vista-desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Secciones</h4><ul><li><a onclick="abrirBuscador('',{})">Propiedades</a></li><li><a onclick="irAHome('desarrollos')">Desarrollos</a></li><li><a onclick="irAHome('tasaciones')">Tasaciones</a></li><li><a onclick="irAHome('contacto')">Contacto</a></li></ul></div>
       <div class="footer-col"><h4>Categorías</h4><ul><li><a onclick="abrirBuscador('',{op:'1'})">Casas en venta</a></li><li><a onclick="abrirBuscador('',{op:'2'})">Alquileres</a></li><li><a onclick="abrirBuscador('',{op:'1',tipos:['1']})">Terrenos</a></li><li><a onclick="abrirBuscador('',{})">Ver todo</a></li></ul></div>
       <div class="footer-col"><h4>Contacto</h4><ul><li><a href="tel:+5492323426040">(02323) 426040</a></li><li><a href="https://wa.me/5492323652581" target="_blank">WA: 2323-652581</a></li><li><a href="https://www.google.com/maps/place/Di+Martino+Propiedades/@-34.566198,-59.1115103,17z" target="_blank">Lavalle 889, Luján</a></li></ul></div>
     </div>
@@ -890,7 +889,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <div class="res-acciones">
           <button class="btn-ver-mapa" id="btn-mapa-toggle" onclick="toggleMapa()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ver mapa
+            <span id="btn-mapa-txt">Ver mapa</span>
           </button>
           <div class="ordenar-wrap">
             Ordenar por
@@ -1025,6 +1024,7 @@ footer{background:#0B3042;padding:56px 5% 26px}
         <div class="det-precio-row">
           <div class="det-precio" id="det-precio"></div>
         </div>
+        <div class="det-precio-extra" id="det-precio-extra" style="display:none"></div>
         <div class="det-gastos" id="det-gastos"></div>
         <!-- Barra de iconos clave -->
         <div class="det-key-feats" id="det-key-feats"></div>
@@ -1889,6 +1889,9 @@ function toggleMapa() {
   sentinel.style.display = mapaVisible ? 'none' : '';
   mapEl.style.display    = mapaVisible ? 'block' : 'none';
   btn.classList.toggle('activo', mapaVisible);
+  const txt = document.getElementById('btn-mapa-txt');
+  if (txt) txt.textContent = mapaVisible ? 'Ver lista' : 'Ver mapa';
+  btn.setAttribute('aria-pressed', String(mapaVisible));
 
   if (mapaVisible) {
     if (!window.L) cargarLeaflet(() => iniciarMapa());
@@ -1992,6 +1995,14 @@ const RANGOS_USD = [
   { label:'US$ 200.000 a US$ 500.000',     desde:200000, hasta:500000  },
   { label:'Más de US$ 500.000',            desde:500000, hasta:null    },
 ];
+// Rentals in pesos need their own steps: a single "up to $10M" bucket would hold every rental.
+const RANGOS_ARS_ALQ = [
+  { label:'Hasta $ 300.000',               desde:0,       hasta:300000  },
+  { label:'$ 300.000 a $ 500.000',         desde:300000,  hasta:500000  },
+  { label:'$ 500.000 a $ 800.000',         desde:500000,  hasta:800000  },
+  { label:'$ 800.000 a $ 1.200.000',       desde:800000,  hasta:1200000 },
+  { label:'Más de $ 1.200.000',            desde:1200000, hasta:null    },
+];
 const RANGOS_ARS = [
   { label:'Hasta $ 10.000.000',            desde:0,         hasta:10000000  },
   { label:'$ 10M a $ 30M',                 desde:10000000,  hasta:30000000  },
@@ -2074,17 +2085,18 @@ function actualizarOpcionesDinamicas() {
   const sinPrecio = aplicarFiltrosSin(todasLasProps, ['precio']);
 
   // ── Rangos de precio ──
-  const rangos = S.moneda === 'USD' ? RANGOS_USD : RANGOS_ARS;
+  const rangos = rangosActuales(sinPrecio);
   let rangosHTML = '';
   rangos.forEach(r => {
+    // Same rule as the results: above the lower bound, up to and including the upper one,
+    // so a price of exactly 100.000 is counted (and shown) in one range only.
     const cnt = sinPrecio.filter(p => {
       const pr = getPrecioProp(p);
       if (!pr) return false;
-      return pr >= r.desde && (r.hasta === null || pr < r.hasta);
+      return pr > r.desde && (r.hasta === null || pr <= r.hasta);
     }).length;
     if (!cnt) return;
-    const activo = (String(r.desde) === S.desde) &&
-      (r.hasta === null ? !S.hasta : String(r.hasta) === S.hasta);
+    const activo = rangoActivo(r);
     rangosHTML += `<button class="precio-rango${activo?' activo':''}" onclick="setRangoPrecio(${r.desde},${r.hasta===null?'null':r.hasta})">${r.label} <span>(${cnt})</span></button>`;
   });
   const rangosEl = document.getElementById('precio-rangos');
@@ -2265,7 +2277,7 @@ async function cargarResultados() {
     propsMostradas = lote.length;
     grid.innerHTML = lote.map(renderCard).join('');
     grid.style.display = 'grid';
-    count.innerHTML = `<b>${total.toLocaleString('es-AR')}</b> propiedades encontradas${S.kw ? ` para "<b>${S.kw}</b>"` : ''}`;
+    count.textContent = textoConteo(total);
     hayMas = propsMostradas < total;
     if (mapaVisible) actualizarMapaMarcadores(propsFiltradas);
 
@@ -2723,6 +2735,12 @@ function renderDetalle(p) {
   if (orientTrad) cand.push(['orient', orientTrad, 'orientación']);
   if (p.toilet_amount) cand.push(['toilet', p.toilet_amount, 'toilette']);
   if (terreno && total && total !== cub && total !== terreno) cand.push(['supTot', m2(total), 'totales']);
+  // Extra data so short listings (lots, garages) still reach a full row of 4.
+  const metros = v => `${Number(v).toLocaleString('es-AR', {maximumFractionDigits: 2})} m`;
+  if (Number(p.front_measure) > 0) cand.push(['supTot', metros(p.front_measure), 'de frente']);
+  if (Number(p.depth_measure) > 0) cand.push(['supTot', metros(p.depth_measure), 'de fondo']);
+  if (Number(p.floors_amount) > 1) cand.push(['amb', p.floors_amount, 'plantas']);
+  if (!cocheras && Number(p.type?.id) === 10) cand.push(['coche', 1, 'cochera']);
   const n = cand.length >= 8 ? 8 : cand.length >= 4 ? 4 : cand.length;
   let kf = cand.slice(0, n).map(([i, v, l]) => kfItem(i, v, l)).join('');
   document.getElementById('det-key-feats').innerHTML = kf;
@@ -2741,7 +2759,7 @@ function renderDetalle(p) {
   // Tab General
   document.getElementById('tab-general-grid').innerHTML = buildGrid([
     ['Tipo de propiedad', trad(p.type?.name)],
-    ['Código',            p.reference_code ? `#${p.reference_code}` : null],
+    ['Código',            p.reference_code ? p.reference_code : null],
     ['Barrio / Zona',     ubic],
     ['Dirección',         p.address || null],
     ['Antigüedad',        p.age > 0 ? `${p.age} años` : null],
@@ -2924,7 +2942,8 @@ function buildGaleria() {
       const total = galFotos.length;
       const s1 = galFotos[1] || galFotos[0];
       const s2 = galFotos[2] || galFotos[0];
-      const labelVerTodas = `${total} fotos`;
+      // The photo count is already on the gallery; this tile says how many more there are.
+      const labelVerTodas = total > 3 ? `+${total - 3} fotos` : 'Ver fotos';
       gridDer.innerHTML = `
         <div class="galeria-grid-item" onclick="galIr(1); abrirLightbox(1)">
           <img src="${s1}" alt="Foto 2" loading="lazy" onerror="this.src='${FALLBACK}'">
@@ -2936,6 +2955,8 @@ function buildGaleria() {
     } else {
       gridDer.style.display = 'none';
     }
+    // With a single image the main photo takes the whole width (no empty column).
+    document.querySelector('.galeria-layout')?.classList.toggle('galeria-layout--single', galFotos.length <= 1);
   }
 
   // Thumbnails strip — oculto en desktop
@@ -2951,10 +2972,11 @@ function buildGaleria() {
     const pills = [];
 
     // Pill de fotos — ícono plano de imagen
-    if (galFotos.length > 0) {
+    const fotosReales = (galProp.photos||[]).length;
+    if (fotosReales > 0) {
       pills.push(`<button class="gal-media-pill" onclick="abrirLightbox(galIdx)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 9h2l2-3h10l2 3h2"/></svg>
-        ${galFotos.length} fotos</button>`);
+        ${fotosReales} ${fotosReales === 1 ? 'foto' : 'fotos'}</button>`);
     }
 
     // Pill de video — ícono play simple
