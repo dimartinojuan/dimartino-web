@@ -25,6 +25,8 @@ const placeFixes=[[/^Jauregui Jose Maria$/i,'Jáuregui'],[/\bLujan\b/g,'Luján']
 export const prettyPlace=v=>placeFixes.reduce((s,[re,to])=>s.replace(re,to),text(v));
 // Published addresses are shown as Tokko has them, minus typing slips: "al al", "N° al", a repeated city at the end,
 // "Calle S/N" or a listing title typed into the address field.
+// Dollar rate used only to sort pesos and dollars together: MEP first, official if MEP is not available.
+async function dollarRate(){for(const [tipo,url] of [['MEP','https://dolarapi.com/v1/dolares/bolsa'],['oficial','https://dolarapi.com/v1/dolares/oficial']]){try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(!r.ok)continue;const d=await r.json();const valor=Number(d.venta??d.compra);if(valor>0)return {tipo,valor,fecha:d.fechaActualizacion||new Date().toISOString()};}catch{}}return null;}
 export function cleanAddress(v){let a=text(v).replace(/\s+/g,' ');a=a.replace(/\bal al\b/gi,'al').replace(/\s+N[°º]\s*(?=al\b)/gi,' ').replace(/(?:,\s*(?:Luj[aá]n|Buenos Aires))+\s*$/i,'').trim();if(/^calle\s*s\/?n$/i.test(a)||/\b(a la venta|en venta|en alquiler|apto cr[eé]dito|ambientes)\b/i.test(a))return '';return prettyPlace(a);}
 // Tokko may deliver the listing text in different fields depending on the endpoint.
 const descriptionOf=p=>text(String(p.description||p.rich_description||p.description_only||p.short_description||'').replace(/<br\s*\/?>|<\/p>/gi,'\n').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&')).replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n');
@@ -142,6 +144,7 @@ async function main(){
   // Listing without photos: the official logo, unchanged, on the brand blue.
   const logoData=(await fs.readFile(path.join(out,'assets/logo.png'))).toString('base64');
   await write('assets/property-placeholder.svg',`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="#0B3042"/><image x="300" y="293" width="600" height="215" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,${logoData}" xlink:href="data:image/png;base64,${logoData}"/></svg>`);
+  snapshot.dolar=await dollarRate();console.log(snapshot.dolar?`Dólar ${snapshot.dolar.tipo}: $ ${snapshot.dolar.valor}`:'Sin cotización del dólar: el orden por precio separa pesos y dólares.');
   await write('data/properties.json',json(snapshot));await write('data/routes.json',json(Object.fromEntries(properties.map(p=>[p.id,p.path]))));await write('.nojekyll','');
   const assetVersions={};for(const name of ['site.css','search.js','app.js'])assetVersions[name]=createHash('sha256').update(await fs.readFile(path.join(out,'assets',name))).digest('hex').slice(0,12);
   template=template.replace(BASE+'assets/site.css',BASE+'assets/site.css?v='+assetVersions['site.css']);
