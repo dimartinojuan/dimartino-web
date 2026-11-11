@@ -129,8 +129,9 @@ body{background:#fff}
 .hero h1.hero-titulo{display:flex;flex-direction:column;font-size:clamp(2.1rem,4.6vw,3.9rem);font-weight:800;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:34px}
 .hero-accesos{justify-content:flex-start}
 @media(max-width:768px){.hero{padding-left:6%;padding-right:6%}.hero h1.hero-titulo{font-size:clamp(2rem,9.5vw,2.6rem)}.hero-accesos{align-items:stretch}}
-/* Grilla fina del manual sobre los fondos azules */
-.seccion--azul,footer{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:88px 88px}
+/* Fondos lisos, sin grilla. Desarrollos en blanco y el pie más oscuro, con filete rojo, para separar cada parte */
+.seccion--desarrollos{background:var(--blanco)}
+footer{background:linear-gradient(rgba(0,0,0,.22),rgba(0,0,0,.22)),#0B3042;border-top:4px solid #D3282F}
 /* Datos principales: grilla pareja de 4 columnas (4 u 8 datos) */
 .det-key-feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 0!important}
 .det-kf{min-width:0!important;padding:8px 4px!important}
@@ -219,3 +220,23 @@ footer .brand-logo{height:auto!important;width:210px}
 .development-props{margin-top:40px}
 .development-props h2{font-size:22px;color:var(--azul);margin-bottom:18px}
 .galeria-layout.galeria-layout--single{grid-template-columns:1fr}
+
+/* Desarrollos: en marcha en tarjetas, concretados en tira de logos */
+.seccion--desarrollos .des-card{background:var(--azul);border-radius:14px;overflow:hidden;box-shadow:0 14px 36px rgba(11,48,66,.16)}
+.des-grid--uno{grid-template-columns:1fr!important}
+.des-grid--uno .des-card{flex-direction:row!important}
+.des-grid--uno .des-card img{width:58%!important;height:340px!important}
+.des-grid--uno .des-overlay{display:flex!important;flex-direction:column;justify-content:center;padding:28px 32px!important}
+.des-grid--uno .des-nombre{font-size:26px}
+@media(max-width:768px){.des-grid--uno .des-card{flex-direction:column!important}.des-grid--uno .des-card img{width:100%!important;height:230px!important}}
+.des-vendidos{margin-top:56px;padding-top:34px;border-top:1px solid var(--gris-borde)}
+.des-vendidos-titulo{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--azul);margin-bottom:20px}
+.des-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,transparent);mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,transparent)}
+.des-marquee-track{display:flex;gap:18px;width:max-content;animation:des-pasar 38s linear infinite}
+.des-marquee:hover .des-marquee-track{animation-play-state:paused}
+.des-logo{flex:none;width:200px;display:flex!important;flex-direction:column;align-items:center;gap:8px;text-decoration:none;background:none!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important}
+.des-logo img{width:200px!important;height:118px!important;object-fit:cover;border-radius:10px;filter:grayscale(1);opacity:.8;transition:filter .3s,opacity .3s}
+.des-logo:hover img{filter:none;opacity:1}
+.des-logo span{font-size:12px;font-weight:600;color:var(--azul);text-align:center;white-space:nowrap}
+@keyframes des-pasar{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.des-marquee-track{animation:none}}

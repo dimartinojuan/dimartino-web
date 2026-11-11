@@ -171,7 +171,20 @@ async function main(){
   baseDoc.querySelector('footer').remove();const footer=parseHTML(template).document.querySelector('footer');baseDoc.body.append(footer);
   const developmentSection=baseDoc.getElementById('desarrollos');
   developmentSection.querySelector('.sec-label')?.remove();developmentSection.querySelector('.sec-sub')?.remove();
-  developmentSection.querySelector('.des-grid').innerHTML=developments.map(d=>`<a class="des-card" href="${BASE+d.path}"><img src="${esc(d.photos[0]?.image||BASE+'assets/property-placeholder.svg')}" alt="${esc(d.name+' en '+d.location.name)}" width="900" height="560" loading="lazy" decoding="async"><div class="des-overlay"><span class="des-tag">${esc(d.type.label)}</span><h3 class="des-nombre">${esc(d.name)}</h3><p class="des-desc">${esc(d.location.name)}</p></div></a>`).join('');
+  // Desarrollos en marcha arriba, en tarjetas; los ya vendidos abajo, en una tira de logos que va pasando.
+  const isSold=d=>/villa odilia|la ferme (iii|v|3|5)\b/i.test(d.name)&&!/industrial/i.test(d.name);
+  const active=developments.filter(d=>!isSold(d)),sold=developments.filter(isSold);
+  const desImg=d=>esc(d.photos[0]?.image||BASE+'assets/property-placeholder.svg');
+  const grid=developmentSection.querySelector('.des-grid');
+  grid.classList.toggle('des-grid--uno',active.length===1);
+  grid.innerHTML=active.map(d=>`<a class="des-card" href="${BASE+d.path}"><img src="${desImg(d)}" alt="${esc(d.name+' en '+d.location.name)}" width="900" height="560" loading="lazy" decoding="async"><div class="des-overlay"><span class="des-tag">En marcha · ${esc(d.type.label)}</span><h3 class="des-nombre">${esc(d.name)}</h3><p class="des-desc">${esc(d.location.name)}</p></div></a>`).join('');
+  if(!active.length)grid.remove();
+  if(sold.length){
+    const tile=(d,dup)=>`<a class="${dup?'des-logo':'des-card des-logo'}" href="${BASE+d.path}"${dup?' aria-hidden="true" tabindex="-1"':''}><img src="${desImg(d)}" alt="${dup?'':esc(d.name)}" width="220" height="130" loading="lazy" decoding="async"><span>${esc(d.name)}</span></a>`;
+    const reps=Math.max(2,Math.ceil(8/sold.length));
+    const row=Array.from({length:reps},(_,i)=>sold.map(d=>tile(d,i>0)).join('')).join('');
+    developmentSection.insertAdjacentHTML('beforeend',`<div class="des-vendidos"><h3 class="des-vendidos-titulo">Desarrollos ya concretados</h3><div class="des-marquee"><div class="des-marquee-track">${row}${row.replace(/class="des-card des-logo"/g,'class="des-logo"').replace(/<a class="des-logo" href="([^"]*)"><img src="([^"]*)" alt="[^"]*"/g,'<a class="des-logo" href="$1" aria-hidden="true" tabindex="-1"><img src="$2" alt=""')}</div></div></div>`);
+  }
   if(!developments.length)developmentSection.remove();
   else baseDoc.getElementById('tasaciones').after(developmentSection);
   let fieldId=0;for(const field of baseDoc.querySelectorAll('.campo input,.campo select,.campo textarea')){if(!field.id)field.id='campo-'+(++fieldId);const label=field.parentElement.querySelector('label');if(label)label.setAttribute('for',field.id);if(field.name==='from_name')field.setAttribute('autocomplete','name');if(field.name==='from_phone')field.setAttribute('autocomplete','tel');if(field.name==='from_email')field.setAttribute('autocomplete','email');}
