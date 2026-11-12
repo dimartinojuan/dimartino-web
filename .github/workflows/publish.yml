@@ -15,6 +15,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FTP_HOST: ${{ secrets.FTP_HOST }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +34,18 @@ jobs:
       - run: npm test
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://dimartinojuan.github.io/dimartino-web' }}
+      # Sube dist/ al hosting de DonWeb (solo si están cargados los secretos FTP_HOST, FTP_USER y FTP_PASS).
+      # Corre después de los tests: si fallan, no se publica nada.
+      - name: Publicar en DonWeb por FTP
+        if: ${{ env.FTP_HOST != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: dist/
+          server-dir: ${{ vars.FTP_DIR || 'public_html/' }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -42,6 +56,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    # Con el dominio propio cargado en SITE_URL, la web deja de publicarse en GitHub Pages.
+    if: ${{ !vars.SITE_URL || contains(vars.SITE_URL, 'github.io') }}
     steps:
       - name: Publicar en GitHub Pages
         id: deployment
