@@ -118,7 +118,7 @@ async function main(){
   app=app.replace(/^if \(EJS_PK[^\n]+/m,'');
   app=app.replace(/\/\* ═+\n   EMAILJS CONFIG[\s\S]*?\/\* ═+\n   SLIDER EN CARDS/, '/* ═══════════════════════════════\n   SLIDER EN CARDS');
   app=app.replace(/const FALLBACK = '[^']+';/,`const FALLBACK = DM_ROOT+'assets/property-placeholder.svg';`);
-  app=app.replace(/const S = \{[^\n]+/,'const S = { kw:"",op:"",ops:[],tipos:[],desde:"",hasta:"",ambs:[],rooms:[],barrios:[],tags:[],excluded:[],barrioTipo:"",moneda:"USD",code:"" };');
+  app=app.replace(/const S = \{[^\n]+/,'const S = { kw:"",op:"",ops:[],tipos:[],desde:"",hasta:"",ambs:[],rooms:[],barrios:[],ubic:[],tags:[],excluded:[],barrioTipo:"",moneda:"USD",code:"" };');
   app=app.replace('onclick="abrirLightbox(2)"','onclick="abrirLightbox(${Math.min(2,galFotos.length-1)})"');
   app=app.replace('const supCub = p.roofed_surface || p.surface;','const supCub = Number(p.roofed_surface)||0;');
   app=app.replace("document.title = titulo + ' | Di Martino Propiedades';","// The static generator provides the unique page title.");
