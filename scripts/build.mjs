@@ -135,6 +135,7 @@ async function main(){
   await fs.mkdir(path.join(out,'assets'),{recursive:true});
   // Write image bytes synchronously with the rest of the build, avoiding async replacements.
   const originals=[...((await fs.readFile(path.join(ROOT,'src/template.html'),'utf8')).matchAll(/data:image\/png;base64,([A-Za-z0-9+/=]+)/g))];await write('assets/favicon-source.png',Buffer.from(originals[0][1],'base64'));await write('assets/logo.png',Buffer.from(originals[1][1],'base64'));
+  for(const f of await fs.readdir(path.join(ROOT,'assets/categorias')).catch(()=>[]))await write('assets/categorias/'+f,await fs.readFile(path.join(ROOT,'assets/categorias',f)));
   for(const name of ['favicon.png','social-cover.jpg','logo-schema.png','iso-color.svg','logo-nav.png']){try{await write('assets/'+name,await fs.readFile(path.join(ROOT,'assets',name)));}catch{if(name==='favicon.png')await write('assets/favicon.png',Buffer.from(originals[0][1],'base64'));}}
   template=template.replaceAll('favicon-source.png','favicon.png');
   // Poppins is self-hosted so every phone and computer shows the same brand typeface, with no third-party requests.
@@ -156,17 +157,12 @@ async function main(){
   {const top=baseDoc.querySelector('.resultados-top'),left=baseDoc.createElement('div');left.className='res-izq';left.append(baseDoc.getElementById('res-count'),baseDoc.getElementById('nlp-bar'));top.prepend(left);}
   baseDoc.querySelector('.busq-body').insertAdjacentHTML('beforebegin','<button type="button" class="filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="property-filters">Filtros</button>');baseDoc.querySelector('.filtros-sidebar').id='property-filters';baseDoc.getElementById('res-count').setAttribute('aria-live','polite');
   const hero=properties.find(p=>p.is_starred_on_web&&p.photos.length)||properties.find(p=>p.photos.length);baseDoc.documentElement.style.setProperty('--hero-photo',`url("${hero.photos[0].image}")`);
-  // Category artwork comes from the active public inventory, never stock photos.
-  // Chosen by looking at every cover in the catalog: bright, wide, no signs or logos. If one is sold, the next property of that category is used.
-  const categoryPhotos=[{id:1052996,state:{op:'1',tipos:['3']}},{id:8067131,state:{op:'2'}},{id:5936796,state:{op:'1',tipos:['1']}},{id:7276672,state:{tipos:['2']}},{id:4858288,state:{}}];
-  const usedCategoryProperties=new Set();
+  // Category artwork: own images in assets/categorias (Argentine-style homes, chosen by Juan), published with the site.
+  const categoryImages=[['casas-en-venta','Casa de estilo argentino con techo de tejas y jardín'],['alquileres','Living luminoso de un departamento en alquiler'],['terrenos','Lote baldío en un barrio de casas bajas'],['departamentos','Edificio de departamentos con balcones y vereda arbolada'],['ver-todo','Calle arbolada de un barrio residencial']];
   for(const [i,card]of [...baseDoc.querySelectorAll('.cat-card')].entries()){
-    const choice=categoryPhotos[i],candidates=DMSearch.filter(properties,choice.state).filter(p=>p.photos?.length);
-    const property=candidates.find(p=>p.id===choice.id)||candidates.find(p=>!usedCategoryProperties.has(p.id))||candidates[0];
-    const img=card.querySelector('img');
-    if(property){const photo=property.photos[property.id===choice.id?(choice.photo||0):0]||property.photos[0];img.src=photo.image;img.alt=property.type.label+' en '+property.location.name+(property.address?' | '+property.address:'');img.setAttribute('data-property-id',property.id);usedCategoryProperties.add(property.id);}
-    else{img.src=BASE+'assets/property-placeholder.svg';img.alt='Di Martino Propiedades';}
-    img.setAttribute('decoding','async');img.setAttribute('width','640');img.setAttribute('height','480');
+    const img=card.querySelector('img'),[file,alt]=categoryImages[i]||categoryImages[4];
+    img.src=BASE+'assets/categorias/'+file+'.webp';img.alt=alt;
+    img.setAttribute('decoding','async');img.setAttribute('width','600');img.setAttribute('height','803');
   }
   baseDoc.querySelector('footer').remove();const footer=parseHTML(template).document.querySelector('footer');baseDoc.body.append(footer);
   const developmentSection=baseDoc.getElementById('desarrollos');
