@@ -240,3 +240,15 @@ footer .brand-logo{height:auto!important;width:210px}
 .des-logo span{font-size:12px;font-weight:600;color:var(--azul);text-align:center;white-space:nowrap}
 @keyframes des-pasar{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.des-marquee-track{animation:none}}
+
+/* Ubicación paso a paso */
+.ubic-ruta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ubic-sel{display:inline-flex;align-items:center;gap:6px;background:var(--azul);color:#fff;border:none;border-radius:20px;padding:5px 10px 5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.ubic-sel span{font-size:14px;line-height:1;opacity:.75}
+.ubic-sel:hover span{opacity:1}
+.ubic-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.ubic-lista button{background:none;border:none;padding:5px 0;font-size:13px;color:var(--negro);cursor:pointer;text-align:left;font-family:inherit;width:100%}
+.ubic-lista button:hover{color:var(--rojo)}
+.ubic-n{color:var(--gris-txt);font-size:12px}
+.ubic-mas{background:none;border:none;padding:6px 0 0;font-size:12px;font-weight:700;color:var(--azul);cursor:pointer;font-family:inherit}
+.ubic-mas:hover{text-decoration:underline}
