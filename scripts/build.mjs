@@ -129,6 +129,7 @@ async function main(){
   app=app.replace('`${c.label}', '`${escapeHTML(c.label)}');
   const overrides=await fs.readFile(path.join(ROOT,'src/overrides.js'),'utf8');app+='\n'+await fs.readFile(path.join(ROOT,'src/navigation.js'),'utf8')+'\n'+overrides+'\n'+await fs.readFile(path.join(ROOT,'src/media.js'),'utf8');
   app+='\nif(!window.DM_BUILD){\n'+await fs.readFile(path.join(ROOT,'src/hero-video.js'),'utf8')+'\n}';
+  app+='\nif(!window.DM_BUILD){\n'+await fs.readFile(path.join(ROOT,'src/analytics.js'),'utf8')+'\n}';
   template=template.replace(/<style>[\s\S]*?<\/style>/,`<link rel="stylesheet" href="${BASE}assets/site.css">`).replace(/<script src="https:\/\/cdn.jsdelivr.net\/npm\/@emailjs[\s\S]*?<\/script>/,'').replace(/<script>\s*\/\* ═[\s\S]*?<\/script>/,'');
   // Externalize the retained brand assets, including the oversized original favicon.
   let assetIndex=0;template=template.replace(/data:image\/png;base64,([A-Za-z0-9+/=]+)/g,()=>{const name=assetIndex++===0?'favicon-source.png':'logo.png';return BASE+'assets/'+name;});

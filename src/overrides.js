@@ -85,7 +85,7 @@ function enviarForm(btn,tipoForm){
   if(typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL){whatsapp();return;}
   btn.disabled=true;const label=btn.textContent;btn.textContent='Enviando…';if(estado)estado.textContent='';
   fetch(DM_CONTACT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:val('from_name'),telefono:val('from_phone'),email:val('from_email'),mensaje,tipo:tipoForm||'Consulta',propiedad:prop,url,website:container.querySelector('[name=website]')?.value||''})})
-    .then(r=>r.ok?r.json():Promise.reject()).then(r=>{if(!r.ok)throw 0;fields.forEach(el=>{if(el.id!=='det-msg')el.value='';});btn.textContent='Consulta enviada';if(estado)estado.textContent='Gracias. Te vamos a contactar a la brevedad.';})
+    .then(r=>r.ok?r.json():Promise.reject()).then(r=>{if(!r.ok)throw 0;fields.forEach(el=>{if(el.id!=='det-msg')el.value='';});btn.textContent='Consulta enviada';window.dmTrack&&window.dmTrack('consulta_enviada',{formulario:tipoForm||'Consulta'});if(estado)estado.textContent='Gracias. Te vamos a contactar a la brevedad.';})
     .catch(()=>{btn.disabled=false;btn.textContent=label;if(estado)estado.textContent='No pudimos enviar la consulta. Probá de nuevo o escribinos por WhatsApp.';});
 }
 function suggestions(){const input=document.getElementById('nav-search-input'),list=document.getElementById('search-suggestions');if(!list)return;input.addEventListener('input',async()=>{await cargarCache().catch(()=>{});const q=DMSearch.norm(input.value);const values=[...new Set(['Casa en venta','Departamento en alquiler','Terreno en Jáuregui','Casa con pileta',...todasLasProps.map(p=>p.location?.name).filter(Boolean),...todasLasProps.map(p=>p.reference_code).filter(Boolean)])];list.replaceChildren(...values.filter(v=>DMSearch.norm(v).includes(q)).slice(0,10).map(v=>{const opt=document.createElement('option');opt.value=v;return opt;}));});}
@@ -120,13 +120,13 @@ function compartir(){
   const url=document.querySelector('link[rel=canonical]')?.href||location.href.split('?')[0];
   const title=(document.getElementById('det-titulo')?.textContent||document.title).trim();
   const touch=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
-  if(touch&&navigator.share){navigator.share({title,text:title,url}).catch(()=>{});return;}
+  if(touch&&navigator.share){window.dmTrack&&window.dmTrack('compartir',{medio:'menú del celular'});navigator.share({title,text:title,url}).catch(()=>{});return;}
   const old=document.getElementById('share-menu');if(old){old.remove();return;}
   const enc=encodeURIComponent,text=title+' '+url;
   const items=[['WhatsApp','https://wa.me/?text='+enc(text)],['Facebook','https://www.facebook.com/sharer/sharer.php?u='+enc(url)],['Email','mailto:?subject='+enc(title)+'&body='+enc(text)]];
   const menu=document.createElement('div');menu.id='share-menu';menu.className='share-menu';menu.setAttribute('role','menu');
   menu.innerHTML=items.map(([n,h])=>`<a role="menuitem" href="${h}" target="_blank" rel="noopener">${n}</a>`).join('')+'<button type="button" role="menuitem" data-copy>Copiar enlace</button>';
-  menu.querySelector('[data-copy]').onclick=()=>{(navigator.clipboard?.writeText(url)||Promise.reject()).then(()=>mostrarToast('Enlace copiado')).catch(()=>mostrarToast('Copiá la dirección desde la barra del navegador'));menu.remove();};
+  menu.querySelector('[data-copy]').onclick=()=>{window.dmTrack&&window.dmTrack('compartir',{medio:'copiar enlace'});(navigator.clipboard?.writeText(url)||Promise.reject()).then(()=>mostrarToast('Enlace copiado')).catch(()=>mostrarToast('Copiá la dirección desde la barra del navegador'));menu.remove();};
   menu.addEventListener('click',e=>{if(e.target.closest('a'))menu.remove();});
   document.querySelector('.galeria-compartir').append(menu);
   setTimeout(()=>document.addEventListener('click',function close(e){if(!e.target.closest('.galeria-compartir')){menu.remove();document.removeEventListener('click',close);}}),0);
