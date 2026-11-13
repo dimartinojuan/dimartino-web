@@ -16,6 +16,25 @@ if (!is_array($datos)) salir(false, 400);
 if (!empty($datos['website'])) salir(true); // trampa para robots: se ignora en silencio
 
 $limpio = fn($v, $max) => mb_substr(trim(strip_tags((string)($v ?? ''))), 0, $max);
+
+// Aviso de clic en un botón de WhatsApp: no carga nada en Tokko, solo avisa por Telegram (si está configurado).
+if (($datos['evento'] ?? '') === 'whatsapp') {
+  $marcaWa = sys_get_temp_dir() . '/dm_wa_' . md5($_SERVER['REMOTE_ADDR'] ?? '');
+  if (file_exists($marcaWa) && time() - filemtime($marcaWa) < 10) salir(true);
+  @touch($marcaWa);
+  $cfg = @include dirname(__DIR__) . '/dimartino-config.php';
+  $tk = is_array($cfg) ? ($cfg['telegram_token'] ?? '') : '';
+  $chat = is_array($cfg) ? ($cfg['telegram_chat'] ?? '') : '';
+  if ($tk !== '' && $chat !== '') {
+    $pagina = filter_var($datos['url'] ?? '', FILTER_VALIDATE_URL) ?: '';
+    $aviso = "Alguien tocó WhatsApp en la web\n" . $limpio($datos['texto'] ?? '', 300) . ($pagina ? "\n\nDesde: " . $pagina : '');
+    $tg = curl_init('https://api.telegram.org/bot' . $tk . '/sendMessage');
+    curl_setopt_array($tg, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => ['chat_id' => $chat, 'text' => $aviso, 'disable_web_page_preview' => 'true'], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8]);
+    curl_exec($tg);
+    curl_close($tg);
+  }
+  salir(true);
+}
 $nombre = $limpio($datos['nombre'] ?? '', 120);
 $telefono = $limpio($datos['telefono'] ?? '', 40);
 $email = filter_var($datos['email'] ?? '', FILTER_VALIDATE_EMAIL) ?: '';
