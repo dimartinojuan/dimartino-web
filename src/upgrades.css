@@ -196,7 +196,7 @@ footer .brand-logo{height:auto!important;width:210px}
 .precio-manual input::-webkit-outer-spin-button,.precio-manual input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 /* Ficha en celular: ninguna tarjeta más ancha que la pantalla */
 @media(max-width:768px){
-  #vista-detalle .det-wrap>*,#vista-detalle .det-wrap>div:first-child>*{min-width:0;max-width:100%;box-sizing:border-box}
+  #vista-detalle .det-wrap>*,#vista-detalle .det-wrap>div:first-child>*{min-width:0;max-width:100%;box-sizing:border-box;align-self:stretch;width:100%}
   .det-tabs-nav{overflow-x:auto;scrollbar-width:none}
   .det-tab-btn{padding:9px 12px;white-space:nowrap}
   .cat-overlay{padding:14px 12px}

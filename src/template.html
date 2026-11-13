@@ -2891,7 +2891,7 @@ function renderDetalle(p) {
   document.getElementById('det-agente-cargo').textContent = prod.email || 'Asesor inmobiliario';
 
   /* ── WhatsApp / teléfono ── */
-  const msg = encodeURIComponent(`Hola! Me interesa la propiedad: ${titulo} — ${ubic}. ¿Pueden darme más información?`);
+  const msg = encodeURIComponent(typeof waMessage === 'function' ? waMessage(p) : `Hola, quiero consultar por esta propiedad: ${titulo} | ${ubic}`);
   document.getElementById('det-wsp').href = `https://wa.me/5492323678107?text=${msg}`;
 
   /* ── Pre-fill formulario ── */
