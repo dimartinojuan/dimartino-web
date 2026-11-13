@@ -1,7 +1,8 @@
 <?php
 // Recibe las consultas de la web y las carga en Tokko como contacto (aparecen en Consultas).
 // La clave de Tokko NO va en este archivo: se lee de un archivo de configuración fuera de la carpeta pública,
-// por ejemplo /home/USUARIO/dimartino-config.php con:  <?php return ['tokko_key' => 'CLAVE'];
+// por ejemplo /home/USUARIO/dimartino-config.php con:  <?php return ['tokko_key' => 'CLAVE', 'telegram_token' => 'TOKEN_DEL_BOT', 'telegram_chat' => 'ID_DEL_CHAT'];
+// (los dos datos de Telegram son opcionales: si están, cada consulta también avisa por Telegram)
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 function salir($ok, $codigo = 200) { http_response_code($codigo); echo json_encode(['ok' => $ok]); exit; }
@@ -53,4 +54,22 @@ curl_setopt_array($ch, [
 curl_exec($ch);
 $estado = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
+
+// Aviso por Telegram (opcional): se activa si el archivo de configuración trae 'telegram_token' y 'telegram_chat'.
+$tgToken = is_array($config) ? ($config['telegram_token'] ?? '') : '';
+$tgChat = is_array($config) ? ($config['telegram_chat'] ?? '') : '';
+if ($tgToken !== '' && $tgChat !== '') {
+  $aviso = "Nueva consulta web\n" . $tipo . "\nNombre: " . $nombre . "\nTel: " . $telefono
+    . ($email ? "\nEmail: " . $email : '') . ($mensaje ? "\n\n" . $mensaje : '') . ($url ? "\n\n" . $url : '')
+    . ($estado >= 200 && $estado < 300 ? '' : "\n\nOJO: no se pudo cargar en Tokko.");
+  $tg = curl_init('https://api.telegram.org/bot' . $tgToken . '/sendMessage');
+  curl_setopt_array($tg, [
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => ['chat_id' => $tgChat, 'text' => $aviso, 'disable_web_page_preview' => 'true'],
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 8,
+  ]);
+  curl_exec($tg);
+  curl_close($tg);
+}
 salir($estado >= 200 && $estado < 300, $estado >= 200 && $estado < 300 ? 200 : 502);
