@@ -1,7 +1,7 @@
 <?php
 // Recibe las consultas de la web y las carga en Tokko como contacto (aparecen en Consultas).
 // La clave de Tokko NO va en este archivo: se lee de un archivo de configuración fuera de la carpeta pública,
-// por ejemplo /home/USUARIO/dimartino-config.php con:  <?php return ['tokko_key' => 'CLAVE', 'telegram_token' => 'TOKEN_DEL_BOT', 'telegram_chat' => 'ID_DEL_CHAT'];
+// por ejemplo /home/USUARIO/dimartino-config.php con:  <?php return ['tokko_key' => 'CLAVE', 'telegram_token' => 'TOKEN_DEL_BOT', 'telegram_chat' => 'ID_DEL_CHAT', 'planilla_url' => 'URL_DEL_SCRIPT', 'planilla_clave' => 'CLAVE'];
 // (los dos datos de Telegram son opcionales: si están, cada consulta también avisa por Telegram)
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -40,7 +40,7 @@ function propDe($texto) {
 }
 function mmss($seg) { $seg = (int)round($seg); return intdiv($seg, 60) . ':' . str_pad($seg % 60, 2, '0', STR_PAD_LEFT); }
 // Arma el texto del resumen de un día (también sirve para probarlo).
-function textoResumen($dir, $dia) {
+function textoResumen($dir, $dia, &$datosDia = null) {
   $props = [];
   foreach ((json_decode(@file_get_contents(__DIR__ . '/data/properties.json'), true)['properties'] ?? []) as $p) {
     $info = ['cod' => (string)($p['reference_code'] ?? $p['id']), 'dir' => (string)($p['address'] ?? '')];
@@ -90,27 +90,65 @@ function textoResumen($dir, $dia) {
       $txt .= (++$i) . '. ' . $nom . "\n   " . implode(' · ', $det) . "\n";
     }
   }
+  // Datos ordenados para la planilla (una fila por día y una por propiedad con movimiento).
+  $filasProp = [];
+  foreach ($porProp as $k => $q) {
+    if (!$q['vistas'] && !$q['w'] && !$q['c'] && !$q['x']) continue;
+    $info = $props[$k] ?? null;
+    $filasProp[] = ['codigo' => is_array($info) ? $info['cod'] : ($k === '' ? 'General' : preg_replace('/^c:/', '', $k)), 'tokko' => is_array($info) ? (string)$k : '', 'direccion' => is_array($info) ? $info['dir'] : '',
+      'personas' => count($q['personas']), 'vistas' => $q['vistas'], 'segundos' => $q['seg'] ? (int)round(array_sum($q['seg']) / count($q['seg'])) : 0,
+      'fotos' => $q['fotos'] ? (int)round(array_sum($q['fotos']) / count($q['fotos'])) : 0, 'tour' => $q['tour'], 'video' => $q['video'], 'planos' => $q['planos'], 'mapa' => $q['mapa'],
+      'whatsapp' => $q['w'], 'consultas' => $q['c'], 'compartidas' => $q['x'], 'telefono' => $q['tel']];
+  }
+  $datosDia = ['fecha' => $dia, 'personas' => $n, 'paginas' => $paginas, 'segundos' => $tiempos ? (int)round(array_sum($tiempos) / count($tiempos)) : 0,
+    'celular' => $n ? round($nCelu * 100 / $n) : 0, 'origenes' => $origenes, 'whatsapp' => $tot['w'], 'consultas' => $tot['c'], 'telefono' => $tot['tel'],
+    'compartidas' => $tot['x'], 'tour' => $tot['tour'], 'video' => $tot['video'], 'propiedades' => $filasProp, 'texto' => $txt];
   return $txt;
+}
+// Manda el resumen del día a la planilla de Google (que además lo manda por mail). Se activa con 'planilla_url' y 'planilla_clave' en el archivo de configuración.
+function enviarPlanilla($cfg, array $datosDia) {
+  $url = is_array($cfg) ? ($cfg['planilla_url'] ?? '') : '';
+  $clave = is_array($cfg) ? ($cfg['planilla_clave'] ?? '') : '';
+  if ($url === '' || $clave === '') return false;
+  $h = curl_init($url);
+  curl_setopt_array($h, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => json_encode(['clave' => $clave] + $datosDia, JSON_UNESCAPED_UNICODE), CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+    CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 20]);
+  $r = curl_exec($h); curl_close($h);
+  return is_string($r) && strpos($r, '"ok":true') !== false;
 }
 // Manda una vez por día (con la primera visita después de las 8) el resumen de ayer.
 function resumenDiario($dir, $cfg) {
   $tk = is_array($cfg) ? ($cfg['telegram_token'] ?? '') : '';
   $chat = is_array($cfg) ? ($cfg['telegram_chat'] ?? '') : '';
-  if ($tk === '' || $chat === '' || (int)date('G') < 8 || !is_dir($dir)) return;
+  $hayPlanilla = is_array($cfg) && !empty($cfg['planilla_url']) && !empty($cfg['planilla_clave']);
+  if ((($tk === '' || $chat === '') && !$hayPlanilla) || (int)date('G') < 8 || !is_dir($dir)) return;
   $ayer = date('Y-m-d', strtotime('-1 day'));
   $marca = @fopen($dir . '/enviado-' . $ayer, 'x');
   if (!$marca) return; // ya se mandó
   fclose($marca);
-  $tg = curl_init('https://api.telegram.org/bot' . $tk . '/sendMessage');
-  curl_setopt_array($tg, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => ['chat_id' => $chat, 'text' => mb_substr(textoResumen($dir, $ayer), 0, 4000)], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8]);
-  curl_exec($tg);
-  curl_close($tg);
+  $datosDia = null; $texto = textoResumen($dir, $ayer, $datosDia);
+  if ($tk !== '' && $chat !== '') {
+    $tg = curl_init('https://api.telegram.org/bot' . $tk . '/sendMessage');
+    curl_setopt_array($tg, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => ['chat_id' => $chat, 'text' => mb_substr($texto, 0, 4000)], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8]);
+    curl_exec($tg);
+    curl_close($tg);
+  }
+  if ($hayPlanilla) enviarPlanilla($cfg, $datosDia);
   foreach (glob($dir . '/*') ?: [] as $f) if (basename($f) !== 'sal' && filemtime($f) < time() - 90 * 86400) @unlink($f);
 }
 $esOficina = !empty($datos['oficina']);
 $esRobot = (bool)preg_match('/bot|crawl|spider|slurp|preview|headless|lighthouse|facebookexternalhit|whatsapp/i', $_SERVER['HTTP_USER_AGENT'] ?? '');
 $propPost = preg_match('/^\d{1,12}$/', (string)($datos['prop'] ?? '')) ? (string)$datos['prop'] : '';
 $evento = $datos['evento'] ?? '';
+
+// Prueba de la planilla: manda a la planilla el resumen del día pedido (o de ayer). Solo con la clave de la planilla.
+if ($evento === 'probar_planilla') {
+  $k = is_array($cfg) ? ($cfg['planilla_clave'] ?? '') : '';
+  if ($k === '' || !hash_equals($k, (string)($datos['clave'] ?? ''))) salir(false, 403);
+  $dia = preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)($datos['dia'] ?? '')) ? $datos['dia'] : date('Y-m-d', strtotime('-1 day'));
+  $datosDia = null; textoResumen($dirVisitas, $dia, $datosDia);
+  salir(enviarPlanilla($cfg, $datosDia));
+}
 
 // Página vista, salida de la página (tiempo y qué miró) y compartir. La web no los manda desde los equipos de la oficina.
 if (in_array($evento, ['visita', 'salida', 'compartir'], true)) {
