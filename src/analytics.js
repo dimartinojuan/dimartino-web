@@ -1,4 +1,6 @@
-// Contador propio de visitas (sin cookies ni datos personales): cada página vista avisa al servidor, que arma el resumen diario por Telegram.
+// Estadísticas propias (invisibles para el visitante, sin cookies ni datos personales y sin efecto en el SEO): cada página avisa
+// a contacto.php qué propiedad se vio, de dónde vino la visita y, al salir, cuánto tiempo estuvo y qué miró (fotos, recorrido 360,
+// video, planos, mapa, descripción, compartir, teléfono). Con eso el servidor arma el resumen diario por Telegram.
 // Los equipos de la oficina se marcan UNA vez abriendo dimartinoprop.com.ar/?oficina y desde entonces no cuentan (ni en Analytics). Para deshacerlo: ?oficina=no
 (function(){
   try{const p=new URLSearchParams(location.search);if(p.has('oficina')){const no=p.get('oficina')==='no';if(no)localStorage.removeItem('dm-oficina');else localStorage.setItem('dm-oficina','si');
@@ -6,7 +8,28 @@
     const d=document.createElement('div');d.className='oficina-aviso';d.setAttribute('role','status');d.textContent=no?'Este equipo vuelve a contar en las visitas de la web.':'Listo: este equipo ya no cuenta en las visitas de la web.';document.body.append(d);setTimeout(()=>d.remove(),7000);}
     window.DM_OFICINA=localStorage.getItem('dm-oficina')==='si';}catch{window.DM_OFICINA=false;}
   if(window.DM_OFICINA||typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL||!navigator.sendBeacon)return;
-  try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify({evento:'visita',url:location.pathname}));}catch{}
+  const enviar=d=>{try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify(d));}catch{}};
+  let prop='';try{const el=document.getElementById('property-data');if(el)prop=String(JSON.parse(el.textContent).id||'');}catch{}
+  let origen='directo';try{const sp=new URLSearchParams(location.search);const r=document.referrer?new URL(document.referrer).hostname.replace(/^www\.|^m\.|^l\.|^lm\./,''):'';
+    origen=sp.get('utm_source')||(sp.has('fbclid')?'facebook':sp.has('gclid')?'google ads':'')||(r&&!/dimartinoprop\.com\.ar$/.test(r)?r:(r?'interna':'directo'));}catch{}
+  enviar({evento:'visita',url:location.pathname,prop,origen:origen.slice(0,40)});
+  // Lo que hace en la página se junta y se manda una sola vez al salir.
+  const inicio=Date.now();let oculto=0,desde=0,enviado=false;const hizo={fotos:new Set(),ampliadas:0,tour:0,video:0,planos:0,mapa:0,descripcion:0,compartir:0,telefono:0,email:0};
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){desde=Date.now();salir();}else if(desde){oculto+=Date.now()-desde;desde=0;enviado=false;}});
+  addEventListener('pagehide',salir);
+  function salir(){if(enviado)return;enviado=true;const seg=Math.round((Date.now()-inicio-oculto)/1000);
+    enviar({evento:'salida',prop,seg:Math.min(seg,3600),fotos:hizo.fotos.size,ampliadas:hizo.ampliadas,tour:hizo.tour,video:hizo.video,planos:hizo.planos,mapa:hizo.mapa,descripcion:hizo.descripcion,compartir:hizo.compartir,telefono:hizo.telefono,email:hizo.email});}
+  const envolver=(nombre,fn)=>{const orig=window[nombre];if(typeof orig!=='function')return;window[nombre]=function(...a){try{fn(...a);}catch{}return orig.apply(this,a);};};
+  hizo.fotos.add(0);
+  envolver('actualizarGal',()=>setTimeout(()=>{try{hizo.fotos.add(galIdx);}catch{}},0));
+  envolver('actualizarLightbox',()=>setTimeout(()=>{try{hizo.fotos.add(lbIdx);}catch{}},0));
+  envolver('abrirLightbox',()=>hizo.ampliadas++);
+  envolver('abrirLightboxTour',()=>hizo.tour++);envolver('abrirLightboxVideo',()=>hizo.video++);
+  envolver('toggleMapa',()=>hizo.mapa++);envolver('toggleDesc',()=>hizo.descripcion++);envolver('compartir',()=>hizo.compartir++);
+  document.addEventListener('click',e=>{const t=e.target.closest?.('a[href],.media-facade,[data-src]');if(!t)return;const h=(t.getAttribute('href')||t.dataset.src||'').toLowerCase();
+    if(/plano/i.test(t.title||''))hizo.planos++;else if(/kuula|matterport|360|tour/.test(h))hizo.tour++;else if(/youtube|youtu\.be|vimeo/.test(h))hizo.video++;else if(/plano|blueprint/.test(h))hizo.planos++;
+    else if(h.startsWith('tel:'))hizo.telefono++;else if(h.startsWith('mailto:'))hizo.email++;
+    if(t.closest('#share-menu'))enviar({evento:'compartir',prop,medio:(t.textContent||'').trim().toLowerCase().slice(0,30)});},true);
 })();
 
 // Medición con Google Analytics 4. Solo corre en el dominio propio y solo si el visitante acepta
