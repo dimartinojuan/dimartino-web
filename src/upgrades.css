@@ -260,3 +260,12 @@ footer .brand-logo{height:auto!important;width:210px}
 .cookie-aviso button{font:inherit;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;border:1px solid #fff;background:transparent;color:#fff}
 .cookie-aviso button[data-ok]{background:#D3282F;border-color:#D3282F}
 @media(max-width:600px){.cookie-aviso{left:10px;right:10px;bottom:76px;max-width:none}}
+#home-grid>.prop-card:nth-child(n+7){display:none}
+.home-more{display:flex;justify-content:center;margin-top:28px}
+.home-more-btn{display:inline-flex;align-items:center;justify-content:center;background:#D3282F;color:#fff;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none}
+.home-more-btn:hover{filter:brightness(.92)}
+.filters-apply{position:fixed;left:0;right:0;bottom:0;z-index:100000;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -4px 16px rgba(11,48,66,.18)}
+.filters-apply[hidden]{display:none}
+.filters-apply button{width:100%;background:#D3282F;color:#fff;font:inherit;font-weight:700;font-size:15px;padding:14px;border:0;border-radius:10px;cursor:pointer}
+@media(min-width:769px){.filters-apply{display:none}}
+@media(max-width:768px){.home-more-btn{width:100%}}
