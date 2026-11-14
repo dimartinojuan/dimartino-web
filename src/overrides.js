@@ -163,7 +163,9 @@ document.addEventListener('click',e=>{const a=e.target.closest('a[href*="#"]');i
 if(location.hash.length>1)irAAncla(decodeURIComponent(location.hash.slice(1)));
 }
 // Cada clic en un botón de WhatsApp avisa al servidor (que avisa por Telegram). No frena ni demora la apertura de WhatsApp.
-if(typeof document!=="undefined")document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href*="wa.me/"]');if(!a||typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL||!navigator.sendBeacon)return;let texto='';try{texto=new URL(a.href).searchParams.get('text')||'';}catch{}try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify({evento:'whatsapp',texto:texto||'Botón de WhatsApp general',url:location.href}));}catch{}},true);
+if(typeof document!=="undefined")document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href*="wa.me/"]');if(!a||typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL||!navigator.sendBeacon)return;let texto='';try{texto=new URL(a.href).searchParams.get('text')||'';}catch{}// En una ficha, "Desde" va con el enlace corto (ej. dimartinoprop.com.ar/1038); si el mensaje ya lo trae, no se repite.
+let desde=location.href;try{const el=document.getElementById('property-data');if(el){const corto=shortLink(JSON.parse(el.textContent));desde=texto.includes(corto)?'':'https://'+corto;}}catch{}
+try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify({evento:'whatsapp',texto:texto||'Botón de WhatsApp general',url:desde}));}catch{}},true);
 // Filtros en celular: el botón dice si abre u oculta, y al abrir aparece abajo una barra fija "Ver N propiedades" para aplicar y volver al listado.
 function initMobileFilters(){const toggle=document.getElementById('filters-toggle'),sidebar=document.querySelector('.filtros-sidebar'),count=document.getElementById('res-count');if(!toggle||!sidebar)return;
   const bar=document.createElement('div');bar.className='filters-apply';bar.hidden=true;bar.innerHTML='<button type="button"></button>';document.body.append(bar);const apply=bar.firstChild;
