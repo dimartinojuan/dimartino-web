@@ -1,3 +1,14 @@
+// Contador propio de visitas (sin cookies ni datos personales): cada página vista avisa al servidor, que arma el resumen diario por Telegram.
+// Los equipos de la oficina se marcan UNA vez abriendo dimartinoprop.com.ar/?oficina y desde entonces no cuentan (ni en Analytics). Para deshacerlo: ?oficina=no
+(function(){
+  try{const p=new URLSearchParams(location.search);if(p.has('oficina')){const no=p.get('oficina')==='no';if(no)localStorage.removeItem('dm-oficina');else localStorage.setItem('dm-oficina','si');
+    p.delete('oficina');history.replaceState(null,'',location.pathname+(p.size?'?'+p:'')+location.hash);
+    const d=document.createElement('div');d.className='oficina-aviso';d.setAttribute('role','status');d.textContent=no?'Este equipo vuelve a contar en las visitas de la web.':'Listo: este equipo ya no cuenta en las visitas de la web.';document.body.append(d);setTimeout(()=>d.remove(),7000);}
+    window.DM_OFICINA=localStorage.getItem('dm-oficina')==='si';}catch{window.DM_OFICINA=false;}
+  if(window.DM_OFICINA||typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL||!navigator.sendBeacon)return;
+  try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify({evento:'visita',url:location.pathname}));}catch{}
+})();
+
 // Medición con Google Analytics 4. Solo corre en el dominio propio y solo si el visitante acepta
 // (el aviso sale una única vez; la respuesta queda guardada en el navegador).
 // Eventos: clic_whatsapp, clic_telefono, compartir y consulta_enviada, cada uno con el código de la propiedad.
@@ -5,7 +16,7 @@ const DM_GA_ID='G-XE7PJR5KCY';
 const DM_GA_KEY='dm-medicion';
 let dmGaOn=false;
 function dmGaLoad(){
-  if(dmGaOn)return;dmGaOn=true;
+  if(dmGaOn)return;try{if(localStorage.getItem('dm-oficina')==='si')return;}catch{}dmGaOn=true;
   window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};
   window.gtag('js',new Date());window.gtag('config',DM_GA_ID,{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
   const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+DM_GA_ID;document.head.append(s);
@@ -37,3 +48,4 @@ if(typeof document!=='undefined'&&typeof location!=='undefined'&&/(^|\.)dimartin
     else if(h.startsWith('mailto:'))dmTrack('clic_email',{},a);
   },true);
 }
+

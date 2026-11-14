@@ -17,12 +17,61 @@ if (!empty($datos['website'])) salir(true); // trampa para robots: se ignora en 
 
 $limpio = fn($v, $max) => mb_substr(trim(strip_tags((string)($v ?? ''))), 0, $max);
 
+// --- Estadísticas propias y resumen diario por Telegram ---
+// Se guardan fuera de public_html, en /home/USUARIO/dimartino-visitas/AAAA-MM-DD.log (una línea por evento, sin IP ni datos personales:
+// solo un código que cambia todos los días). Los equipos marcados como "oficina" no se cuentan. Se borran a los 90 días.
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+$cfg = @include dirname(__DIR__) . '/dimartino-config.php';
+$dirVisitas = dirname(__DIR__) . '/dimartino-visitas';
+function anotar($dir, $tipo) {
+  if (!is_dir($dir) && !@mkdir($dir, 0700, true)) return;
+  $salFile = $dir . '/sal';
+  $sal = @file_get_contents($salFile);
+  if (!$sal) { $sal = bin2hex(random_bytes(16)); @file_put_contents($salFile, $sal); }
+  $id = substr(hash('sha256', $sal . date('Y-m-d') . ($_SERVER['REMOTE_ADDR'] ?? '') . ($_SERVER['HTTP_USER_AGENT'] ?? '')), 0, 12);
+  @file_put_contents($dir . '/' . date('Y-m-d') . '.log', $tipo . ' ' . $id . "\n", FILE_APPEND | LOCK_EX);
+}
+// Manda una vez por día (con la primera visita después de las 8) el resumen de ayer.
+function resumenDiario($dir, $cfg) {
+  $tk = is_array($cfg) ? ($cfg['telegram_token'] ?? '') : '';
+  $chat = is_array($cfg) ? ($cfg['telegram_chat'] ?? '') : '';
+  if ($tk === '' || $chat === '' || (int)date('G') < 8 || !is_dir($dir)) return;
+  $ayer = date('Y-m-d', strtotime('-1 day'));
+  $marca = @fopen($dir . '/enviado-' . $ayer, 'x');
+  if (!$marca) return; // ya se mandó
+  fclose($marca);
+  $personas = []; $paginas = 0; $wa = 0; $consultas = 0;
+  foreach (@file($dir . '/' . $ayer . '.log', FILE_IGNORE_NEW_LINES) ?: [] as $l) {
+    [$t, $id] = array_pad(explode(' ', $l, 2), 2, '');
+    if ($t === 'v') { $paginas++; $personas[$id] = 1; }
+    elseif ($t === 'w') $wa++;
+    elseif ($t === 'c') $consultas++;
+  }
+  $dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  $texto = 'Web de ayer (' . $dias[(int)date('w', strtotime($ayer))] . ' ' . date('d/m', strtotime($ayer)) . "), sin contar la oficina\n"
+    . 'Personas: ' . count($personas) . "\nPáginas vistas: " . $paginas . "\nClics en WhatsApp: " . $wa . "\nConsultas: " . $consultas;
+  $tg = curl_init('https://api.telegram.org/bot' . $tk . '/sendMessage');
+  curl_setopt_array($tg, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => ['chat_id' => $chat, 'text' => $texto], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8]);
+  curl_exec($tg);
+  curl_close($tg);
+  foreach (glob($dir . '/*') ?: [] as $f) if (basename($f) !== 'sal' && filemtime($f) < time() - 90 * 86400) @unlink($f);
+}
+$esOficina = !empty($datos['oficina']);
+$esRobot = (bool)preg_match('/bot|crawl|spider|slurp|preview|headless|lighthouse|facebookexternalhit|whatsapp/i', $_SERVER['HTTP_USER_AGENT'] ?? '');
+
+// Página vista (la manda la web en cada página, salvo en los equipos de la oficina).
+if (($datos['evento'] ?? '') === 'visita') {
+  if (!$esOficina && !$esRobot) anotar($dirVisitas, 'v');
+  resumenDiario($dirVisitas, $cfg);
+  salir(true);
+}
+
 // Aviso de clic en un botón de WhatsApp: no carga nada en Tokko, solo avisa por Telegram (si está configurado).
 if (($datos['evento'] ?? '') === 'whatsapp') {
   $marcaWa = sys_get_temp_dir() . '/dm_wa_' . md5($_SERVER['REMOTE_ADDR'] ?? '');
   if (file_exists($marcaWa) && time() - filemtime($marcaWa) < 10) salir(true);
   @touch($marcaWa);
-  $cfg = @include dirname(__DIR__) . '/dimartino-config.php';
+  if (!$esOficina) anotar($dirVisitas, 'w');
   $tk = is_array($cfg) ? ($cfg['telegram_token'] ?? '') : '';
   $chat = is_array($cfg) ? ($cfg['telegram_chat'] ?? '') : '';
   if ($tk !== '' && $chat !== '') {
@@ -73,6 +122,7 @@ curl_setopt_array($ch, [
 curl_exec($ch);
 $estado = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
+if (!$esOficina) anotar($dirVisitas, 'c');
 
 // Aviso por Telegram (opcional): se activa si el archivo de configuración trae 'telegram_token' y 'telegram_chat'.
 $tgToken = is_array($config) ? ($config['telegram_token'] ?? '') : '';
