@@ -11,7 +11,7 @@
   const ses=(()=>{let o={};try{o=JSON.parse(sessionStorage.getItem('dm-sesion')||'{}');}catch{}
     if(!o.inicio){let r='';try{const sp=new URLSearchParams(location.search);const h=document.referrer?new URL(document.referrer).hostname.replace(/^www\.|^m\.|^l\.|^lm\./,''):'';r=sp.get('utm_source')||(sp.has('fbclid')?'facebook':sp.has('gclid')?'google ads':'')||(h&&!/dimartinoprop\.com\.ar$/.test(h)?h:'directo');}catch{r='directo';}
       o={inicio:Date.now(),origen:r.slice(0,40),paginas:0,props:[]};}
-    o.paginas++;try{const el=document.getElementById('property-data');if(el){const pd=JSON.parse(el.textContent);const c=String(pd.reference_code||pd.id||'');const t=(document.getElementById('det-titulo')?.textContent||'').trim().slice(0,45);
+    o.paginas++;try{const el=document.getElementById('property-data');if(el){const pd=JSON.parse(el.textContent);const c=String(pd.reference_code||pd.id||'');const t=String(pd.address||document.getElementById('det-titulo')?.textContent||'').trim().slice(0,45);
       if(c&&!o.props.some(x=>x.c===c))o.props.push({c,t});o.props=o.props.slice(-6);}}catch{}
     try{sessionStorage.setItem('dm-sesion',JSON.stringify(o));}catch{}return o;})();
   let fotosAca=()=>0;
