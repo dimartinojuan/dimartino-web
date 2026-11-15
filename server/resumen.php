@@ -7,7 +7,7 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/estadisticas.php';
 $tk = is_array($cfg) ? (string)($cfg['telegram_token'] ?? '') : '';
 $chat = is_array($cfg) ? (string)($cfg['telegram_chat'] ?? '') : '';
-if ($tk === '' || $chat === '') { http_response_code(503); echo '{"ok":false}'; exit; }
+if ($tk === '' || $chat === '') { http_response_code(503); echo '{"ok":false,"error":"sin datos de Telegram en la configuracion"}'; exit; }
 $secreto = substr(hash('sha256', 'dm-bot|' . $tk), 0, 40);
 function tg($tk, $metodo, array $p = []) {
   $h = curl_init('https://api.telegram.org/bot' . $tk . '/' . $metodo);
@@ -21,7 +21,7 @@ if (isset($_GET['activar'])) {
   if ($actual !== '' && $actual !== $url && !isset($_GET['forzar'])) { echo json_encode(['ok' => false, 'conectado_a' => parse_url($actual, PHP_URL_HOST)]); exit; }
   $r = tg($tk, 'setWebhook', ['url' => $url, 'secret_token' => $secreto, 'allowed_updates' => ['message'], 'drop_pending_updates' => true]);
   tg($tk, 'setMyCommands', ['commands' => [['command' => 'hoy', 'description' => 'Resumen de hoy hasta ahora'], ['command' => 'ayer', 'description' => 'Resumen de ayer'], ['command' => 'semana', 'description' => 'Resumen de los últimos 7 días']]]);
-  echo json_encode(['ok' => !empty($r['ok'])]); exit;
+  echo json_encode(['ok' => !empty($r['ok']), 'error' => $r ? ($r['description'] ?? null) : 'sin respuesta de Telegram'], JSON_UNESCAPED_UNICODE); exit;
 }
 if (!hash_equals($secreto, (string)($_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? ''))) { http_response_code(403); exit; }
 $u = json_decode((string)file_get_contents('php://input'), true);
