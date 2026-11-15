@@ -7,6 +7,15 @@
     p.delete('oficina');history.replaceState(null,'',location.pathname+(p.size?'?'+p:'')+location.hash);
     const d=document.createElement('div');d.className='oficina-aviso';d.setAttribute('role','status');d.textContent=no?'Este equipo vuelve a contar en las visitas de la web.':'Listo: este equipo ya no cuenta en las visitas de la web.';document.body.append(d);setTimeout(()=>d.remove(),7000);}
     window.DM_OFICINA=localStorage.getItem('dm-oficina')==='si';}catch{window.DM_OFICINA=false;}
+  // Datos de la visita para sumar al aviso de WhatsApp por Telegram (de dónde llegó, celular o compu, qué miró). Sin datos personales.
+  const ses=(()=>{let o={};try{o=JSON.parse(sessionStorage.getItem('dm-sesion')||'{}');}catch{}
+    if(!o.inicio){let r='';try{const sp=new URLSearchParams(location.search);const h=document.referrer?new URL(document.referrer).hostname.replace(/^www\.|^m\.|^l\.|^lm\./,''):'';r=sp.get('utm_source')||(sp.has('fbclid')?'facebook':sp.has('gclid')?'google ads':'')||(h&&!/dimartinoprop\.com\.ar$/.test(h)?h:'directo');}catch{r='directo';}
+      o={inicio:Date.now(),origen:r.slice(0,40),paginas:0,props:[]};}
+    o.paginas++;try{const el=document.getElementById('property-data');if(el){const pd=JSON.parse(el.textContent);const c=String(pd.reference_code||pd.id||'');const t=(document.getElementById('det-titulo')?.textContent||'').trim().slice(0,45);
+      if(c&&!o.props.some(x=>x.c===c))o.props.push({c,t});o.props=o.props.slice(-6);}}catch{}
+    try{sessionStorage.setItem('dm-sesion',JSON.stringify(o));}catch{}return o;})();
+  let fotosAca=()=>0;
+  window.dmContexto=()=>({origen:ses.origen,celular:/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent),paginas:ses.paginas,seg:Math.round((Date.now()-ses.inicio)/1000),fotos:fotosAca(),props:ses.props});
   if(window.DM_OFICINA||typeof DM_CONTACT_URL==='undefined'||!DM_CONTACT_URL||!navigator.sendBeacon)return;
   const enviar=d=>{try{navigator.sendBeacon(DM_CONTACT_URL,JSON.stringify(d));}catch{}};
   let prop='';try{const el=document.getElementById('property-data');if(el)prop=String(JSON.parse(el.textContent).id||'');}catch{}
@@ -21,6 +30,7 @@
     enviar({evento:'salida',prop,seg:Math.min(seg,3600),fotos:hizo.fotos.size,ampliadas:hizo.ampliadas,tour:hizo.tour,video:hizo.video,planos:hizo.planos,mapa:hizo.mapa,descripcion:hizo.descripcion,compartir:hizo.compartir,telefono:hizo.telefono,email:hizo.email});}
   const envolver=(nombre,fn)=>{const orig=window[nombre];if(typeof orig!=='function')return;window[nombre]=function(...a){try{fn(...a);}catch{}return orig.apply(this,a);};};
   hizo.fotos.add(0);
+  fotosAca=()=>document.getElementById('property-data')?hizo.fotos.size:0;
   envolver('actualizarGal',()=>setTimeout(()=>{try{hizo.fotos.add(galIdx);}catch{}},0));
   envolver('actualizarLightbox',()=>setTimeout(()=>{try{hizo.fotos.add(lbIdx);}catch{}},0));
   envolver('abrirLightbox',()=>hizo.ampliadas++);
@@ -56,7 +66,7 @@ function dmTrack(evento,datos,link){if(!dmGaOn||!window.gtag)return;try{window.g
 if(typeof window!=='undefined')window.dmTrack=dmTrack;
 function dmGaBanner(){
   const bar=document.createElement('div');bar.className='cookie-aviso';bar.setAttribute('role','region');bar.setAttribute('aria-label','Aviso de cookies');
-  bar.innerHTML='<p>Usamos cookies para saber cuántas visitas tiene la web y mejorarla. No guardamos tu nombre ni tu teléfono.</p><div><button type="button" data-ok>Aceptar</button><button type="button" data-no>No, gracias</button></div>';
+  bar.innerHTML='<p>Usamos cookies.</p><div><button type="button" data-ok>Aceptar</button><button type="button" data-no>Rechazar</button></div>';
   const close=v=>{try{localStorage.setItem(DM_GA_KEY,v);}catch{}bar.remove();if(v==='si')dmGaLoad();};
   bar.querySelector('[data-ok]').onclick=()=>close('si');bar.querySelector('[data-no]').onclick=()=>close('no');
   document.body.append(bar);

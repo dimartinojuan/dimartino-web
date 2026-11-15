@@ -172,6 +172,21 @@ if (($datos['evento'] ?? '') === 'whatsapp') {
   if ($tk !== '' && $chat !== '') {
     $pagina = filter_var($datos['url'] ?? '', FILTER_VALIDATE_URL) ?: '';
     $aviso = "Alguien tocó WhatsApp en la web\n" . $limpio($datos['texto'] ?? '', 300) . ($pagina ? "\n\nDesde: " . $pagina : '');
+    $ctx = is_array($datos['ctx'] ?? null) ? $datos['ctx'] : null;
+    if ($ctx) {
+      $o = strtolower($limpio((string)($ctx['origen'] ?? ''), 40));
+      $nombres = ['google' => 'Google', 'instagram' => 'Instagram', 'facebook' => 'Facebook', 'whatsapp' => 'WhatsApp', 'wa.me' => 'WhatsApp', 'zonaprop' => 'Zonaprop', 'mercadolibre' => 'Mercado Libre', 'argenprop' => 'Argenprop', 'lujanprop' => 'LujanProp', 'bing' => 'Bing', 'directo' => 'directo (link guardado o escrito)'];
+      $origen = $o;
+      foreach ($nombres as $k => $v) if (strpos($o, $k) !== false) { $origen = $v; break; }
+      $seg = max(0, min(86400, (int)($ctx['seg'] ?? 0)));
+      $lin = "\n\nLlegó desde: " . ($origen !== '' ? $origen : '¿?') . ' · ' . (!empty($ctx['celular']) ? 'celular' : 'compu');
+      $lin .= "\nEn la web: " . max(1, (int)($ctx['paginas'] ?? 1)) . ' pág. · ' . intdiv($seg, 60) . ':' . str_pad((string)($seg % 60), 2, '0', STR_PAD_LEFT) . ' min';
+      if ((int)($ctx['fotos'] ?? 0) > 1) $lin .= ' · ' . (int)$ctx['fotos'] . ' fotos';
+      $vistas = [];
+      foreach (array_slice(is_array($ctx['props'] ?? null) ? $ctx['props'] : [], 0, 6) as $pv) if (is_array($pv)) $vistas[] = trim($limpio((string)($pv['c'] ?? ''), 12) . ' ' . $limpio((string)($pv['t'] ?? ''), 45));
+      if ($vistas) $lin .= "\nVio:\n• " . implode("\n• ", array_filter($vistas));
+      $aviso .= $lin;
+    }
     $tg = curl_init('https://api.telegram.org/bot' . $tk . '/sendMessage');
     curl_setopt_array($tg, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => ['chat_id' => $chat, 'text' => $aviso, 'disable_web_page_preview' => 'true'], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8]);
     curl_exec($tg);
