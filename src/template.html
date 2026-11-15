@@ -2984,8 +2984,8 @@ function buildGaleria() {
     if (tienePlano) {
       const bp = galProp.blueprints[0];
       const planoUrl = (typeof bp === 'string') ? bp : (bp.image || bp.url || '');
-      if (planoUrl) pills.push(`<a class="gal-media-pill" href="${planoUrl}" target="_blank" rel="noopener" title="Ver plano">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></a>`);
+      if (planoUrl) pills.push(`<button class="gal-media-pill" title="Ver plano" aria-label="Ver plano" onclick="abrirLightboxPlano()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></button>`);
     }
 
     acciones.innerHTML = pills.join('');
@@ -3248,9 +3248,27 @@ window.addEventListener('scroll', () => {
    LIGHTBOX
 ═══════════════════════════════ */
 let lbIdx = 0;
+// Cuando el visor muestra los planos, lbPlanos tiene sus imágenes; con las fotos queda en null.
+let lbPlanos = null;
+function lbLista() { return lbPlanos || galFotos; }
 
 function abrirLightbox(idx) {
+  lbPlanos = null;
   lbIdx = idx ?? galIdx;
+  lbMostrar();
+}
+
+// Abre los planos de la propiedad en el mismo visor que las fotos.
+function abrirLightboxPlano() {
+  const planos = ((galProp && galProp.blueprints) || []).map(b => typeof b === 'string' ? b : (b.image || b.url || '')).filter(Boolean);
+  if (!planos.length) return;
+  lbPlanos = planos;
+  lbIdx = 0;
+  lbMostrar();
+}
+
+function lbMostrar() {
+  volverAFotos();
   actualizarLightbox();
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -3278,15 +3296,20 @@ function cerrarLightbox() {
 }
 
 function lbNav(d) {
-  lbIdx = (lbIdx + d + galFotos.length) % galFotos.length;
+  const lista = lbLista();
+  lbIdx = (lbIdx + d + lista.length) % lista.length;
   actualizarLightbox();
 }
 
 function actualizarLightbox() {
-  document.getElementById('lb-img').src = galFotos[lbIdx];
-  document.getElementById('lb-counter').textContent = `${lbIdx + 1} / ${galFotos.length}`;
-  document.getElementById('lb-prev').style.display = galFotos.length <= 1 ? 'none' : 'flex';
-  document.getElementById('lb-next').style.display = galFotos.length <= 1 ? 'none' : 'flex';
+  const lista = lbLista(), n = lista.length;
+  const img = document.getElementById('lb-img');
+  img.src = lista[lbIdx];
+  img.alt = lbPlanos ? 'Plano' + (n > 1 ? ' ' + (lbIdx + 1) : '') : 'Foto ampliada';
+  img.classList.toggle('lb-plano', !!lbPlanos);
+  document.getElementById('lb-counter').textContent = lbPlanos ? (n > 1 ? `Plano ${lbIdx + 1} / ${n}` : 'Plano') : `${lbIdx + 1} / ${n}`;
+  document.getElementById('lb-prev').style.display = n <= 1 ? 'none' : 'flex';
+  document.getElementById('lb-next').style.display = n <= 1 ? 'none' : 'flex';
 }
 
 // Cerrar con Escape o click en fondo

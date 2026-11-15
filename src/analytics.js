@@ -32,8 +32,8 @@
   hizo.fotos.add(0);
   fotosAca=()=>document.getElementById('property-data')?hizo.fotos.size:0;
   envolver('actualizarGal',()=>setTimeout(()=>{try{hizo.fotos.add(galIdx);}catch{}},0));
-  envolver('actualizarLightbox',()=>setTimeout(()=>{try{hizo.fotos.add(lbIdx);}catch{}},0));
-  envolver('abrirLightbox',()=>hizo.ampliadas++);
+  envolver('actualizarLightbox',()=>setTimeout(()=>{try{if(!lbPlanos)hizo.fotos.add(lbIdx);}catch{}},0));
+  envolver('abrirLightbox',()=>hizo.ampliadas++);envolver('abrirLightboxPlano',()=>hizo.planos++);
   envolver('abrirLightboxTour',()=>hizo.tour++);envolver('abrirLightboxVideo',()=>hizo.video++);
   envolver('toggleMapa',()=>hizo.mapa++);envolver('toggleDesc',()=>hizo.descripcion++);envolver('compartir',()=>hizo.compartir++);
   document.addEventListener('click',e=>{const t=e.target.closest?.('a[href],.media-facade,[data-src]');if(!t)return;const h=(t.getAttribute('href')||t.dataset.src||'').toLowerCase();
