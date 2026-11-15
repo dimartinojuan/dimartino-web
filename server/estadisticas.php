@@ -1,6 +1,6 @@
 <?php
 if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) { http_response_code(404); exit; }
-// Funciones de estadísticas propias y del resumen diario. Las usan contacto.php (la web) y bot.php (pedidos por Telegram).
+// Funciones de estadísticas propias y del resumen diario. Las usan contacto.php (la web) y resumen.php (pedidos por Telegram).
 // --- Estadísticas propias y resumen diario por Telegram ---
 // Se guardan fuera de public_html, en /home/USUARIO/dimartino-visitas/AAAA-MM-DD.log (una línea por evento, separada por tabs, sin IP
 // ni datos personales: solo un código que cambia todos los días). Los equipos marcados como "oficina" no se cuentan. Se borran a los 90 días.

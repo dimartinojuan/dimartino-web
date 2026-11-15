@@ -1,7 +1,7 @@
 <?php
 // Bot de Telegram (@DiMartinoConsultasBot): Juan le pide el resumen de la web y el bot contesta.
 // Telegram llama a esta página cada vez que alguien le escribe al bot. Solo contesta al chat de 'telegram_chat'
-// (dimartino-config.php, fuera de public_html). Se activa UNA vez abriendo https://www.dimartinoprop.com.ar/bot.php?activar
+// (dimartino-config.php, fuera de public_html). Se activa UNA vez abriendo https://www.dimartinoprop.com.ar/resumen.php?activar
 // (si el bot ya estaba conectado a otro sistema, no lo pisa: avisa a dónde está conectado; para pisarlo, ?activar&forzar).
 header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/estadisticas.php';
@@ -16,7 +16,7 @@ function tg($tk, $metodo, array $p = []) {
   return json_decode((string)$r, true) ?: [];
 }
 if (isset($_GET['activar'])) {
-  $url = 'https://www.dimartinoprop.com.ar/bot.php';
+  $url = 'https://www.dimartinoprop.com.ar/resumen.php';
   $actual = (string)(tg($tk, 'getWebhookInfo')['result']['url'] ?? '');
   if ($actual !== '' && $actual !== $url && !isset($_GET['forzar'])) { echo json_encode(['ok' => false, 'conectado_a' => parse_url($actual, PHP_URL_HOST)]); exit; }
   $r = tg($tk, 'setWebhook', ['url' => $url, 'secret_token' => $secreto, 'allowed_updates' => ['message'], 'drop_pending_updates' => true]);
