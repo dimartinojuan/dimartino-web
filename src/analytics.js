@@ -66,7 +66,7 @@ function dmTrack(evento,datos,link){if(!dmGaOn||!window.gtag)return;try{window.g
 if(typeof window!=='undefined')window.dmTrack=dmTrack;
 function dmGaBanner(){
   const bar=document.createElement('div');bar.className='cookie-aviso';bar.setAttribute('role','region');bar.setAttribute('aria-label','Aviso de cookies');
-  bar.innerHTML='<p>Usamos cookies.</p><div><button type="button" data-ok>Aceptar</button><button type="button" data-no>Rechazar</button></div>';
+  bar.innerHTML='<p>Esta web utiliza cookies.</p><div><button type="button" data-ok>Aceptar</button><button type="button" data-no>Rechazar</button></div>';
   const close=v=>{try{localStorage.setItem(DM_GA_KEY,v);}catch{}bar.remove();if(v==='si')dmGaLoad();};
   bar.querySelector('[data-ok]').onclick=()=>close('si');bar.querySelector('[data-no]').onclick=()=>close('no');
   document.body.append(bar);
