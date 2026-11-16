@@ -13,6 +13,14 @@ Options -Indexes
   RewriteRule ^(home|nosotros)/?$ https://www.dimartinoprop.com.ar/ [L,R=301]
   RewriteRule ^consultas/?$ https://www.dimartinoprop.com.ar/#contacto [L,R=301,NE]
   RewriteRule ^desarrollos/?$ https://www.dimartinoprop.com.ar/#desarrollos [L,R=301,NE]
+  RewriteRule ^propiedad/?$ https://www.dimartinoprop.com.ar/propiedades/ [L,R=301]
+  # Desarrollos viejos /desarrollo/ y /desarrollo/ID/ (en singular).
+  RewriteRule ^desarrollo/?$ https://www.dimartinoprop.com.ar/#desarrollos [L,R=301,NE]
+  RewriteCond %{DOCUMENT_ROOT}/desarrollos/$1/index.html -f
+  RewriteRule ^desarrollo/([0-9]+)/?$ https://www.dimartinoprop.com.ar/desarrollos/$1/ [L,R=301]
+  RewriteRule ^desarrollo/([0-9]+)/?$ https://www.dimartinoprop.com.ar/#desarrollos [L,R=301,NE]
+  # Página de "servicio suspendido" del hosting viejo: ya no existe (410 = borrada para siempre).
+  RewriteRule ^suspended\.page - [G,L]
   # Fichas viejas /propiedad/ID/: a la ficha nueva si sigue publicada; si no, al listado de propiedades.
   RewriteCond %{DOCUMENT_ROOT}/propiedades/$1/index.html -f
   RewriteRule ^propiedad/([0-9]+)/?$ https://www.dimartinoprop.com.ar/propiedades/$1/ [L,R=301]
