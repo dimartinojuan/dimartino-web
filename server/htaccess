@@ -19,8 +19,7 @@ Options -Indexes
   RewriteCond %{DOCUMENT_ROOT}/desarrollos/$1/index.html -f
   RewriteRule ^desarrollo/([0-9]+)/?$ https://www.dimartinoprop.com.ar/desarrollos/$1/ [L,R=301]
   RewriteRule ^desarrollo/([0-9]+)/?$ https://www.dimartinoprop.com.ar/#desarrollos [L,R=301,NE]
-  # Página de "servicio suspendido" del hosting viejo: ya no existe (410 = borrada para siempre).
-  RewriteRule ^suspended\.page - [G,L]
+  # (/suspended.page/ la responde DonWeb antes de este archivo: no se puede redirigir desde acá.)
   # Fichas viejas /propiedad/ID/: a la ficha nueva si sigue publicada; si no, al listado de propiedades.
   RewriteCond %{DOCUMENT_ROOT}/propiedades/$1/index.html -f
   RewriteRule ^propiedad/([0-9]+)/?$ https://www.dimartinoprop.com.ar/propiedades/$1/ [L,R=301]
