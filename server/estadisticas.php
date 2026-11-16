@@ -41,6 +41,7 @@ function textoResumen($dir, $dia, &$datosDia = null) {
     if ($t === 'v') {
       $paginas++; $personas[$id] = 1; $celu[$id] = ($f[4] ?? '') === 'm';
       $o = strtolower($f[3] ?? 'directo');
+      $o = ['ig' => 'instagram', 'fb' => 'facebook'][$o] ?? $o; // utm_source cortos que usan Instagram y Facebook
       foreach (['google' => 'Google', 'instagram' => 'Instagram', 'facebook' => 'Facebook', 'whatsapp' => 'WhatsApp', 'wa.me' => 'WhatsApp', 'zonaprop' => 'Zonaprop', 'mercadolibre' => 'Mercado Libre', 'bing' => 'Bing', 'lujanprop' => 'LujanProp', 'tiktok' => 'TikTok', 'directo' => 'directo'] as $k => $nom) if (strpos($o, $k) !== false) { $o = $nom; break; }
       if ($o !== 'interna') { $origenes[$o] = ($origenes[$o] ?? 0) + 1; }
       if ($prop !== '') { $porProp[$prop]['vistas']++; $porProp[$prop]['personas'][$id] = 1; }
@@ -96,7 +97,7 @@ function enviarPlanilla($cfg, array $datosDia) {
   if ($url === '' || $clave === '') return false;
   $h = curl_init($url);
   curl_setopt_array($h, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => json_encode(['clave' => $clave] + $datosDia, JSON_UNESCAPED_UNICODE), CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-    CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 20]);
+    CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 60]); // la planilla puede tardar en responder
   $r = curl_exec($h); curl_close($h);
   return is_string($r) && strpos($r, '"ok":true') !== false;
 }

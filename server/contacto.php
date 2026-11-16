@@ -58,6 +58,7 @@ if (($datos['evento'] ?? '') === 'whatsapp') {
     if ($ctx) {
       $o = strtolower($limpio((string)($ctx['origen'] ?? ''), 40));
       $nombres = ['google' => 'Google', 'instagram' => 'Instagram', 'facebook' => 'Facebook', 'whatsapp' => 'WhatsApp', 'wa.me' => 'WhatsApp', 'zonaprop' => 'Zonaprop', 'mercadolibre' => 'Mercado Libre', 'argenprop' => 'Argenprop', 'lujanprop' => 'LujanProp', 'bing' => 'Bing', 'directo' => 'directo (link guardado o escrito)'];
+      $o = ['ig' => 'instagram', 'fb' => 'facebook'][$o] ?? $o;
       $origen = $o;
       foreach ($nombres as $k => $v) if (strpos($o, $k) !== false) { $origen = $v; break; }
       $seg = max(0, min(86400, (int)($ctx['seg'] ?? 0)));
