@@ -6,6 +6,17 @@ Options -Indexes
   RewriteEngine On
   RewriteCond %{HTTP_HOST} !^www\. [NC]
   RewriteRule ^ https://www.dimartinoprop.com.ar%{REQUEST_URI} [L,R=301]
+
+  # Direcciones de la web vieja (WordPress) -> web nueva, con 301 (permanente) para que Google pase todo a las nuevas.
+  # /tasaciones/ NO se toca: es una página propia de la web nueva.
+  RewriteRule ^busqueda/?$ https://www.dimartinoprop.com.ar/propiedades/ [L,R=301]
+  RewriteRule ^(home|nosotros)/?$ https://www.dimartinoprop.com.ar/ [L,R=301]
+  RewriteRule ^consultas/?$ https://www.dimartinoprop.com.ar/#contacto [L,R=301,NE]
+  RewriteRule ^desarrollos/?$ https://www.dimartinoprop.com.ar/#desarrollos [L,R=301,NE]
+  # Fichas viejas /propiedad/ID/: a la ficha nueva si sigue publicada; si no, al listado de propiedades.
+  RewriteCond %{DOCUMENT_ROOT}/propiedades/$1/index.html -f
+  RewriteRule ^propiedad/([0-9]+)/?$ https://www.dimartinoprop.com.ar/propiedades/$1/ [L,R=301]
+  RewriteRule ^propiedad/([0-9]+)/?$ https://www.dimartinoprop.com.ar/propiedades/ [L,R=301]
 </IfModule>
 
 # Archivos internos que no tienen que verse desde afuera.
