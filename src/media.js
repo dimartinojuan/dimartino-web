@@ -11,8 +11,12 @@ function abrirLightboxVideo(){
   document.getElementById('lb-img-wrap').style.display='none';document.getElementById('lb-iframe-wrap').style.display='none';document.getElementById('lb-yt-wrap').style.display='flex';for(const id of ['lb-prev','lb-next','lb-counter'])document.getElementById(id).style.display='none';document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';document.querySelector('.lightbox-cerrar').focus();
 }
 
-// Video and 360° tours load only when the visitor asks for them, keeping the page fast.
-document.addEventListener('click',e=>{const button=e.target.closest?.('.media-facade');if(!button)return;const frame=document.createElement('iframe');frame.src=button.dataset.src;frame.setAttribute('allow',button.dataset.allow||'fullscreen');frame.setAttribute('allowfullscreen','');frame.title=button.getAttribute('aria-label')||'Contenido multimedia';frame.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';button.replaceWith(frame);});
+// El video se carga al hacer clic; el recorrido 360° se abre solo (ver abajo).
+function abrirMedia(button){if(!button?.isConnected)return;const frame=document.createElement('iframe');frame.src=button.dataset.src;frame.setAttribute('allow',button.dataset.allow||'fullscreen');frame.setAttribute('allowfullscreen','');frame.title=(button.getAttribute('aria-label')||'Contenido multimedia').replace(/^Abrir el /,'').replace(/^r/,'R');frame.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';button.replaceWith(frame);}
+document.addEventListener('click',e=>{const button=e.target.closest?.('.media-facade');if(button)abrirMedia(button);});
+
+// El recorrido 360° se abre solo, sin clic, cuando el visitante se acerca a esa parte de la ficha.
+if(typeof window!=='undefined'&&!window.DM_BUILD){const tours=document.querySelectorAll('#det-tour-card .media-facade');if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){io.unobserve(e.target);abrirMedia(e.target);}},{rootMargin:'500px 0px'});tours.forEach(t=>io.observe(t));}else tours.forEach(abrirMedia);}
 
 // The floating Instagram button steps aside while the footer is on screen.
 if(typeof window!=='undefined'&&!window.DM_BUILD&&'IntersectionObserver' in window){const ig=document.querySelector('.ig-float'),foot=document.querySelector('footer');if(ig&&foot)new IntersectionObserver(([e])=>ig.classList.toggle('is-hidden',e.isIntersecting)).observe(foot);}
