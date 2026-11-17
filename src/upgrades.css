@@ -307,3 +307,5 @@ footer .brand-logo{height:auto!important;width:210px}
 }
 /* Listados: la ruta (Inicio › …) y "Ver mapa / Ordenar por" van en un mismo renglón, alineado con el título del panel */
 @media(min-width:769px){.resultados-panel{display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start}.resultados-panel>*{flex:0 0 100%;min-width:0;order:1}.resultados-panel>.search-links{flex:1 1 auto;order:0;padding:0;margin:0 12px 14px 0;min-height:37px;align-items:center}.resultados-panel>.resultados-top{flex:0 0 auto;order:0;margin:0 0 14px auto}}
+/* Alineación: en compu, la ficha usa los mismos bordes que el menú y el pie (logo, ruta, fotos, "Otras propiedades" y franja de propietarios en una misma línea) y se achican los huecos entre bloques */
+@media(min-width:1025px){:root{--lado:max(5%,calc(50% - 660px))}.navbar{padding-left:5%;padding-right:5%}#vista-detalle .det-breadcrumb,.det-wrap{max-width:none;padding-left:var(--lado);padding-right:var(--lado)}.det-wrap{padding-bottom:20px}.related{padding:28px var(--lado) 8px}.related h2{margin-bottom:14px}body>.owner-band{width:auto;max-width:none;margin:28px var(--lado) 48px}}

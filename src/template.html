@@ -2623,7 +2623,7 @@ function renderDetalle(p) {
   const mapq = encodeURIComponent((p.address ? p.address + ', ' : '') + ubic + ', Buenos Aires, Argentina');
   const mapaLink = document.getElementById('det-mapa-link');
   mapaLink.href = `https://www.google.com/maps/search/?api=1&query=${mapq}`;
-  document.getElementById('det-mapa-txt').textContent = p.address ? p.address + ' — Ver en Google Maps' : 'Ver en Google Maps';
+  document.getElementById('det-mapa-txt').textContent = p.address ? p.address + ' | Ver en Google Maps' : 'Ver en Google Maps';
 
   /* ── Precio ── */
   document.getElementById('det-precio').textContent = precio || 'Consultar precio';
