@@ -264,3 +264,12 @@ footer .brand-logo{height:auto!important;width:210px}
 @media(max-width:768px){.home-more-btn{width:100%}}
 .oficina-aviso{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:100001;background:#0B3042;color:#fff;font-weight:600;padding:12px 20px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center}
 .lightbox-img.lb-plano{background:#fff}
+
+/* Franja para propietarios (fichas y listados) */
+.owner-band{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;max-width:1240px;width:90%;margin:28px auto 36px;padding:22px 26px;background:var(--gris-bg);border-radius:14px}
+.resultados-panel .owner-band{width:auto;margin:28px 0 10px}
+.owner-band-t{font-size:18px;font-weight:800;color:var(--azul);line-height:1.25;margin:0 0 4px}
+.owner-band-s{font-size:14px;color:var(--gris-txt);margin:0}
+.owner-band-btn{background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:12px 22px;border-radius:8px;white-space:nowrap;transition:opacity .18s}
+.owner-band-btn:hover{opacity:.88}
+@media(max-width:600px){.owner-band{padding:18px}.owner-band-btn{width:100%;text-align:center}}
