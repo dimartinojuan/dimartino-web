@@ -52,6 +52,8 @@
   // Tokko location as a hierarchy: partido › localidad › barrio (after country and zone).
   function levels(p){return String(p.location?.full_location||'').split('|').map(x=>x.trim()).filter(Boolean).slice(2);}
   function inUbic(p,path){const lv=levels(p);return path.every((v,i)=>norm(lv[i])===norm(v));}
+  // Ambientes: lo cargado en Tokko; si falta o es menor que dormitorios + 1, se toma dormitorios + 1 (1 dormitorio = 2 ambientes).
+  function ambientes(p){const r=Number(p.room_amount)||0,d=Number(p.suite_amount)||0;return d&&r<d+1?d+1:r;}
   function inLocation(p,v,broad=false){const n=norm(v);if(n===norm(p.location?.name))return true;return broad&&String(p.location?.full_location||'').split('|').some(seg=>norm(seg)===n);}
   // Words people use interchangeably find the same listings (pileta / piscina, parrilla / asador...).
   const SYN=[['pileta','piscina','pool'],['parrilla','asador','barbacoa'],['cochera','garage','garaje'],['jardin','parque'],['departamento','depto','dpto','apartamento'],['quincho','sum'],['credito','apto credito']];
@@ -65,7 +67,7 @@
     if(!exclude.includes('tipos')&&state.tipos?.length&&!state.tipos.includes(String(p.type?.id)))return false;
     if(!exclude.includes('precio')&&(state.desde||state.hasta)){const offer=selectedOffer(p,state);if(!offer||!Number(offer.price)||Number(offer.price)<Number(state.desde||0)||(state.hasta&&Number(offer.price)>Number(state.hasta)))return false;}
     if(!exclude.includes('ambs')&&state.ambs?.length&&!state.ambs.some(v=>v==='4'?Number(p.suite_amount)>=4:Number(p.suite_amount)===Number(v)))return false;
-    if(state.rooms?.length&&!state.rooms.some(v=>Number(p.room_amount)===Number(v)))return false;
+    if(state.rooms?.length&&!state.rooms.some(v=>ambientes(p)===Number(v)))return false;
     if(!exclude.includes('ubic')&&state.ubic?.length&&!inUbic(p,state.ubic))return false;
     if(!exclude.includes('barrios')&&state.barrios?.length&&!state.barrios.some(v=>inLocation(p,v,!!state.barriosAmplios)))return false;
     const hay=searchable(p);
@@ -76,5 +78,5 @@
     if(!exclude.includes('kw')&&state.kw&&!norm(state.kw).split(/\s+/).every(w=>synonyms(w).some(x=>hay.includes(x))))return false;
     return true;
   });}
-  root.DMSearch={levels,inUbic,norm,parse,suggest,filter,selectedOffer,distance,searchable};
+  root.DMSearch={ambientes,levels,inUbic,norm,parse,suggest,filter,selectedOffer,distance,searchable};
 })(globalThis);
