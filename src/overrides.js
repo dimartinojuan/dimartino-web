@@ -175,3 +175,8 @@ function initMobileFilters(){const toggle=document.getElementById('filters-toggl
   if(count&&typeof MutationObserver!=='undefined')new MutationObserver(sync).observe(count,{childList:true,characterData:true,subtree:true});sync();}
 // Portada: las destacadas se mezclan en cada visita (se muestran 6).
 function initHomeFeatured(){const grid=document.getElementById('home-grid');if(!grid||grid.children.length<2)return;const cards=[...grid.children];for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}grid.append(...cards);}
+
+// Título del listado (arriba del panel de filtros): acompaña a los filtros elegidos.
+const LISTADO_TIPOS={'1':'Terrenos y lotes','2':'Departamentos','3':'Casas','4':'Quintas','5':'Oficinas','7':'Locales comerciales','9':'Campos','10':'Cocheras','13':'PH','14':'Depósitos','24':'Galpones','31':'Monoambientes'};
+function tituloListado(){const tipo=S.tipos.length===1&&LISTADO_TIPOS[S.tipos[0]]||'Propiedades';const op=S.ops?.length>1?'':({'1':' en venta','2':' en alquiler','3':' en alquiler temporario'}[S.op]||'');const lugar=S.ubic?.length?ubicNombre(S.ubic,S.ubic.length-1):S.barrios.length===1?S.barrios[0]:'Luján y alrededores';return tipo+op+' en '+lugar;}
+{const cargarBase=cargarResultados;cargarResultados=async function(){await cargarBase.apply(this,arguments);const t=typeof document!=='undefined'&&document.querySelector('.ml-titulo');if(t)t.textContent=tituloListado();};}
