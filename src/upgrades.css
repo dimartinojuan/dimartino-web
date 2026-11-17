@@ -273,3 +273,35 @@ footer .brand-logo{height:auto!important;width:210px}
 .owner-band-btn{background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:12px 22px;border-radius:8px;white-space:nowrap;transition:opacity .18s}
 .owner-band-btn:hover{opacity:.88}
 @media(max-width:600px){.owner-band{padding:18px}.owner-band-btn{width:100%;text-align:center}}
+
+/* PRUEBA (solo /prueba-listado/): panel lateral que baja con la página, sin recuadro ni scroll propio */
+.ml-head{display:none}
+body.lateral-ml .ml-head{display:block;padding:14px 16px 0}
+body.lateral-ml .ml-titulo{font-size:19px;font-weight:800;color:var(--azul);line-height:1.25;margin:0 0 4px}
+body.lateral-ml .ml-head .res-izq{display:block}
+body.lateral-ml .ml-head #res-count{display:block;font-size:13px;color:var(--gris-txt);margin-bottom:10px}
+body.lateral-ml .ml-head .nlp-bar{flex-wrap:wrap;gap:6px}
+@media(min-width:769px){
+  body.lateral-ml #vista-busqueda{background:var(--gris-bg)}
+  body.lateral-ml .busq-body{grid-template-columns:270px 1fr;grid-template-rows:auto 1fr;align-items:start;max-width:1440px;margin:0 auto;padding:0 2%}
+  body.lateral-ml .ml-head{grid-column:1;grid-row:1;padding:26px 18px 0 6px}
+  body.lateral-ml .filtros-sidebar{grid-column:1;grid-row:2;position:static;height:auto;overflow:visible;background:transparent;border-right:none;padding:18px 18px 40px 6px}
+  body.lateral-ml .resultados-panel{grid-column:2;grid-row:1/3;padding-top:22px}
+  body.lateral-ml .resultados-top{border-bottom:none;justify-content:flex-end;padding-bottom:0}
+  body.lateral-ml .filtro-grupo{margin-bottom:26px}
+  body.lateral-ml .filtro-grupo h4{font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--azul);margin-bottom:10px}
+  body.lateral-ml .filtro-radio,body.lateral-ml .filtro-check{gap:7px}
+  body.lateral-ml .filtro-radio label,body.lateral-ml .filtro-check label{font-size:14px;color:var(--gris-txt)}
+  body.lateral-ml .filtro-radio input,body.lateral-ml .filtro-check input{position:absolute;opacity:0;width:0;height:0}
+  body.lateral-ml .filtro-radio label:hover,body.lateral-ml .filtro-check label:hover{color:var(--azul)}
+  body.lateral-ml .filtro-radio label:has(input:checked),body.lateral-ml .filtro-check label:has(input:checked){color:var(--azul);font-weight:700}
+  body.lateral-ml .filtro-check label:has(input:checked)::after{content:"×";font-weight:400;margin-left:2px}
+  body.lateral-ml .filtro-radio label:has(input:focus-visible),body.lateral-ml .filtro-check label:has(input:focus-visible){outline:2px solid var(--azul);outline-offset:2px}
+  body.lateral-ml .dorm-opts{flex-direction:column;align-items:flex-start;gap:5px}
+  body.lateral-ml .dorm-btn{border:none;background:none;padding:2px 0;border-radius:0;font-size:14px;color:var(--gris-txt)}
+  body.lateral-ml .dorm-btn:hover{color:var(--azul)}
+  body.lateral-ml .dorm-btn.activo{background:none;color:var(--azul);font-weight:700}
+  body.lateral-ml .precio-rango{font-size:14px;color:var(--gris-txt)}
+  body.lateral-ml .ubic-lista button{font-size:14px;color:var(--gris-txt);padding:3px 0}
+  body.lateral-ml .prop-card{box-shadow:0 1px 2px rgba(0,0,0,.08)}
+}
