@@ -35,6 +35,8 @@ if ($evento === 'probar_planilla') {
 // "Mi lista" por mail: la persona pone su mail y el servidor le manda las propiedades que guardó (solo propiedades
 // de la web, por número, para que no se pueda usar para mandar otra cosa). También avisa a la inmobiliaria por Telegram.
 if ($evento === 'lista_mail') {
+  // Diagnóstico: con la clave de la planilla en "depurar", muestra los errores de PHP.
+  if (is_array($cfg) && !empty($cfg['planilla_clave']) && hash_equals((string)$cfg['planilla_clave'], (string)($datos['depurar'] ?? ''))) { ini_set('display_errors', '1'); error_reporting(E_ALL); }
   $mail = trim((string)($datos['email'] ?? ''));
   if (!filter_var($mail, FILTER_VALIDATE_EMAIL) || strlen($mail) > 120) salir(false, 400);
   $ids = array_slice(array_values(array_unique(array_filter(array_map('strval', (array)($datos['ids'] ?? [])), fn($x) => preg_match('/^\d{1,12}$/', $x)))), 0, 30);
