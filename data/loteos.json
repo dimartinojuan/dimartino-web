@@ -34,8 +34,11 @@
     ]
    ]
   },
-  "descripcion": "Barrio abierto en Los Cardales, partido de Exaltación de la Cruz. Son 20 lotes de más de 2.000 m², pensados para casa quinta: para vivir todo el año o para el fin de semana, en un entorno tranquilo.",
-  "construccion": "En cada lote se puede construir una vivienda unifamiliar de hasta unos 200 m² (FOS 0,10).",
+  "descripcion": [
+   "La Ferme 6 es un barrio abierto en Los Cardales, partido de Exaltación de la Cruz, pensado para quienes buscan vivir tranquilos y rodeados de verde, en una casa de uso permanente o de fin de semana.",
+   "Son 20 lotes tipo quinta, todos de más de 2.000 m², con frente sobre las calles del barrio y acceso por calle 20 de Junio.",
+   "El proyecto prevé calles consolidadas con piedra, red eléctrica con alumbrado público LED, agua corriente, conexión a cloacas y arbolado en el frente de cada lote."
+  ],
   "obras": [
    "Calles consolidadas con piedra",
    "Red eléctrica y alumbrado público con luces LED",
@@ -48,8 +51,8 @@
    "zoom": 17,
    "contorno": [
     [
-     -34.343781,
-     -58.985899
+     -34.343712,
+     -58.985949
     ],
     [
      -34.344571,
@@ -60,12 +63,40 @@
      -58.981123
     ],
     [
-     -34.341805,
-     -58.981884
+     -34.341736,
+     -58.981934
     ]
    ],
    "texto": "Sobre calle 20 de Junio, Los Cardales"
   },
+  "financiacion": [
+   {
+    "nombre": "Contado",
+    "detalle": "10% de descuento",
+    "ajuste": -10
+   },
+   {
+    "nombre": "Entrega 50% y 24 cuotas",
+    "detalle": "Precio de lista",
+    "ajuste": 0,
+    "entrega": 50,
+    "cuotas": 24
+   },
+   {
+    "nombre": "Entrega 30% y 24 cuotas",
+    "detalle": "Precio de lista",
+    "ajuste": 0,
+    "entrega": 30,
+    "cuotas": 24
+   },
+   {
+    "nombre": "Entrega 30% y 60 cuotas",
+    "detalle": "Precio de lista + 5%",
+    "ajuste": 5,
+    "entrega": 30,
+    "cuotas": 60
+   }
+  ],
   "lotes": [
    {
     "n": 1,
