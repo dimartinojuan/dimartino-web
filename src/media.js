@@ -81,7 +81,7 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
     const filtros=document.getElementById('property-filters');
     if(filtros&&!filtros.querySelector('.filtros-pie')){const pie=el('div','filtros-pie');const vf=el('button','filtros-volver','Ver filtros');vf.type='button';vf.hidden=true;vf.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
       const caja=el('div','filtros-vender');caja.append(el('p','filtros-vender-k','Para propietarios'),el('p','filtros-vender-t','¿Querés vender tu propiedad con nosotros?'));const a=el('a','filtros-vender-btn','Contactanos');a.href=(document.querySelector('a[href$="/tasaciones/"]')?.getAttribute('href'))||'/tasaciones/';caja.append(a);pie.append(vf,caja);filtros.append(pie);
-      const limpiar=filtros.querySelector('.btn-limpiar-link');if(limpiar&&'IntersectionObserver' in window)new IntersectionObserver(([en])=>{vf.hidden=en.isIntersecting||en.boundingClientRect.top>0;}).observe(limpiar);}
+      const ver=()=>{vf.hidden=pie.getBoundingClientRect().top>90;};window.addEventListener('scroll',ver,{passive:true});ver();}
   };
   const seguro=()=>{try{iniciar();}catch(e){console.error(e);}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',seguro);else seguro();
