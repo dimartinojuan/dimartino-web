@@ -46,7 +46,7 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
   let lista=leer();
   const guardar=()=>{try{localStorage.setItem(KEY,JSON.stringify(lista));}catch{}pintar();};
   const tiene=id=>lista.some(x=>x.id===id);
-  const alternar=item=>{if(tiene(item.id))lista=lista.filter(x=>x.id!==item.id);else lista.push(item);guardar();};
+  const alternar=item=>{if(tiene(item.id))lista=lista.filter(x=>x.id!==item.id);else{lista.push(item);oculta=false;try{sessionStorage.removeItem('dm-lista-oculta');}catch{}}guardar();};
   const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
   const telefono=()=>(document.querySelector('a[href*="wa.me/"]')?.href.match(/wa\.me\/(\d+)/)||[])[1]||'5492323678107';
   const datosTarjeta=card=>{const a=card.querySelector('.prop-titulo a');const id=(a?.getAttribute('href')||'').match(/propiedades\/(\d+)/)?.[1];if(!id)return null;let corto='';try{corto=decodeURIComponent(card.querySelector('.prop-wsp-card')?.href||'').match(/dimartinoprop\.com\.ar\/[\w-]+/)?.[0]||'';}catch{}
@@ -56,9 +56,13 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
   // Barra y panel
   const barra=el('div','lista-barra'),panel=el('div','lista-panel');barra.hidden=true;panel.hidden=true;
   const cuenta=el('span','lista-cuenta'),ver=el('button','lista-ver','Ver lista'),wa=el('a','lista-wa','Consultar por todas');ver.type='button';wa.target='_blank';wa.rel='noopener';
-  barra.append(cuenta,ver,wa);
-  const pintar=()=>{const n=lista.length;barra.hidden=!n;document.body.classList.toggle('con-lista',!!n);if(!n){panel.hidden=true;ver.textContent='Ver lista';document.body.classList.remove('lista-abierta');}
-    cuenta.textContent=n===1?'1 propiedad guardada':n+' propiedades guardadas';
+  // Cruz para esconder la barra sin vaciar la lista; vuelve a aparecer al guardar otra propiedad.
+  const cerrar=el('button','lista-cerrar','×');cerrar.type='button';cerrar.setAttribute('aria-label','Ocultar mi lista');cerrar.title='Ocultar (tu lista queda guardada)';
+  let oculta=false;try{oculta=sessionStorage.getItem('dm-lista-oculta')==='1';}catch{}
+  cerrar.onclick=()=>{oculta=true;try{sessionStorage.setItem('dm-lista-oculta','1');}catch{}panel.hidden=true;ver.textContent='Ver lista';document.body.classList.remove('lista-abierta');pintar();};
+  barra.append(cerrar,cuenta,ver,wa);
+  const pintar=()=>{const n=lista.length;barra.hidden=!n||oculta;document.body.classList.toggle('con-lista',!!n&&!oculta);if(!n){panel.hidden=true;ver.textContent='Ver lista';document.body.classList.remove('lista-abierta');}
+    cuenta.textContent='';cuenta.append(String(n),el('span','lista-cuenta-larga',n===1?' propiedad':' propiedades'),n===1?' guardada':' guardadas');
     wa.href='https://wa.me/'+telefono()+'?text='+encodeURIComponent('Hola, quiero consultar por estas propiedades:\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+': '+x.l).join('\n'));
     document.querySelectorAll('.lista-mas').forEach(b=>marcar(b,tiene(b.dataset.id)));
     const f=document.querySelector('.lista-ficha');if(f){const on=tiene(f.dataset.id);f.classList.toggle('is-on',on);f.textContent=on?'✓ Guardada en mi lista':'+ Guardar en mi lista';}
@@ -109,7 +113,7 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
       const cab=el('div','filtros-ig-cab');const av=el('span','filtros-ig-av');const iso=el('img');iso.src=raiz+'assets/iso-color.svg';iso.alt='';av.append(iso);
       const nom=el('div','filtros-ig-nom');nom.append(el('strong','','dimartinopropiedades'),el('span','','Instagram'));cab.append(av,nom);
       const fotos=el('div','filtros-ig-fotos');
-      [...document.querySelectorAll('.prop-card .prop-foto img')].map(i=>i.currentSrc||i.src).filter(Boolean).slice(0,3).forEach(src=>{const f=el('img');f.src=src;f.alt='';f.loading='lazy';fotos.append(f);});
+      [...document.querySelectorAll('.prop-card')].map(c=>{const i=c.querySelector('.prop-foto img');return i&&(i.currentSrc||i.src||i.dataset.src);}).filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,3).forEach(src=>{const f=el('img');f.src=src;f.alt='';f.loading='lazy';fotos.append(f);});
       caja.append(el('p','filtros-ig-t','No te pierdas las últimas novedades'),cab);if(fotos.children.length)caja.append(fotos);const seg=el('span','filtros-ig-btn');seg.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Seguir';caja.append(seg);
       caja.addEventListener('click',()=>{try{window.dmTrack&&window.dmTrack('clic_instagram',{lugar:'lateral'});}catch{}});
       pie.append(vf,caja);filtros.append(pie);

@@ -444,3 +444,7 @@ body.lista-abierta .ig-float{display:none}
 .lista-mas.en-pie.is-on{background:var(--rojo);border-color:var(--rojo);color:#fff;font-size:15px}
 .prop-wsp-card{z-index:2}
 .prop-card:has(.lista-mas.en-pie) .prop-feats-ml,.prop-card:has(.lista-mas.en-pie) .prop-ubicacion-ml{padding-right:92px}
+.lista-cerrar{flex:none;width:26px;height:26px;margin-left:-8px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font:inherit;font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.lista-cerrar:hover{background:rgba(255,255,255,.3)}
+@media(max-width:768px){.lista-cerrar{margin-left:-4px;width:24px;height:24px}}
+@media(max-width:768px){.lista-cuenta-larga{display:none}.lista-cuenta{white-space:nowrap}}
