@@ -90,7 +90,7 @@ if ($evento === 'lista_mail') {
     . "--$limite\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html)) . "--$limite--";
   $asunto = '=?UTF-8?B?' . base64_encode('Tu lista de propiedades | Di Martino') . '?=';
   if (!function_exists('mail')) salir(false, 501); // el hosting no permite mandar mails desde PHP
-  $ok = @mail($mail, $asunto, $cuerpo, $cabeceras, '-finfo@dimartinoprop.com.ar');
+  $ok = @mail($mail, $asunto, $cuerpo, $cabeceras); // DonWeb no permite el parámetro -f
   if ($ok) {
     $veces[] = time(); @file_put_contents($marcaIp, implode(',', $veces)); @file_put_contents($marcaDia, (string)($hoy + 1));
     if (!$esOficina) anotar($dirVisitas, ['m', '', count($props)]);
