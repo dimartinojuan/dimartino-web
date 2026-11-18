@@ -38,3 +38,51 @@ if(typeof window!=='undefined'&&!window.DM_BUILD&&document.querySelector('.loteo
   document.addEventListener('click',e=>{if(e.target.closest?.('.loteo-tabla a'))return;const el=e.target.closest?.('.loteo-plano [data-lote],.loteo-tabla tr[data-lote]');if(el)elegir(el.dataset.lote);});
   document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const el=e.target.closest?.('.loteo-plano [data-lote]');if(el){e.preventDefault();elegir(el.dataset.lote);}});
 }
+
+// Mi lista: el visitante guarda propiedades con el botón "+" (sin registrarse; queda en su navegador) y consulta por todas juntas.
+if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
+  const KEY='dm-lista';
+  const leer=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(x=>x&&x.id):[];}catch{return [];}};
+  let lista=leer();
+  const guardar=()=>{try{localStorage.setItem(KEY,JSON.stringify(lista));}catch{}pintar();};
+  const tiene=id=>lista.some(x=>x.id===id);
+  const alternar=item=>{if(tiene(item.id))lista=lista.filter(x=>x.id!==item.id);else lista.push(item);guardar();};
+  const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
+  const telefono=()=>(document.querySelector('a[href*="wa.me/"]')?.href.match(/wa\.me\/(\d+)/)||[])[1]||'5492323678107';
+  const datosTarjeta=card=>{const a=card.querySelector('.prop-titulo a');const id=(a?.getAttribute('href')||'').match(/propiedades\/(\d+)/)?.[1];if(!id)return null;let corto='';try{corto=decodeURIComponent(card.querySelector('.prop-wsp-card')?.href||'').match(/dimartinoprop\.com\.ar\/[\w-]+/)?.[0]||'';}catch{}
+    return {id,t:a.textContent.trim(),u:(card.querySelector('.prop-ubicacion-ml')?.textContent||'').trim(),p:(card.querySelector('.prop-precio-ml')?.textContent||'').trim(),l:corto||location.host.replace(/^www\./,'')+'/propiedades/'+id+'/',h:a.getAttribute('href')};};
+  const marcar=(b,on)=>{b.classList.toggle('is-on',on);b.textContent=on?'✓':'+';b.setAttribute('aria-label',on?'Quitar de mi lista':'Guardar en mi lista');b.title=on?'Quitar de mi lista':'Guardar en mi lista';};
+  const botones=()=>{for(const card of document.querySelectorAll('.prop-card')){if(card.querySelector('.lista-mas'))continue;const d=datosTarjeta(card),foto=card.querySelector('.prop-foto');if(!d||!foto)continue;const b=el('button','lista-mas');b.type='button';b.dataset.id=d.id;marcar(b,tiene(d.id));foto.append(b);}};
+  // Barra y panel
+  const barra=el('div','lista-barra'),panel=el('div','lista-panel');barra.hidden=true;panel.hidden=true;
+  const cuenta=el('span','lista-cuenta'),ver=el('button','lista-ver','Ver lista'),wa=el('a','lista-wa','Consultar por todas');ver.type='button';wa.target='_blank';wa.rel='noopener';
+  barra.append(cuenta,ver,wa);
+  const pintar=()=>{const n=lista.length;barra.hidden=!n;document.body.classList.toggle('con-lista',!!n);if(!n)panel.hidden=true;
+    cuenta.textContent=n===1?'1 propiedad guardada':n+' propiedades guardadas';
+    wa.href='https://wa.me/'+telefono()+'?text='+encodeURIComponent('Hola, quiero consultar por estas propiedades:\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+': '+x.l).join('\n'));
+    document.querySelectorAll('.lista-mas').forEach(b=>marcar(b,tiene(b.dataset.id)));
+    const f=document.querySelector('.lista-ficha');if(f){const on=tiene(f.dataset.id);f.classList.toggle('is-on',on);f.textContent=on?'✓ Guardada en mi lista':'+ Guardar en mi lista';}
+    panel.textContent='';const cab=el('div','lista-panel-cab');cab.append(el('strong','', 'Mi lista'));const vaciar=el('button','lista-vaciar','Vaciar');vaciar.type='button';vaciar.onclick=()=>{lista=[];guardar();};cab.append(vaciar);panel.append(cab);
+    for(const x of lista){const fila=el('div','lista-item');const a=el('a','',x.t);a.href=x.h;const sub=el('span','',[x.u,x.p].filter(Boolean).join(' | '));const q=el('button','lista-quitar','Quitar');q.type='button';q.onclick=()=>{lista=lista.filter(y=>y.id!==x.id);guardar();};const txt=el('div','lista-item-txt');txt.append(a,sub);fila.append(txt,q);panel.append(fila);}
+    const nota=el('p','lista-nota','Tu lista queda guardada en este dispositivo.');panel.append(nota);};
+  ver.onclick=()=>{panel.hidden=!panel.hidden;ver.textContent=panel.hidden?'Ver lista':'Cerrar';};
+  document.addEventListener('click',e=>{const b=e.target.closest?.('.lista-mas');if(b){e.preventDefault();e.stopPropagation();const d=datosTarjeta(b.closest('.prop-card'));if(d)alternar(d);}});
+  const iniciar=()=>{document.body.append(panel,barra);botones();
+    // Ficha de propiedad
+    const m=location.pathname.match(/\/propiedades\/(\d+)\/?$/),fila=document.querySelector('.det-precio-row');
+    if(m&&fila&&document.getElementById('det-titulo')){const cod=(document.getElementById('det-ref')?.textContent||'').match(/[\w-]+$/)?.[0];const b=el('button','lista-ficha');b.type='button';b.dataset.id=m[1];b.onclick=()=>alternar({id:m[1],t:document.getElementById('det-titulo').textContent.trim(),u:'',p:(document.getElementById('det-precio')?.textContent||'').trim(),l:location.host.replace(/^www\./,'')+'/'+(cod||'propiedades/'+m[1]+'/'),h:location.pathname});fila.after(b);}
+    pintar();
+    let t;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(botones,150);}).observe(document.body,{childList:true,subtree:true});
+    window.addEventListener('storage',e=>{if(e.key===KEY){lista=leer();pintar();}});
+    // Botón para volver arriba
+    const arriba=el('button','ir-arriba','↑');arriba.type='button';arriba.setAttribute('aria-label','Ir arriba');arriba.title='Ir arriba';arriba.hidden=true;arriba.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});document.body.append(arriba);
+    const alScroll=()=>{arriba.hidden=window.scrollY<700;};window.addEventListener('scroll',alScroll,{passive:true});alScroll();
+    // Listados: debajo de los filtros, botón "Ver filtros" e invitación a propietarios, que acompañan al bajar
+    const filtros=document.getElementById('property-filters');
+    if(filtros&&!filtros.querySelector('.filtros-pie')){const pie=el('div','filtros-pie');const vf=el('button','filtros-volver','Ver filtros');vf.type='button';vf.hidden=true;vf.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+      const caja=el('div','filtros-vender');caja.append(el('p','filtros-vender-k','Para propietarios'),el('p','filtros-vender-t','¿Querés vender tu propiedad con nosotros?'));const a=el('a','filtros-vender-btn','Contactanos');a.href=(document.querySelector('a[href$="/tasaciones/"]')?.getAttribute('href'))||'/tasaciones/';caja.append(a);pie.append(vf,caja);filtros.append(pie);
+      const limpiar=filtros.querySelector('.btn-limpiar-link');if(limpiar&&'IntersectionObserver' in window)new IntersectionObserver(([en])=>{vf.hidden=en.isIntersecting||en.boundingClientRect.top>0;}).observe(limpiar);}
+  };
+  const seguro=()=>{try{iniciar();}catch(e){console.error(e);}};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',seguro);else seguro();
+})();}
