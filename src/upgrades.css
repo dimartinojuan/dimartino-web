@@ -376,3 +376,16 @@ footer .brand-logo{height:auto!important;width:210px}
 .loteo-satelital{border-radius:14px;overflow:hidden;background:var(--azul);line-height:0}
 .loteo-satelital svg{display:block;width:100%;height:auto}
 @media(max-width:600px){.loteo-llegar{width:100%;justify-content:center}}
+.loteo-fin{margin-top:36px}
+.loteo-fin h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 4px}
+.loteo-fin-para{font-size:14px;color:var(--gris-txt);margin:0 0 14px}.loteo-fin-para strong{color:var(--azul)}
+.loteo-fin-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.fin-plan{background:#fff;border:1px solid var(--gris-borde);border-radius:14px;padding:18px 20px}
+.fin-plan:first-child{border:2px solid var(--azul)}
+.fin-nombre{font-size:16px;font-weight:800;color:var(--azul);margin:0 0 2px}
+.fin-detalle{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--rojo);margin:0 0 12px}
+.fin-plan dl{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;margin:0;font-size:14px;color:var(--azul)}
+.fin-plan dt{color:var(--gris-txt)}.fin-plan dd{margin:0;text-align:right;font-weight:700}
+.fin-plan dd.fin-total{font-size:16px;font-weight:800}
+@media(max-width:1100px){.loteo-fin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.loteo-fin-grid{grid-template-columns:1fr}}
