@@ -353,3 +353,18 @@ footer .brand-logo{height:auto!important;width:210px}
 @media(max-width:600px){.loteo-tabla{font-size:14px}.loteo-tabla th,.loteo-tabla td{padding:11px 10px}}
 /* Video de portada propio: cubre toda la portada */
 .hero-video-wrap video{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;border:0}
+.loteo-info{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;margin:0 0 24px}
+.loteo-info .development-description{margin:0 0 10px;font-size:16px;color:var(--azul)}
+.loteo-construccion{font-size:14px;color:var(--gris-txt);line-height:1.6;margin:0}
+.loteo-obras{background:var(--gris-bg);border-radius:14px;padding:18px 22px}
+.loteo-obras h2{font-size:15px;font-weight:800;color:var(--azul);margin:0 0 10px}
+.loteo-obras ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px;color:var(--azul)}
+.loteo-obras li{padding-left:18px;position:relative;line-height:1.45}
+.loteo-obras li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--rojo)}
+.loteo-mini{margin:12px 0 2px;background:var(--gris-bg);border-radius:10px;padding:8px}
+.loteo-mini svg{display:block;width:100%;max-width:220px;margin:0 auto;height:auto;font-family:inherit}
+.loteo-mini rect{fill:#fff;stroke:#0B3042;stroke-width:1.5}
+.loteo-mini text{font-size:10px;font-weight:700;fill:#0B3042}
+.loteo-mini line{stroke:#BCBEC0;stroke-width:3}
+.loteo-mini .mini-calle{font-size:8px;font-weight:600;fill:rgba(11,48,66,.72)}
+@media(max-width:900px){.loteo-info{grid-template-columns:1fr}}
