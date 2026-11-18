@@ -36,8 +36,11 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL || 'https://dimartinojuan.github.io/dimartino-web' }}
       # Sube dist/ al hosting de DonWeb (solo si están cargados los secretos FTP_HOST, FTP_USER y FTP_PASS).
       # Corre después de los tests: si fallan, no se publica nada.
+      # DonWeb a veces no responde por FTP: si falla, espera y reintenta (hasta 3 veces) antes de dar error.
       - name: Publicar en DonWeb por FTP
+        id: ftp1
         if: ${{ env.FTP_HOST != '' }}
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -46,6 +49,41 @@ jobs:
           protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
           local-dir: dist/
           server-dir: ${{ vars.FTP_DIR || 'public_html/' }}
+      - name: Esperar antes de reintentar
+        if: ${{ env.FTP_HOST != '' && steps.ftp1.outcome == 'failure' }}
+        run: sleep 60
+      - name: Reintentar publicación en DonWeb (2)
+        id: ftp2
+        if: ${{ env.FTP_HOST != '' && steps.ftp1.outcome == 'failure' }}
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: dist/
+          server-dir: ${{ vars.FTP_DIR || 'public_html/' }}
+      - name: Esperar antes del último intento
+        if: ${{ env.FTP_HOST != '' && steps.ftp2.outcome == 'failure' }}
+        run: sleep 180
+      - name: Reintentar publicación en DonWeb (3)
+        id: ftp3
+        if: ${{ env.FTP_HOST != '' && steps.ftp2.outcome == 'failure' }}
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: dist/
+          server-dir: ${{ vars.FTP_DIR || 'public_html/' }}
+      - name: Avisar si DonWeb no respondió
+        if: ${{ env.FTP_HOST != '' && steps.ftp3.outcome == 'failure' }}
+        run: |
+          echo "::error::DonWeb no respondió por FTP en 3 intentos. La próxima actualización automática (cada 6 h) lo vuelve a intentar."
+          exit 1
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
