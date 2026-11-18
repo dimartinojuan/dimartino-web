@@ -351,3 +351,5 @@ footer .brand-logo{height:auto!important;width:210px}
 @media(max-width:900px){.loteo{grid-template-columns:1fr}.loteo-ficha{position:static}.loteo-plano-caja{padding:18px 14px}.lote-e{display:none}.lote-n{font-size:14px}}
 .loteo-tabla-caja{position:relative}
 @media(max-width:600px){.loteo-tabla{font-size:14px}.loteo-tabla th,.loteo-tabla td{padding:11px 10px}}
+/* Video de portada propio: cubre toda la portada */
+.hero-video-wrap video{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;border:0}
