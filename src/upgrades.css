@@ -438,3 +438,9 @@ body.lista-abierta .ig-float{display:none}
 .filtros-ig-fotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:var(--gris-borde)}
 .filtros-ig-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:11px;border-radius:10px}
 .filtros-ig:hover .filtros-ig-btn{filter:brightness(.92)}}
+/* Botón "+" de Mi lista al lado del de WhatsApp, abajo a la derecha de la tarjeta */
+.lista-mas.en-pie{position:absolute;top:auto;right:60px;bottom:15px;z-index:1;width:34px;height:34px;background:#fff;color:var(--azul);border:1.5px solid var(--azul);box-shadow:none;font-size:20px}
+.lista-mas.en-pie:hover{transform:none;background:var(--azul);color:#fff}
+.lista-mas.en-pie.is-on{background:var(--rojo);border-color:var(--rojo);color:#fff;font-size:15px}
+.prop-wsp-card{z-index:2}
+.prop-card:has(.lista-mas.en-pie) .prop-feats-ml,.prop-card:has(.lista-mas.en-pie) .prop-ubicacion-ml{padding-right:92px}
