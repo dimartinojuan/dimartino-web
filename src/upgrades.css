@@ -414,3 +414,7 @@ footer .brand-logo{height:auto!important;width:210px}
 .filtros-vender-t{font-size:17px;font-weight:800;color:var(--azul);line-height:1.25;margin:0 0 14px}
 .filtros-vender-btn{display:block;text-align:center;background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:12px;border-radius:10px}}
 @media(max-width:768px){.lista-barra{left:10px;right:10px;bottom:10px;transform:none;justify-content:space-between;gap:8px;padding:8px 8px 8px 14px;font-size:13px}.lista-cuenta{white-space:normal;line-height:1.2}.lista-wa{padding:10px 12px;font-size:13px}.lista-panel{bottom:70px}.ir-arriba{left:12px;bottom:14px;width:42px;height:42px}body.con-lista .ir-arriba{bottom:72px}body.con-lista .ig-float{bottom:72px}}
+.lista-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--gris-borde)}
+.lista-accion{flex:1 1 auto;background:#fff;border:1.5px solid var(--azul);color:var(--azul);font:inherit;font-weight:700;font-size:13px;padding:9px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.lista-accion:hover{background:var(--azul);color:#fff}
+body.lista-abierta .ig-float{display:none}

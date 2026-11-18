@@ -57,15 +57,23 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
   const barra=el('div','lista-barra'),panel=el('div','lista-panel');barra.hidden=true;panel.hidden=true;
   const cuenta=el('span','lista-cuenta'),ver=el('button','lista-ver','Ver lista'),wa=el('a','lista-wa','Consultar por todas');ver.type='button';wa.target='_blank';wa.rel='noopener';
   barra.append(cuenta,ver,wa);
-  const pintar=()=>{const n=lista.length;barra.hidden=!n;document.body.classList.toggle('con-lista',!!n);if(!n)panel.hidden=true;
+  const pintar=()=>{const n=lista.length;barra.hidden=!n;document.body.classList.toggle('con-lista',!!n);if(!n){panel.hidden=true;ver.textContent='Ver lista';document.body.classList.remove('lista-abierta');}
     cuenta.textContent=n===1?'1 propiedad guardada':n+' propiedades guardadas';
     wa.href='https://wa.me/'+telefono()+'?text='+encodeURIComponent('Hola, quiero consultar por estas propiedades:\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+': '+x.l).join('\n'));
     document.querySelectorAll('.lista-mas').forEach(b=>marcar(b,tiene(b.dataset.id)));
     const f=document.querySelector('.lista-ficha');if(f){const on=tiene(f.dataset.id);f.classList.toggle('is-on',on);f.textContent=on?'✓ Guardada en mi lista':'+ Guardar en mi lista';}
     panel.textContent='';const cab=el('div','lista-panel-cab');cab.append(el('strong','', 'Mi lista'));const vaciar=el('button','lista-vaciar','Vaciar');vaciar.type='button';vaciar.onclick=()=>{lista=[];guardar();};cab.append(vaciar);panel.append(cab);
     for(const x of lista){const fila=el('div','lista-item');const a=el('a','',x.t);a.href=x.h;const sub=el('span','',[x.u,x.p].filter(Boolean).join(' | '));const q=el('button','lista-quitar','Quitar');q.type='button';q.onclick=()=>{lista=lista.filter(y=>y.id!==x.id);guardar();};const txt=el('div','lista-item-txt');txt.append(a,sub);fila.append(txt,q);panel.append(fila);}
+    // Acciones de la lista: compartir (celular), copiar y mandar por mail.
+    const acc=el('div','lista-acciones');
+    const accion=(txt,fn,medio)=>{const b=el('button','lista-accion',txt);b.type='button';b.onclick=async()=>{try{await fn(b);}catch{}try{window.dmTrack&&window.dmTrack('lista_'+medio,{cantidad:lista.length});}catch{}};acc.append(b);return b;};
+    if(navigator.share)accion('Compartir',()=>navigator.share({title:'Mi lista de propiedades | Di Martino',text:textoLista()}),'compartir');
+    accion('Copiar',async b=>{const t=textoLista();if(navigator.clipboard)await navigator.clipboard.writeText(t);else{const a=el('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove();}b.textContent='¡Copiada!';setTimeout(()=>b.textContent='Copiar',2000);},'copiar');
+    accion('Enviar por mail',()=>{location.href='mailto:?subject='+encodeURIComponent('Mi lista de propiedades | Di Martino')+'&body='+encodeURIComponent(textoLista());},'mail');
+    panel.append(acc);
     const nota=el('p','lista-nota','Tu lista queda guardada en este dispositivo.');panel.append(nota);};
-  ver.onclick=()=>{panel.hidden=!panel.hidden;ver.textContent=panel.hidden?'Ver lista':'Cerrar';};
+  const textoLista=()=>'Mi lista de propiedades | Di Martino Propiedades\n\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+(x.p?' | '+x.p:'')+'\n'+(/^https?:/.test(x.l)?x.l:'https://'+x.l)).join('\n\n')+'\n\nConsultas: wa.me/'+telefono();
+  ver.onclick=()=>{panel.hidden=!panel.hidden;ver.textContent=panel.hidden?'Ver lista':'Cerrar';document.body.classList.toggle('lista-abierta',!panel.hidden);};
   document.addEventListener('click',e=>{const b=e.target.closest?.('.lista-mas');if(b){e.preventDefault();e.stopPropagation();const d=datosTarjeta(b.closest('.prop-card'));if(d)alternar(d);}});
   const iniciar=()=>{document.body.append(panel,barra);botones();
     // Ficha de propiedad
