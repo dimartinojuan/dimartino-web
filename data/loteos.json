@@ -1,33 +1,209 @@
 [
-  {
-    "slug": "la-ferme-6",
-    "name": "La Ferme 6",
-    "location": "Los Cardales",
-    "type": "Barrio abierto",
-    "moneda": "US$",
-    "fuente": "Planilla 'Lotes | La Ferme VI' (Drive). Solo columnas públicas: N°, m², frente, fondo, estado y precio público.",
-    "plano": {"filas": [[2,3,4,5,6,7,8,9,10,11],[1,20,19,18,17,16,15,14,13,12]]},
-    "lotes": [
-      {"n":1,"sup":2077.20,"frente":40,"fondo":48.43,"estado":"disponible","precio":42000,"nota":"Lote al frente, en esquina"},
-      {"n":2,"sup":2077.19,"frente":40,"fondo":48.43,"estado":"disponible","precio":42000,"nota":"Lote al frente, en esquina"},
-      {"n":3,"sup":2083.10,"frente":43,"fondo":48.49,"estado":"disponible","precio":42000},
-      {"n":4,"sup":2084.52,"frente":43,"fondo":48.52,"estado":"disponible","precio":42000},
-      {"n":5,"sup":2085.94,"frente":43,"fondo":48.53,"estado":"disponible","precio":42000},
-      {"n":6,"sup":2087.35,"frente":43,"fondo":48.56,"estado":"vendido"},
-      {"n":7,"sup":2088.77,"frente":43,"fondo":48.59,"estado":"disponible","precio":42000},
-      {"n":8,"sup":2090.19,"frente":43,"fondo":48.63,"estado":"disponible","precio":42000},
-      {"n":9,"sup":2091.61,"frente":43,"fondo":48.66,"estado":"disponible","precio":42000},
-      {"n":10,"sup":2093.02,"frente":43,"fondo":48.69,"estado":"disponible","precio":42000},
-      {"n":11,"sup":2094.35,"frente":43,"fondo":48.72,"estado":"disponible","precio":42000},
-      {"n":12,"sup":2094.40,"frente":43,"fondo":48.72,"estado":"disponible","precio":42000},
-      {"n":13,"sup":2093.02,"frente":43,"fondo":48.69,"estado":"disponible","precio":42000},
-      {"n":14,"sup":2091.61,"frente":43,"fondo":48.66,"estado":"disponible","precio":42000},
-      {"n":15,"sup":2090.19,"frente":43,"fondo":48.63,"estado":"disponible","precio":42000},
-      {"n":16,"sup":2088.77,"frente":43,"fondo":48.59,"estado":"disponible","precio":42000},
-      {"n":17,"sup":2087.35,"frente":43,"fondo":48.56,"estado":"disponible","precio":42000},
-      {"n":18,"sup":2085.94,"frente":43,"fondo":48.53,"estado":"disponible","precio":42000},
-      {"n":19,"sup":2084.52,"frente":43,"fondo":48.49,"estado":"disponible","precio":42000},
-      {"n":20,"sup":2083.10,"frente":43,"fondo":48.46,"estado":"disponible","precio":42000}
+ {
+  "slug": "la-ferme-6",
+  "name": "La Ferme 6",
+  "location": "Los Cardales",
+  "type": "Barrio abierto",
+  "moneda": "US$",
+  "fuente": "Planilla 'Lotes | La Ferme VI' (Drive). Solo columnas públicas: N°, m², frente, fondo, estado y precio público. Descripción y obras: documentos 'La Ferme – Descripción para presentación ante ADA' y 'Plan de Obras La Ferme V y VI'.",
+  "plano": {
+   "filas": [
+    [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11
+    ],
+    [
+     1,
+     20,
+     19,
+     18,
+     17,
+     16,
+     15,
+     14,
+     13,
+     12
     ]
-  }
+   ]
+  },
+  "lotes": [
+   {
+    "n": 1,
+    "sup": 2077.2,
+    "frente": 40,
+    "fondo": 48.43,
+    "estado": "disponible",
+    "precio": 42000,
+    "nota": "Lote al frente, en esquina"
+   },
+   {
+    "n": 2,
+    "sup": 2077.19,
+    "frente": 40,
+    "fondo": 48.43,
+    "estado": "disponible",
+    "precio": 42000,
+    "nota": "Lote al frente, en esquina"
+   },
+   {
+    "n": 3,
+    "sup": 2083.1,
+    "frente": 43,
+    "fondo": 48.49,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 4,
+    "sup": 2084.52,
+    "frente": 43,
+    "fondo": 48.52,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 5,
+    "sup": 2085.94,
+    "frente": 43,
+    "fondo": 48.53,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 6,
+    "sup": 2087.35,
+    "frente": 43,
+    "fondo": 48.56,
+    "estado": "vendido"
+   },
+   {
+    "n": 7,
+    "sup": 2088.77,
+    "frente": 43,
+    "fondo": 48.59,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 8,
+    "sup": 2090.19,
+    "frente": 43,
+    "fondo": 48.63,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 9,
+    "sup": 2091.61,
+    "frente": 43,
+    "fondo": 48.66,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 10,
+    "sup": 2093.02,
+    "frente": 43,
+    "fondo": 48.69,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 11,
+    "sup": 2094.35,
+    "frente": 43,
+    "fondo": 48.72,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 12,
+    "sup": 2094.4,
+    "frente": 43,
+    "fondo": 48.72,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 13,
+    "sup": 2093.02,
+    "frente": 43,
+    "fondo": 48.69,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 14,
+    "sup": 2091.61,
+    "frente": 43,
+    "fondo": 48.66,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 15,
+    "sup": 2090.19,
+    "frente": 43,
+    "fondo": 48.63,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 16,
+    "sup": 2088.77,
+    "frente": 43,
+    "fondo": 48.59,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 17,
+    "sup": 2087.35,
+    "frente": 43,
+    "fondo": 48.56,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 18,
+    "sup": 2085.94,
+    "frente": 43,
+    "fondo": 48.53,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 19,
+    "sup": 2084.52,
+    "frente": 43,
+    "fondo": 48.49,
+    "estado": "disponible",
+    "precio": 42000
+   },
+   {
+    "n": 20,
+    "sup": 2083.1,
+    "frente": 43,
+    "fondo": 48.46,
+    "estado": "disponible",
+    "precio": 42000
+   }
+  ],
+  "descripcion": "Barrio abierto en Los Cardales, partido de Exaltación de la Cruz. Son 20 lotes de más de 2.000 m², pensados para casa quinta: para vivir todo el año o para el fin de semana, en un entorno tranquilo.",
+  "construccion": "En cada lote se puede construir una vivienda unifamiliar de hasta unos 200 m² (FOS 0,10).",
+  "obras": [
+   "Calles consolidadas con piedra",
+   "Red eléctrica y alumbrado público con luces LED",
+   "Red de agua corriente y de cloacas (preinstalación)",
+   "Arbolado: dos fresnos en el frente de cada lote"
+  ]
+ }
 ]
