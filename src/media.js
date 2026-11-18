@@ -20,3 +20,19 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){const tours=document.querySele
 
 // The floating Instagram button steps aside while the footer is on screen.
 if(typeof window!=='undefined'&&!window.DM_BUILD&&'IntersectionObserver' in window){const ig=document.querySelector('.ig-float'),foot=document.querySelector('footer');if(ig&&foot)new IntersectionObserver(([e])=>ig.classList.toggle('is-hidden',e.isIntersecting)).observe(foot);}
+
+// Loteos: al tocar un lote del plano o de la lista se muestran sus medidas, precio y el enlace de consulta.
+if(typeof window!=='undefined'&&!window.DM_BUILD&&document.querySelector('.loteo')){
+  const ficha=document.getElementById('loteo-ficha');
+  const elegir=n=>{const fila=document.querySelector('.loteo-tabla tr[data-lote="'+n+'"]');if(!fila)return;const d=fila.dataset,vendido=d.estado==='vendido';
+    document.querySelectorAll('.loteo [data-lote].is-sel,.loteo-tabla tr.is-sel').forEach(e=>e.classList.remove('is-sel'));
+    document.querySelector('.loteo-plano [data-lote="'+n+'"]')?.classList.add('is-sel');fila.classList.add('is-sel');
+    ficha.textContent='';
+    const p=(cls,txt)=>{const e=document.createElement('p');e.className=cls;e.textContent=txt;ficha.append(e);return e;};
+    p('loteo-ficha-k',vendido?'Vendido':'Disponible');p('loteo-ficha-t','Lote '+n);if(d.nota)p('loteo-ficha-nota',d.nota);
+    const dl=document.createElement('dl');for(const [k,v] of [['Superficie',d.sup],['Frente',d.frente],['Fondo',d.fondo]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;dl.append(dt,dd);}ficha.append(dl);
+    if(!vendido){p('loteo-ficha-precio',d.precio);const a=document.createElement('a');a.className='loteo-ficha-btn';a.href=d.wa;a.target='_blank';a.rel='noopener';a.textContent='Consultar por este lote';ficha.append(a);}
+    ficha.classList.toggle('is-vendido',vendido);};
+  document.addEventListener('click',e=>{if(e.target.closest?.('.loteo-tabla a'))return;const el=e.target.closest?.('.loteo-plano [data-lote],.loteo-tabla tr[data-lote]');if(el)elegir(el.dataset.lote);});
+  document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const el=e.target.closest?.('.loteo-plano [data-lote]');if(el){e.preventDefault();elegir(el.dataset.lote);}});
+}

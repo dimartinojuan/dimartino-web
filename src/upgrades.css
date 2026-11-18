@@ -310,3 +310,42 @@ footer .brand-logo{height:auto!important;width:210px}
 /* Alineación: en compu, la ficha usa los mismos bordes que el menú y el pie (logo, ruta, fotos, "Otras propiedades" y franja de propietarios en una misma línea) y se achican los huecos entre bloques */
 @media(min-width:1025px){:root{--lado:max(5%,calc(50% - 660px))}.navbar{padding-left:5%;padding-right:5%}#vista-detalle .det-breadcrumb,.det-wrap{max-width:none;padding-left:var(--lado);padding-right:var(--lado)}.det-wrap{padding-bottom:20px}.related{padding:28px var(--lado) 8px}.related h2{margin-bottom:14px}body>.owner-band{width:auto;max-width:none;margin:28px var(--lado) 48px}}
 .prop-compromiso{margin:26px 0 0;font-size:15px}
+/* Página de loteo: plano interactivo, ficha del lote elegido y lista completa */
+.loteo{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;margin-top:8px}
+.loteo-plano-caja,.loteo-ficha,.loteo-tabla-caja{background:#fff;border:1px solid var(--gris-borde);border-radius:14px}
+.loteo-plano-caja{padding:22px 24px}
+.loteo h2,.loteo-lista h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px}
+.loteo-ayuda{font-size:14px;color:var(--gris-txt);margin:0 0 16px}
+.loteo-plano svg{display:block;width:100%;height:auto;font-family:inherit}
+.plano-calle{fill:#EDEDE4}.plano-calle-t{font-size:5.5px;fill:rgba(11,48,66,.72);font-weight:600;letter-spacing:.3px}
+.lote{cursor:pointer;outline:none}
+.lote rect{fill:#fff;stroke:#0B3042;stroke-width:.7;transition:fill .15s}
+.lote-n{font-size:12px;font-weight:800;fill:#0B3042}.lote-e{font-size:4.6px;font-weight:600;fill:rgba(11,48,66,.72)}
+.lote--disponible:hover rect,.lote--disponible:focus-visible rect{fill:rgba(11,48,66,.12)}
+.lote--vendido rect{fill:#BCBEC0;stroke:#BCBEC0}.lote--vendido .lote-n,.lote--vendido .lote-e{fill:#fff}
+.lote.is-sel rect{fill:#D3282F;stroke:#D3282F}.lote.is-sel .lote-n,.lote.is-sel .lote-e{fill:#fff}
+.lote:focus-visible rect{stroke-width:1.6}
+.loteo-leyenda{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:13px;color:var(--azul);margin:14px 0 0}
+.ley{display:inline-block;width:14px;height:14px;border-radius:3px;border:1.5px solid #0B3042;background:#fff;margin-left:12px}.ley:first-child{margin-left:0}
+.ley--vendido{background:#BCBEC0;border-color:#BCBEC0}.ley--sel{background:#D3282F;border-color:#D3282F}
+.loteo-nota{font-size:12px;color:var(--gris-txt);margin:10px 0 0}
+.loteo-ficha{padding:22px 24px;position:sticky;top:88px;border:2px solid var(--azul)}
+.loteo-ficha-k{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--rojo);margin:0 0 6px}
+.loteo-ficha-vacio{font-size:14px;color:var(--gris-txt);line-height:1.6;margin:0}
+.loteo-ficha-t{font-size:26px;font-weight:800;color:var(--azul);margin:0 0 4px}
+.loteo-ficha-nota{font-size:13px;color:var(--gris-txt);margin:0 0 4px}
+.loteo-ficha dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:14px 0;font-size:15px;color:var(--azul)}
+.loteo-ficha dt{color:var(--gris-txt)}.loteo-ficha dd{margin:0;font-weight:700;text-align:right}
+.loteo-ficha-precio{font-size:24px;font-weight:800;color:var(--azul);margin:0 0 14px;padding-top:14px;border-top:1px solid var(--gris-borde)}
+.loteo-ficha-btn{display:block;text-align:center;background:var(--rojo);color:#fff;font-weight:700;padding:14px 18px;border-radius:10px}
+.loteo-ficha.is-vendido{border-color:var(--gris-borde)}.loteo-ficha.is-vendido .loteo-ficha-k{color:var(--gris-txt)}
+.loteo-lista{margin-top:36px}
+.loteo-tabla-caja{overflow-x:auto;margin-top:12px}
+.loteo-tabla{width:100%;border-collapse:collapse;font-size:15px;color:var(--azul)}
+.loteo-tabla th,.loteo-tabla td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--gris-borde);white-space:nowrap}
+.loteo-tabla thead th{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--gris-txt)}
+.loteo-tabla tbody tr{cursor:pointer}.loteo-tabla tbody tr:last-child th,.loteo-tabla tbody tr:last-child td{border-bottom:0}
+.loteo-tabla tbody tr:hover,.loteo-tabla tr.is-sel{background:var(--gris-bg)}
+.loteo-tabla tr[data-estado="vendido"]{color:var(--gris-txt)}
+.loteo-precio{font-weight:700}.loteo-tabla a{color:var(--rojo);font-weight:700;text-decoration:underline}
+@media(max-width:900px){.loteo{grid-template-columns:1fr}.loteo-ficha{position:static}.loteo-plano-caja{padding:18px 14px}.lote-e{display:none}.lote-n{font-size:14px}}
