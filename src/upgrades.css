@@ -368,3 +368,11 @@ footer .brand-logo{height:auto!important;width:210px}
 .loteo-mini line{stroke:#BCBEC0;stroke-width:3}
 .loteo-mini .mini-calle{font-size:8px;font-weight:600;fill:rgba(11,48,66,.72)}
 @media(max-width:900px){.loteo-info{grid-template-columns:1fr}}
+.loteo-ubicacion{margin-top:36px}
+.loteo-ubicacion-cab{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.loteo-ubicacion h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 4px}
+.loteo-ubicacion-cab p{margin:0;font-size:14px;color:var(--gris-txt)}
+.loteo-llegar{display:inline-flex;padding:12px 20px;border-radius:10px;background:var(--azul);color:#fff;font-weight:700;font-size:14px}
+.loteo-satelital{border-radius:14px;overflow:hidden;background:var(--azul);line-height:0}
+.loteo-satelital svg{display:block;width:100%;height:auto}
+@media(max-width:600px){.loteo-llegar{width:100%;justify-content:center}}
