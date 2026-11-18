@@ -349,3 +349,5 @@ footer .brand-logo{height:auto!important;width:210px}
 .loteo-tabla tr[data-estado="vendido"]{color:var(--gris-txt)}
 .loteo-precio{font-weight:700}.loteo-tabla a{color:var(--rojo);font-weight:700;text-decoration:underline}
 @media(max-width:900px){.loteo{grid-template-columns:1fr}.loteo-ficha{position:static}.loteo-plano-caja{padding:18px 14px}.lote-e{display:none}.lote-n{font-size:14px}}
+.loteo-tabla-caja{position:relative}
+@media(max-width:600px){.loteo-tabla{font-size:14px}.loteo-tabla th,.loteo-tabla td{padding:11px 10px}}
