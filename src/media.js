@@ -69,8 +69,23 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
     const accion=(txt,fn,medio)=>{const b=el('button','lista-accion',txt);b.type='button';b.onclick=async()=>{try{await fn(b);}catch{}try{window.dmTrack&&window.dmTrack('lista_'+medio,{cantidad:lista.length});}catch{}};acc.append(b);return b;};
     if(navigator.share)accion('Compartir',()=>navigator.share({title:'Mi lista de propiedades | Di Martino',text:textoLista()}),'compartir');
     accion('Copiar',async b=>{const t=textoLista();if(navigator.clipboard)await navigator.clipboard.writeText(t);else{const a=el('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove();}b.textContent='¡Copiada!';setTimeout(()=>b.textContent='Copiar',2000);},'copiar');
-    accion('Enviar por mail',()=>{location.href='mailto:?subject='+encodeURIComponent('Mi lista de propiedades | Di Martino')+'&body='+encodeURIComponent(textoLista());},'mail');
+    const porServidor=typeof DM_CONTACT_URL!=='undefined'&&DM_CONTACT_URL;
+    const form=el('form','lista-mail');form.hidden=true;
+    accion('Enviar por mail',()=>{if(!porServidor){location.href='mailto:?subject='+encodeURIComponent('Mi lista de propiedades | Di Martino')+'&body='+encodeURIComponent(textoLista());return;}form.hidden=!form.hidden;if(!form.hidden)form.querySelector('input').focus();},'mail_abrir');
     panel.append(acc);
+    if(porServidor){
+      const inp=el('input');inp.type='email';inp.required=true;inp.placeholder='Tu mail';inp.autocomplete='email';inp.setAttribute('aria-label','Tu mail');try{inp.value=localStorage.getItem('dm-mail')||'';}catch{}
+      const env=el('button','lista-mail-btn','Enviar');env.type='submit';
+      const fila=el('div','lista-mail-fila');fila.append(inp,env);
+      const msj=el('p','lista-mail-msj','Te mandamos la lista con fotos y enlaces. Di Martino también la recibe para poder ayudarte.');
+      form.append(fila,msj);
+      form.onsubmit=async e=>{e.preventDefault();const mail=inp.value.trim();if(!mail)return;env.disabled=true;env.textContent='Enviando…';
+        let ok=false;try{const r=await fetch(DM_CONTACT_URL,{method:'POST',body:JSON.stringify({evento:'lista_mail',email:mail,ids:lista.map(x=>x.id),oficina:!!window.DM_OFICINA})});ok=(await r.json()).ok;}catch{}
+        env.disabled=false;env.textContent='Enviar';
+        if(ok){try{localStorage.setItem('dm-mail',mail);}catch{}msj.textContent='¡Listo! Te la mandamos a '+mail+'. Si no la ves, revisá la carpeta de spam.';msj.classList.add('is-ok');try{window.dmTrack&&window.dmTrack('lista_mail',{cantidad:lista.length});}catch{}}
+        else{msj.textContent='No se pudo enviar. Revisá el mail o probá en un rato.';msj.classList.remove('is-ok');}};
+      panel.append(form);
+    }
     const nota=el('p','lista-nota','Tu lista queda guardada en este dispositivo.');panel.append(nota);};
   const textoLista=()=>'Mi lista de propiedades | Di Martino Propiedades\n\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+(x.p?' | '+x.p:'')+'\n'+(/^https?:/.test(x.l)?x.l:'https://'+x.l)).join('\n\n')+'\n\nConsultas: wa.me/'+telefono();
   ver.onclick=()=>{panel.hidden=!panel.hidden;ver.textContent=panel.hidden?'Ver lista':'Cerrar';document.body.classList.toggle('lista-abierta',!panel.hidden);};
@@ -88,7 +103,16 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
     // Listados: debajo de los filtros, botón "Ver filtros" e invitación a propietarios, que acompañan al bajar
     const filtros=document.getElementById('property-filters');
     if(filtros&&!filtros.querySelector('.filtros-pie')){const pie=el('div','filtros-pie');const vf=el('button','filtros-volver','Ver filtros');vf.type='button';vf.hidden=true;vf.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-      const caja=el('div','filtros-vender');caja.append(el('p','filtros-vender-k','Para propietarios'),el('p','filtros-vender-t','¿Querés vender tu propiedad con nosotros?'));const a=el('a','filtros-vender-btn','Contactanos');a.href=(document.querySelector('a[href$="/tasaciones/"]')?.getAttribute('href'))||'/tasaciones/';caja.append(a);pie.append(vf,caja);filtros.append(pie);
+      // Cuadro de Instagram (la invitación a vender ya está al pie del listado).
+      const ig='https://www.instagram.com/dimartinopropiedades/',raiz=(typeof DM_ROOT!=='undefined'?DM_ROOT:'/');
+      const caja=el('a','filtros-ig');caja.href=ig;caja.target='_blank';caja.rel='noopener';caja.setAttribute('aria-label','Seguinos en Instagram: @dimartinopropiedades');
+      const cab=el('div','filtros-ig-cab');const av=el('span','filtros-ig-av');const iso=el('img');iso.src=raiz+'assets/iso-color.svg';iso.alt='';av.append(iso);
+      const nom=el('div','filtros-ig-nom');nom.append(el('strong','','dimartinopropiedades'),el('span','','Instagram'));cab.append(av,nom);
+      const fotos=el('div','filtros-ig-fotos');
+      [...document.querySelectorAll('.prop-card .prop-foto img')].map(i=>i.currentSrc||i.src).filter(Boolean).slice(0,3).forEach(src=>{const f=el('img');f.src=src;f.alt='';f.loading='lazy';fotos.append(f);});
+      caja.append(el('p','filtros-ig-t','No te pierdas las últimas novedades'),cab);if(fotos.children.length)caja.append(fotos);const seg=el('span','filtros-ig-btn');seg.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Seguir';caja.append(seg);
+      caja.addEventListener('click',()=>{try{window.dmTrack&&window.dmTrack('clic_instagram',{lugar:'lateral'});}catch{}});
+      pie.append(vf,caja);filtros.append(pie);
       const ver=()=>{vf.hidden=pie.getBoundingClientRect().top>90;};window.addEventListener('scroll',ver,{passive:true});ver();}
   };
   const seguro=()=>{try{iniciar();}catch(e){console.error(e);}};
