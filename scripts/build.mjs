@@ -145,7 +145,7 @@ async function main(){
   // Write image bytes synchronously with the rest of the build, avoiding async replacements.
   const originals=[...((await fs.readFile(path.join(ROOT,'src/template.html'),'utf8')).matchAll(/data:image\/png;base64,([A-Za-z0-9+/=]+)/g))];await write('assets/favicon-source.png',Buffer.from(originals[0][1],'base64'));await write('assets/logo.png',Buffer.from(originals[1][1],'base64'));
   for(const f of await fs.readdir(path.join(ROOT,'assets/categorias')).catch(()=>[]))await write('assets/categorias/'+f,await fs.readFile(path.join(ROOT,'assets/categorias',f)));
-  for(const name of ['favicon.png','social-cover.jpg','logo-schema.png','iso-color.svg','logo-nav.png']){try{await write('assets/'+name,await fs.readFile(path.join(ROOT,'assets',name)));}catch{if(name==='favicon.png')await write('assets/favicon.png',Buffer.from(originals[0][1],'base64'));}}
+  for(const name of ['favicon.png','social-cover.jpg','logo-schema.png','iso-color.svg','logo-nav.png','portada.mp4']){try{await write('assets/'+name,await fs.readFile(path.join(ROOT,'assets',name)));}catch{if(name==='favicon.png')await write('assets/favicon.png',Buffer.from(originals[0][1],'base64'));}}
   template=template.replaceAll('favicon-source.png','favicon.png');
   // Poppins is self-hosted so every phone and computer shows the same brand typeface, with no third-party requests.
   const weights=[400,500,600,700,800];let fontFaces='';
