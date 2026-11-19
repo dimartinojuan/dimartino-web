@@ -98,11 +98,11 @@ if ($evento === 'lista_mail') {
   $html = '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     . '<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><title>Tu lista de propiedades</title></head>'
     . '<body style="margin:0;padding:0;background:' . $CREMA . '">'
-    . '<div style="display:none;max-height:0;overflow:hidden">Las ' . $n . ' propiedades que guardaste en la web de Di Martino Propiedades.</div>'
+    . '<div style="display:none;max-height:0;overflow:hidden">Las ' . $n . ' propiedades que guardaste en la web de Di Martino Inmobiliaria.</div>'
     . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . $CREMA . '"><tr><td align="center" style="padding:24px 12px">'
     . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:596px">'
     // Encabezado: azul con el logo y la línea roja de la web
-    . '<tr><td style="background:' . $AZUL . ';border-radius:16px 16px 0 0;padding:22px 24px"><a href="' . $sitio . '"><img src="' . $sitio . 'assets/logo-nav.png" width="190" height="30" alt="Di Martino Propiedades" style="display:block;width:190px;height:auto;border:0"></a></td></tr>'
+    . '<tr><td style="background:' . $AZUL . ';border-radius:16px 16px 0 0;padding:22px 24px"><a href="' . $sitio . '"><img src="' . $sitio . 'assets/logo-nav.png" width="190" height="30" alt="Di Martino Inmobiliaria" style="display:block;width:190px;height:auto;border:0"></a></td></tr>'
     . '<tr><td style="background:' . $ROJO . ';height:4px;line-height:4px;font-size:0">&nbsp;</td></tr>'
     // Título
     . '<tr><td style="background:#ffffff;padding:26px 24px 22px;border-radius:0 0 16px 16px;' . $fuente . '">'
@@ -112,6 +112,13 @@ if ($evento === 'lista_mail') {
     . '</td></tr>'
     // Tarjetas
     . '<tr><td style="background:' . $CREMA . ';padding:20px 0 2px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $tarjetas . '</table></td></tr>'
+    // Instagram
+    . '<tr><td style="background:' . $CREMA . ';padding:0 0 20px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:#ffffff;border-radius:14px;padding:24px;text-align:center;' . $fuente . '">'
+    . '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:' . $ROJO . '">Seguinos en Instagram</div>'
+    . '<div style="margin-top:6px;font-size:18px;font-weight:800;color:' . $AZUL . '">No te pierdas las últimas novedades</div>'
+    . '<div style="margin-top:6px;font-size:14px;color:' . $AZUL . ';line-height:1.5">Propiedades nuevas, recorridos y oportunidades antes que en ningún lado.</div>'
+    . '<a href="https://www.instagram.com/dimartinopropiedades/" style="display:inline-block;margin-top:14px;background:' . $ROJO . ';color:#ffffff;font-size:14px;font-weight:700;padding:11px 24px;border-radius:999px;text-decoration:none;' . $fuente . '">Seguir a @dimartinopropiedades</a>'
+    . '</td></tr></table></td></tr>'
     // Llamado a la acción
     . '<tr><td style="background:' . $AZUL . ';padding:26px 24px;text-align:center;border-radius:16px 16px 0 0;' . $fuente . '">'
     . '<div style="font-size:19px;font-weight:800;color:#ffffff">¿Querés verlas en persona?</div>'
@@ -121,15 +128,15 @@ if ($evento === 'lista_mail') {
     // Pie
     . '<tr><td style="background:' . $ROJO . ';height:4px;line-height:4px;font-size:0">&nbsp;</td></tr>'
     . '<tr><td style="background:' . $AZUL . ';border-radius:0 0 16px 16px;padding:22px 24px;' . $fuente . 'font-size:13px;color:' . $GRIS . ';line-height:1.7">'
-    . '<img src="' . $sitio . 'assets/logo-nav.png" width="140" alt="Di Martino Propiedades" style="display:block;width:140px;height:auto;border:0;margin-bottom:12px">'
+    . '<img src="' . $sitio . 'assets/logo-nav.png" width="140" alt="Di Martino Inmobiliaria" style="display:block;width:140px;height:auto;border:0;margin-bottom:12px">'
     . 'Lavalle 889, Luján<br>Oficina: <a href="tel:+542323426040" style="color:#ffffff;text-decoration:none">(02323) 426040</a> · WhatsApp: <a href="https://wa.me/' . $waNum . '" style="color:#ffffff;text-decoration:none">2323-678107</a><br>'
     . '<a href="' . $sitio . '" style="color:#ffffff;text-decoration:none;font-weight:700">dimartinoprop.com.ar</a> · <a href="https://www.instagram.com/dimartinopropiedades/" style="color:#ffffff;text-decoration:none">Instagram</a>'
     . '</td></tr>'
-    . '<tr><td style="padding:14px 10px 0;text-align:center;' . $fuente . 'font-size:11px;color:#8f9194">Recibiste este mail porque pediste tu lista desde la web de Di Martino Propiedades.</td></tr>'
+    . '<tr><td style="padding:14px 10px 0;text-align:center;' . $fuente . 'font-size:11px;color:#8f9194">Recibiste este mail porque pediste tu lista desde la web de Di Martino Inmobiliaria.</td></tr>'
     . '</table></td></tr></table></body></html>';
-  $texto = "Tu lista de propiedades | Di Martino Propiedades\n\n" . $plano . "Consultas por WhatsApp: 2323-678107\nLavalle 889, Luján · (02323) 426040\n";
+  $texto = "Tu lista de propiedades | Di Martino Inmobiliaria\n\n" . $plano . "Consultas por WhatsApp: 2323-678107\nSeguinos en Instagram: instagram.com/dimartinopropiedades\nLavalle 889, Luján · (02323) 426040\n";
   $limite = '=_dm' . bin2hex(random_bytes(8));
-  $cabeceras = "From: Di Martino Propiedades <info@dimartinoprop.com.ar>\r\nReply-To: info@dimartinoprop.com.ar\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$limite\"";
+  $cabeceras = "From: =?UTF-8?B?" . base64_encode('Di Martino Inmobiliaria') . "?= <info@dimartinoprop.com.ar>\r\nReply-To: info@dimartinoprop.com.ar\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$limite\"";
   $cuerpo = "--$limite\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($texto))
     . "--$limite\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html)) . "--$limite--";
   $asunto = '=?UTF-8?B?' . base64_encode('Tu lista de propiedades | Di Martino') . '?=';
