@@ -60,29 +60,73 @@ if ($evento === 'lista_mail') {
     return 'Consultar';
   };
   $sitio = 'https://www.dimartinoprop.com.ar/';
-  $filas = ''; $plano = '';
+  // Colores del manual de marca y tipografía de la web (Poppins donde el programa de mail la acepte).
+  $AZUL = '#0B3042'; $ROJO = '#D3282F'; $GRIS = '#BCBEC0'; $CREMA = '#EDEDE4';
+  $fuente = "font-family:Poppins,'Segoe UI',Arial,Helvetica,sans-serif;";
+  $waNum = '5492323678107';
+  $tarjetas = ''; $plano = '';
   foreach ($props as $i => $p) {
     $url = $sitio . ($p['path'] ?? 'propiedades/' . $p['id'] . '/');
-    $nombre = trim(($p['type']['label'] ?? 'Propiedad') . ' | ' . ($p['address'] ?? ''));
+    $tipo = $p['type']['label'] ?? 'Propiedad';
+    $nombre = trim($tipo . ' | ' . ($p['address'] ?? ''));
     $zona = $p['location']['name'] ?? '';
     $foto = $p['photos'][0]['image'] ?? '';
-    $filas .= '<tr><td style="padding:12px 0;border-top:1px solid #e6e1d8;width:120px;vertical-align:top">'
-      . ($foto ? '<a href="' . $h($url) . '"><img src="' . $h($foto) . '" width="110" height="80" alt="" style="display:block;width:110px;height:80px;object-fit:cover;border-radius:8px"></a>' : '')
-      . '</td><td style="padding:12px 0 12px 12px;border-top:1px solid #e6e1d8;vertical-align:top">'
-      . '<a href="' . $h($url) . '" style="color:#0B3042;font-weight:bold;font-size:15px;text-decoration:none">' . $h($nombre) . '</a>'
-      . '<div style="color:#6b7280;font-size:13px;margin-top:2px">' . $h($zona) . '</div>'
-      . '<div style="color:#0B3042;font-weight:bold;font-size:15px;margin-top:6px">' . $h($precio($p)) . '</div>'
-      . '<a href="' . $h($url) . '" style="display:inline-block;margin-top:6px;color:#D3282F;font-size:13px;font-weight:bold">Ver ficha</a></td></tr>';
+    $op = (($p['operations'][0]['operation_type'] ?? '') === 'Rent') ? 'Alquiler' : 'Venta';
+    $rasgos = [];
+    if (!empty($p['suite_amount'])) $rasgos[] = $p['suite_amount'] . ' dorm.';
+    if (!empty($p['bathroom_amount'])) $rasgos[] = $p['bathroom_amount'] . ($p['bathroom_amount'] == 1 ? ' baño' : ' baños');
+    if (!empty($p['roofed_surface'])) $rasgos[] = round($p['roofed_surface']) . ' m² cubiertos';
+    elseif (!empty($p['surface'])) $rasgos[] = round($p['surface']) . ' m² de terreno';
+    $consulta = 'https://wa.me/' . $waNum . '?text=' . rawurlencode('Hola, quiero consultar por ' . $nombre . ($zona ? ', ' . $zona : '') . ":\n" . $url);
+    $tarjetas .= '<tr><td style="padding:0 0 18px">'
+      . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;overflow:hidden;border-collapse:separate">'
+      . ($foto ? '<tr><td><a href="' . $h($url) . '"><img src="' . $h($foto) . '" width="556" alt="' . $h($nombre) . '" style="display:block;width:100%;max-width:556px;height:auto;border:0;border-radius:14px 14px 0 0"></a></td></tr>' : '')
+      . '<tr><td style="padding:16px 20px 20px;' . $fuente . '">'
+      . '<span style="display:inline-block;background:' . $ROJO . ';color:#ffffff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px">' . $op . '</span>'
+      . '<div style="margin-top:9px;font-size:16px;font-weight:700;color:' . $AZUL . ';line-height:1.3"><a href="' . $h($url) . '" style="color:' . $AZUL . ';text-decoration:none">' . $h($nombre) . '</a></div>'
+      . '<div style="margin-top:6px;font-size:22px;font-weight:800;color:' . $AZUL . '">' . $h($precio($p)) . '</div>'
+      . ($rasgos ? '<div style="margin-top:4px;font-size:13px;color:' . $AZUL . '">' . $h(implode(' · ', $rasgos)) . '</div>' : '')
+      . ($zona ? '<div style="margin-top:2px;font-size:12px;color:#8f9194">' . $h($zona) . '</div>' : '')
+      . '<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:14px"><tr>'
+      . '<td style="padding-right:8px"><a href="' . $h($url) . '" style="display:inline-block;background:' . $AZUL . ';color:#ffffff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:999px;text-decoration:none;' . $fuente . '">Ver ficha</a></td>'
+      . '<td><a href="' . $h($consulta) . '" style="display:inline-block;background:#ffffff;color:' . $AZUL . ';border:1.5px solid ' . $AZUL . ';font-size:13px;font-weight:700;padding:9px 18px;border-radius:999px;text-decoration:none;' . $fuente . '">Consultar</a></td>'
+      . '</tr></table></td></tr></table></td></tr>';
     $plano .= ($i + 1) . ') ' . $nombre . ($zona ? ', ' . $zona : '') . ' | ' . $precio($p) . "\n" . $url . "\n\n";
   }
-  $wa = 'https://wa.me/5492323678107?text=' . rawurlencode("Hola, quiero consultar por estas propiedades de mi lista:\n" . trim($plano));
-  $html = '<!DOCTYPE html><html><body style="margin:0;background:#f4f1ec;font-family:Arial,sans-serif">'
-    . '<div style="max-width:600px;margin:0 auto;padding:20px">'
-    . '<div style="background:#0B3042;color:#fff;padding:18px 22px;border-radius:12px 12px 0 0"><div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#f3b4b6">Di Martino Propiedades</div><div style="font-size:20px;font-weight:bold;margin-top:4px">Tu lista de propiedades</div></div>'
-    . '<div style="background:#fff;padding:8px 22px 20px;border-radius:0 0 12px 12px"><table style="width:100%;border-collapse:collapse">' . $filas . '</table>'
-    . '<p style="margin:18px 0 0;text-align:center"><a href="' . $h($wa) . '" style="display:inline-block;background:#D3282F;color:#fff;font-weight:bold;padding:12px 22px;border-radius:999px;text-decoration:none">Consultar por WhatsApp</a></p>'
-    . '<p style="color:#6b7280;font-size:12px;text-align:center;margin:16px 0 0">Lavalle 889, Luján · (02323) 426040 · <a href="' . $sitio . '" style="color:#0B3042">dimartinoprop.com.ar</a></p></div>'
-    . '<p style="color:#9ca3af;font-size:11px;text-align:center;margin-top:12px">Recibiste este mail porque lo pediste desde la web de Di Martino Propiedades.</p></div></body></html>';
+  $n = count($props);
+  $wa = 'https://wa.me/' . $waNum . '?text=' . rawurlencode("Hola, quiero consultar por estas propiedades de mi lista:\n" . trim($plano));
+  $html = '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    . '<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><title>Tu lista de propiedades</title></head>'
+    . '<body style="margin:0;padding:0;background:' . $CREMA . '">'
+    . '<div style="display:none;max-height:0;overflow:hidden">Las ' . $n . ' propiedades que guardaste en la web de Di Martino Propiedades.</div>'
+    . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . $CREMA . '"><tr><td align="center" style="padding:24px 12px">'
+    . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:596px">'
+    // Encabezado: azul con el logo y la línea roja de la web
+    . '<tr><td style="background:' . $AZUL . ';border-radius:16px 16px 0 0;padding:22px 24px"><a href="' . $sitio . '"><img src="' . $sitio . 'assets/logo-nav.png" width="190" height="30" alt="Di Martino Propiedades" style="display:block;width:190px;height:auto;border:0"></a></td></tr>'
+    . '<tr><td style="background:' . $ROJO . ';height:4px;line-height:4px;font-size:0">&nbsp;</td></tr>'
+    // Título
+    . '<tr><td style="background:#ffffff;padding:26px 24px 22px;border-radius:0 0 16px 16px;' . $fuente . '">'
+    . '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:' . $ROJO . '">Mi lista</div>'
+    . '<div style="margin-top:6px;font-size:24px;font-weight:800;color:' . $AZUL . ';line-height:1.2">Las propiedades que guardaste</div>'
+    . '<div style="margin-top:8px;font-size:14px;color:' . $AZUL . ';line-height:1.5">' . ($n === 1 ? 'Acá tenés la propiedad que guardaste' : 'Acá tenés las ' . $n . ' propiedades que guardaste') . ' en nuestra web, con su ficha para ver todas las fotos, el recorrido y la ubicación.</div>'
+    . '</td></tr>'
+    // Tarjetas
+    . '<tr><td style="background:' . $CREMA . ';padding:20px 0 2px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $tarjetas . '</table></td></tr>'
+    // Llamado a la acción
+    . '<tr><td style="background:' . $AZUL . ';padding:26px 24px;text-align:center;border-radius:16px 16px 0 0;' . $fuente . '">'
+    . '<div style="font-size:19px;font-weight:800;color:#ffffff">¿Querés verlas en persona?</div>'
+    . '<div style="margin-top:6px;font-size:14px;color:' . $GRIS . '">Escribinos y coordinamos una visita.</div>'
+    . '<a href="' . $h($wa) . '" style="display:inline-block;margin-top:16px;background:' . $ROJO . ';color:#ffffff;font-size:15px;font-weight:700;padding:13px 26px;border-radius:999px;text-decoration:none;' . $fuente . '">Consultar por WhatsApp</a>'
+    . '</td></tr>'
+    // Pie
+    . '<tr><td style="background:' . $ROJO . ';height:4px;line-height:4px;font-size:0">&nbsp;</td></tr>'
+    . '<tr><td style="background:' . $AZUL . ';border-radius:0 0 16px 16px;padding:22px 24px;' . $fuente . 'font-size:13px;color:' . $GRIS . ';line-height:1.7">'
+    . '<img src="' . $sitio . 'assets/logo-nav.png" width="140" alt="Di Martino Propiedades" style="display:block;width:140px;height:auto;border:0;margin-bottom:12px">'
+    . 'Lavalle 889, Luján<br>Oficina: <a href="tel:+542323426040" style="color:#ffffff;text-decoration:none">(02323) 426040</a> · WhatsApp: <a href="https://wa.me/' . $waNum . '" style="color:#ffffff;text-decoration:none">2323-678107</a><br>'
+    . '<a href="' . $sitio . '" style="color:#ffffff;text-decoration:none;font-weight:700">dimartinoprop.com.ar</a> · <a href="https://www.instagram.com/dimartinopropiedades/" style="color:#ffffff;text-decoration:none">Instagram</a>'
+    . '</td></tr>'
+    . '<tr><td style="padding:14px 10px 0;text-align:center;' . $fuente . 'font-size:11px;color:#8f9194">Recibiste este mail porque pediste tu lista desde la web de Di Martino Propiedades.</td></tr>'
+    . '</table></td></tr></table></body></html>';
   $texto = "Tu lista de propiedades | Di Martino Propiedades\n\n" . $plano . "Consultas por WhatsApp: 2323-678107\nLavalle 889, Luján · (02323) 426040\n";
   $limite = '=_dm' . bin2hex(random_bytes(8));
   $cabeceras = "From: Di Martino Propiedades <info@dimartinoprop.com.ar>\r\nReply-To: info@dimartinoprop.com.ar\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$limite\"";
