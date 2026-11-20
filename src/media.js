@@ -65,7 +65,7 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
     cuenta.textContent='';cuenta.append(String(n),el('span','lista-cuenta-larga',n===1?' propiedad':' propiedades'),n===1?' guardada':' guardadas');
     wa.href='https://wa.me/'+telefono()+'?text='+encodeURIComponent('Hola, quiero consultar por estas propiedades:\n'+lista.map((x,i)=>(i+1)+') '+x.t+(x.u?', '+x.u:'')+': '+x.l).join('\n'));
     document.querySelectorAll('.lista-mas').forEach(b=>marcar(b,tiene(b.dataset.id)));
-    const f=document.querySelector('.lista-ficha');if(f){const on=tiene(f.dataset.id);f.classList.toggle('is-on',on);f.textContent=on?'✓ Guardada en mi lista':'+ Guardar en mi lista';}
+    const f=document.querySelector('.lista-ficha');if(f){const on=tiene(f.dataset.id);f.classList.toggle('is-on',on);f.textContent=on?'✓ Guardada':'+ Guardar';f.title=on?'Quitar de mi lista':'Guardar en mi lista';}
     panel.textContent='';const cab=el('div','lista-panel-cab');cab.append(el('strong','', 'Mi lista'));const vaciar=el('button','lista-vaciar','Vaciar');vaciar.type='button';vaciar.onclick=()=>{lista=[];guardar();};cab.append(vaciar);panel.append(cab);
     for(const x of lista){const fila=el('div','lista-item');const a=el('a','',x.t);a.href=x.h;const sub=el('span','',[x.u,x.p].filter(Boolean).join(' | '));const q=el('button','lista-quitar','Quitar');q.type='button';q.onclick=()=>{lista=lista.filter(y=>y.id!==x.id);guardar();};const txt=el('div','lista-item-txt');txt.append(a,sub);fila.append(txt,q);panel.append(fila);}
     // Acciones de la lista: compartir (celular), copiar y mandar por mail.
@@ -97,7 +97,7 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
   const iniciar=()=>{document.body.append(panel,barra);botones();
     // Ficha de propiedad
     const m=location.pathname.match(/\/propiedades\/(\d+)\/?$/),fila=document.querySelector('.det-precio-row');
-    if(m&&fila&&document.getElementById('det-titulo')){const cod=(document.getElementById('det-ref')?.textContent||'').match(/[\w-]+$/)?.[0];const b=el('button','lista-ficha');b.type='button';b.dataset.id=m[1];b.onclick=()=>alternar({id:m[1],t:document.getElementById('det-titulo').textContent.trim(),u:'',p:(document.getElementById('det-precio')?.textContent||'').trim(),l:location.host.replace(/^www\./,'')+'/'+(cod||'propiedades/'+m[1]+'/'),h:location.pathname});fila.after(b);}
+    if(m&&fila&&document.getElementById('det-titulo')){const cod=(document.getElementById('det-ref')?.textContent||'').match(/[\w-]+$/)?.[0];const b=el('button','lista-ficha');b.type='button';b.dataset.id=m[1];b.onclick=()=>alternar({id:m[1],t:document.getElementById('det-titulo').textContent.trim(),u:'',p:(document.getElementById('det-precio')?.textContent||'').trim(),l:location.host.replace(/^www\./,'')+'/'+(cod||'propiedades/'+m[1]+'/'),h:location.pathname});fila.append(b);}
     pintar();
     let t;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(botones,150);}).observe(document.body,{childList:true,subtree:true});
     window.addEventListener('storage',e=>{if(e.key===KEY){lista=leer();pintar();}});
