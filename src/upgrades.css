@@ -448,6 +448,6 @@ body.lista-abierta .ig-float{display:none}
 .lista-cerrar:hover{background:rgba(255,255,255,.3)}
 @media(max-width:768px){.lista-cerrar{margin-left:-4px;width:24px;height:24px}}
 @media(max-width:768px){.lista-cuenta-larga{display:none}.lista-cuenta{white-space:nowrap}}
-/* Ficha: el botón de guardar va al lado del precio, sin sumar alto al panel */
-.det-precio-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.lista-ficha{display:inline-block;width:auto;margin:0;padding:8px 14px;border-radius:999px;font-size:13px;white-space:nowrap}
+/* Ficha: "Guardar en mi lista" a lo ancho, un punto más chico; se compensa el alto ajustando apenas los espacios del panel */
+.lista-ficha{margin:10px 0 0;padding:8px 14px;font-size:13px}
+@media(min-width:1025px){.det-sidebar{top:80px}.det-sidebar .det-ubic{margin-bottom:12px}.det-sidebar .det-key-feats{margin-top:12px;padding-top:12px;row-gap:6px}.det-sidebar .det-kf{padding-top:4px;padding-bottom:4px}.det-sidebar>.det-card:first-child{padding-top:18px;padding-bottom:16px}.det-sidebar{gap:12px}}
