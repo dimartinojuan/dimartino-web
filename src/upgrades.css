@@ -456,3 +456,5 @@ body.lista-abierta .ig-float{display:none}
 @media(max-width:768px){.ig-franja{flex-wrap:wrap;gap:12px 14px;padding:16px;margin:4px 0}.ig-franja-av{width:48px;height:48px}.ig-franja-av img{padding:7px}.ig-franja-t{font-size:15px}
   .ig-franja-fotos{order:3;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.ig-franja-fotos img,.ig-franja-fotos img:nth-child(n+3){display:block;width:100%;height:auto;aspect-ratio:1}
   .ig-franja-btn{order:4;width:100%}}
+@media(min-width:769px) and (max-width:1060px){.ig-franja-fotos{display:none}.ig-franja{gap:16px;padding:16px 18px}.ig-franja-t{font-size:16px}}
+.ig-franja-k,.ig-franja-h{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
