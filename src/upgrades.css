@@ -427,17 +427,6 @@ body.lista-abierta .ig-float{display:none}
 .lista-mail-btn:disabled{opacity:.6;cursor:default}
 .lista-mail-msj{font-size:12px;color:var(--gris-txt);margin:6px 4px 0;line-height:1.35}
 .lista-mail-msj.is-ok{color:var(--azul);font-weight:700}
-@media(min-width:769px){
-.filtros-ig{display:block;background:#fff;border:2px solid var(--azul);border-radius:16px;padding:16px;box-shadow:0 8px 26px rgba(11,48,66,.12);color:var(--azul);text-decoration:none}
-.filtros-ig-t{font-size:15px;font-weight:800;line-height:1.25;margin:0 0 12px}
-.filtros-ig-cab{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.filtros-ig-av{flex:none;width:44px;height:44px;border-radius:50%;padding:2px;background:linear-gradient(45deg,var(--rojo),var(--azul))}
-.filtros-ig-av img{display:block;width:100%;height:100%;border-radius:50%;background:#fff;border:2px solid #fff;object-fit:contain;padding:5px;box-sizing:border-box}
-.filtros-ig-nom{min-width:0}.filtros-ig-nom strong{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.filtros-ig-nom span{display:block;font-size:12px;color:var(--gris-txt)}
-.filtros-ig-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:12px}
-.filtros-ig-fotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:var(--gris-borde)}
-.filtros-ig-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:11px;border-radius:10px}
-.filtros-ig:hover .filtros-ig-btn{filter:brightness(.92)}}
 /* Botón "+" de Mi lista al lado del de WhatsApp, abajo a la derecha de la tarjeta */
 .lista-mas.en-pie{position:absolute;top:auto;right:60px;bottom:15px;z-index:1;width:34px;height:34px;background:#fff;color:var(--azul);border:1.5px solid var(--azul);box-shadow:none;font-size:20px}
 .lista-mas.en-pie:hover{transform:none;background:var(--azul);color:#fff}
@@ -451,3 +440,19 @@ body.lista-abierta .ig-float{display:none}
 /* Ficha: "Guardar en mi lista" a lo ancho, un punto más chico; se compensa el alto ajustando apenas los espacios del panel */
 .lista-ficha{margin:10px 0 0;padding:8px 14px;font-size:13px}
 @media(min-width:1025px){.det-sidebar{top:80px}.det-sidebar .det-ubic{margin-bottom:12px}.det-sidebar .det-key-feats{margin-top:12px;padding-top:12px;row-gap:6px}.det-sidebar .det-kf{padding-top:4px;padding-bottom:4px}.det-sidebar>.det-card:first-child{padding-top:18px;padding-bottom:16px}.det-sidebar{gap:12px}}
+/* Instagram: franja a lo ancho dentro del listado */
+.ig-franja{grid-column:1/-1;display:flex;align-items:center;gap:20px;margin:8px 0;padding:18px 22px;border-radius:16px;background:var(--azul);color:#fff;text-decoration:none;box-shadow:0 10px 28px rgba(11,48,66,.18)}
+.ig-franja-av{flex:none;width:58px;height:58px;border-radius:50%;padding:3px;background:var(--rojo)}
+.ig-franja-av img{display:block;width:100%;height:100%;border-radius:50%;background:#fff;object-fit:contain;padding:9px;box-sizing:border-box}
+.ig-franja-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ig-franja-k{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gris-borde)}
+.ig-franja-t{font-size:18px;font-weight:800;line-height:1.25}
+.ig-franja-h{font-size:13px;color:var(--gris-borde)}
+.ig-franja-fotos{flex:none;display:flex;gap:6px}
+.ig-franja-fotos img{display:block;width:66px;height:66px;object-fit:cover;border-radius:9px;background:rgba(255,255,255,.12)}
+.ig-franja-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--rojo);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;white-space:nowrap}
+.ig-franja:hover .ig-franja-btn{filter:brightness(.92)}
+@media(max-width:1180px){.ig-franja-fotos img:nth-child(n+3){display:none}}
+@media(max-width:768px){.ig-franja{flex-wrap:wrap;gap:12px 14px;padding:16px;margin:4px 0}.ig-franja-av{width:48px;height:48px}.ig-franja-av img{padding:7px}.ig-franja-t{font-size:15px}
+  .ig-franja-fotos{order:3;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.ig-franja-fotos img,.ig-franja-fotos img:nth-child(n+3){display:block;width:100%;height:auto;aspect-ratio:1}
+  .ig-franja-btn{order:4;width:100%}}

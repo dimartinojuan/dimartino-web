@@ -104,20 +104,34 @@ if(typeof window!=='undefined'&&!window.DM_BUILD){(function(){
     // Botón para volver arriba
     const arriba=el('button','ir-arriba','↑');arriba.type='button';arriba.setAttribute('aria-label','Ir arriba');arriba.title='Ir arriba';arriba.hidden=true;arriba.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});document.body.append(arriba);
     const alScroll=()=>{arriba.hidden=window.scrollY<700;};window.addEventListener('scroll',alScroll,{passive:true});alScroll();
-    // Listados: debajo de los filtros, botón "Ver filtros" e invitación a propietarios, que acompañan al bajar
+    // Listados: debajo de los filtros, botón "Ver filtros" que acompaña al bajar
     const filtros=document.getElementById('property-filters');
     if(filtros&&!filtros.querySelector('.filtros-pie')){const pie=el('div','filtros-pie');const vf=el('button','filtros-volver','Ver filtros');vf.type='button';vf.hidden=true;vf.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-      // Cuadro de Instagram (la invitación a vender ya está al pie del listado).
-      const ig='https://www.instagram.com/dimartinopropiedades/',raiz=(typeof DM_ROOT!=='undefined'?DM_ROOT:'/');
-      const caja=el('a','filtros-ig');caja.href=ig;caja.target='_blank';caja.rel='noopener';caja.setAttribute('aria-label','Seguinos en Instagram: @dimartinopropiedades');
-      const cab=el('div','filtros-ig-cab');const av=el('span','filtros-ig-av');const iso=el('img');iso.src=raiz+'assets/iso-color.svg';iso.alt='';av.append(iso);
-      const nom=el('div','filtros-ig-nom');nom.append(el('strong','','dimartinopropiedades'),el('span','','Instagram'));cab.append(av,nom);
-      const fotos=el('div','filtros-ig-fotos');
-      [...document.querySelectorAll('.prop-card')].map(c=>{const i=c.querySelector('.prop-foto img');return i&&(i.currentSrc||i.src||i.dataset.src);}).filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,3).forEach(src=>{const f=el('img');f.src=src;f.alt='';f.loading='lazy';fotos.append(f);});
-      caja.append(el('p','filtros-ig-t','No te pierdas las últimas novedades'),cab);if(fotos.children.length)caja.append(fotos);const seg=el('span','filtros-ig-btn');seg.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Seguir';caja.append(seg);
-      caja.addEventListener('click',()=>{try{window.dmTrack&&window.dmTrack('clic_instagram',{lugar:'lateral'});}catch{}});
-      pie.append(vf,caja);filtros.append(pie);
+      pie.append(vf);filtros.append(pie);
       const ver=()=>{vf.hidden=pie.getBoundingClientRect().top>90;};window.addEventListener('scroll',ver,{passive:true});ver();}
+    // Instagram: franja a lo ancho dentro del listado, después de la 6.ª propiedad (o al final si hay menos de 6).
+    // Se vuelve a ubicar sola cada vez que cambian los resultados (filtros, orden, "ver más").
+    const grilla=document.getElementById('busq-grid');
+    if(grilla&&!document.querySelector('.ig-franja')){
+      const raiz=(typeof DM_ROOT!=='undefined'?DM_ROOT:'/');
+      const franja=el('a','ig-franja');franja.href='https://www.instagram.com/dimartinopropiedades/';franja.target='_blank';franja.rel='noopener';franja.setAttribute('aria-label','Seguinos en Instagram: @dimartinopropiedades');
+      const av=el('span','ig-franja-av');const iso=el('img');iso.src=raiz+'assets/iso-color.svg';iso.alt='';av.append(iso);
+      const txt=el('span','ig-franja-txt');txt.append(el('span','ig-franja-k','Seguinos en Instagram'),el('span','ig-franja-t','No te pierdas las últimas novedades'),el('span','ig-franja-h','@dimartinopropiedades'));
+      const fotos=el('span','ig-franja-fotos');
+      const btn=el('span','ig-franja-btn');btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Seguir';
+      franja.append(av,txt,fotos,btn);
+      franja.addEventListener('click',()=>{try{window.dmTrack&&window.dmTrack('clic_instagram',{lugar:'listado'});}catch{}});
+      const ubicar=()=>{
+        const cards=[...grilla.children].filter(c=>c.classList.contains('prop-card'));
+        if(cards.length<3){franja.remove();return;}
+        const ref=cards[Math.min(6,cards.length)-1];
+        if(ref.nextElementSibling!==franja)ref.after(franja);
+        // Fotos de 4 propiedades distintas del listado
+        const srcs=cards.map(c=>{const i=c.querySelector('.prop-foto img');return i&&(i.currentSrc||i.src||i.dataset.src);}).filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).slice(0,4);
+        if(fotos.dataset.srcs!==srcs.join('|')){fotos.dataset.srcs=srcs.join('|');fotos.textContent='';srcs.forEach(src=>{const f=el('img');f.src=src;f.alt='';f.loading='lazy';fotos.append(f);});}
+      };
+      new MutationObserver(ubicar).observe(grilla,{childList:true});ubicar();
+    }
   };
   const seguro=()=>{try{iniciar();}catch(e){console.error(e);}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',seguro);else seguro();
