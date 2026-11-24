@@ -466,3 +466,6 @@ body.lista-abierta .ig-float{display:none}
   .related .prop-grid::-webkit-scrollbar{display:none}
   .related .prop-grid>.prop-card{flex:0 0 82%;max-width:340px;scroll-snap-align:center}
 }
+/* Ficha: al final del recorrido, la columna derecha (que acompaña al bajar) termina a la misma altura que el último cuadro de la izquierda.
+   Se descuenta el margen inferior de los cuadros (18 px) para que no quede un escalón. */
+@media(min-width:769px){#vista-detalle .det-wrap>div:first-child{margin-bottom:-18px}}
