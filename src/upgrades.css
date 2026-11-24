@@ -469,3 +469,8 @@ body.lista-abierta .ig-float{display:none}
 /* Ficha: al final del recorrido, la columna derecha (que acompaña al bajar) termina a la misma altura que el último cuadro de la izquierda.
    Se descuenta el margen inferior de los cuadros (18 px) para que no quede un escalón. */
 @media(min-width:769px){#vista-detalle .det-wrap>div:first-child{margin-bottom:-18px}}
+/* Portada: al bajar, la sección de tasaciones "encaja" sola justo debajo del menú cuando queda cerca del borde de arriba
+   (scroll snap por proximidad: si se pasa lejos, no hace nada). */
+html:has(body[data-view="home"]){scroll-snap-type:y proximity}
+body[data-view="home"] #tasaciones{scroll-snap-align:start;scroll-margin-top:68px}
+@media(max-width:768px){body[data-view="home"] #tasaciones{scroll-margin-top:var(--alto-menu-movil,102px)}}
