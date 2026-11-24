@@ -458,3 +458,11 @@ body.lista-abierta .ig-float{display:none}
   .ig-franja-btn{order:4;width:100%}}
 @media(min-width:769px) and (max-width:1060px){.ig-franja-fotos{display:none}.ig-franja{gap:16px;padding:16px 18px}.ig-franja-t{font-size:16px}}
 .ig-franja-k,.ig-franja-h{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Recomendaciones de la ficha: 3 en compu, 4 en tablet (2 x 2) y en celular una fila para deslizar con las 6 */
+@media(min-width:1025px){.related .prop-grid>.prop-card:nth-child(n+4){display:none}}
+@media(min-width:769px) and (max-width:1024px){.related .prop-grid>.prop-card:nth-child(n+5){display:none}}
+@media(max-width:768px){
+  .related .prop-grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -5%;padding:2px 5% 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .related .prop-grid::-webkit-scrollbar{display:none}
+  .related .prop-grid>.prop-card{flex:0 0 82%;max-width:340px;scroll-snap-align:center}
+}

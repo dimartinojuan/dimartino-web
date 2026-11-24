@@ -30,3 +30,14 @@ test('Comodidades, operación y situación se muestran en español',async()=>{co
 test('Cada propiedad tiene enlace corto /CODIGO y WhatsApp lo usa',async()=>{for(const p of catalog.properties.slice(0,20)){const code=String(p.reference_code||p.id).trim().replace(/\s+/g,'-');if(!/^[\w-]+$/.test(code))continue;const html=await fs.readFile(path.join('dist',code,'index.html'),'utf8');assert.ok(html.includes(p.path),code);const {document}=parseHTML(await fs.readFile(path.join('dist',p.path,'index.html'),'utf8'));const msg=decodeURIComponent(document.getElementById('det-wsp').getAttribute('href').split('text=')[1]);assert.ok(msg.endsWith(BASE.replace(/^\//,'')+code)||msg.endsWith('/'+code),msg);}});
 test('Los botones de WhatsApp de la ficha no codifican el mensaje dos veces',async()=>{const html=await fs.readFile(path.join('dist',catalog.properties[0].path,'index.html'),'utf8');for(const m of html.matchAll(/href="(https:\/\/wa\.me\/[^"]*\?text=[^"]*)"/g)){assert.ok(!/%25|\s/.test(m[1]),m[1]);}});
 test('Con dominio propio se publica .htaccess que oculta el estado del FTP y fuerza www',async()=>{if(BASE!=='/')return;const h=await fs.readFile('dist/.htaccess','utf8');assert.match(h,/ftp-deploy-sync-state/);assert.match(h,/HTTP_HOST/);assert.match(h,/-Indexes/);});
+test('Recomendaciones de la ficha: primero el mismo tipo de inmueble y la misma operación',async()=>{
+  const lista=catalog.properties||catalog;const byId=new Map(lista.map(p=>[p.id,p]));const ops=p=>new Set((p.operations||[]).map(o=>o.operation_type));
+  for(const tipo of [1,2,3]){const p=lista.find(x=>x.type?.id===tipo&&lista.filter(y=>y.type?.id===tipo).length>3);if(!p)continue;
+    const {document}=parseHTML(await fs.readFile(`dist/${p.path||'propiedades/'+p.id+'/'}index.html`,'utf8'));
+    const sec=document.querySelector('section.related');assert.ok(sec,'la ficha tiene recomendaciones');assert.match(sec.querySelector('h2').textContent,/inmuebles/);
+    const ids=[...sec.querySelectorAll('.prop-card a[href*="propiedades/"]')].map(a=>Number(a.getAttribute('href').match(/propiedades\/(\d+)/)?.[1])).filter((v,i,a)=>v&&a.indexOf(v)===i);
+    assert.ok(ids.length>=3&&ids.length<=6);
+    const mismos=lista.filter(x=>x.id!==p.id&&x.type?.id===tipo&&[...ops(x)].some(o=>ops(p).has(o))).length;
+    for(const id of ids.slice(0,Math.min(3,mismos)))assert.equal(byId.get(id)?.type?.id,tipo,`la ficha ${p.id} recomienda primero el mismo tipo`);
+  }
+});

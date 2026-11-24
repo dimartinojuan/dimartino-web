@@ -10,6 +10,39 @@ import {loadDevelopments} from './developments.mjs';
 // Recorridos virtuales 360° (Kuula, Matterport…): apagados por ahora; se mandan por WhatsApp cuando alguien consulta. Para volver a mostrarlos en la web, poner true.
 const MOSTRAR_RECORRIDOS=false;
 
+// ── Recomendaciones de la ficha ("Otros inmuebles que pueden interesarte") ──
+// Cada inmueble suma puntos según cuánto se parece al que se está mirando. El orden de importancia es:
+//   1) tipo de inmueble (igual: 1000; parecido, p. ej. terreno↔campo o casa↔PH: 400)
+//   2) operación (venta / alquiler igual: 700), para no mezclar compradores con inquilinos
+//   3) zona (mismo barrio: 600; si no, según la distancia en el mapa: hasta 450)
+//   4) precio parecido (hasta 150, solo en la misma moneda)
+//   5) tamaño parecido (dormitorios y m² cubiertos; en terrenos y campos, m² de terreno: hasta 100)
+//   6) mismo tipo de barrio (cerrado / abierto: 60) y 7) apto crédito los dos (20)
+// Con el mismo puntaje gana el que está destacado en Tokko y después el más nuevo.
+const TIPOS_PARECIDOS={1:[9,4],9:[1,4],4:[3,1,9],3:[13,4],13:[3,2],2:[13],7:[8,24],8:[7],24:[7,8],10:[]};
+function distanciaKm(a,b){const la1=Number(a.geo_lat),lo1=Number(a.geo_long),la2=Number(b.geo_lat),lo2=Number(b.geo_long);if(!la1||!lo1||!la2||!lo2)return Infinity;const r=Math.PI/180,dLa=(la2-la1)*r,dLo=(lo2-lo1)*r;const h=Math.sin(dLa/2)**2+Math.cos(la1*r)*Math.cos(la2*r)*Math.sin(dLo/2)**2;return 12742*Math.asin(Math.sqrt(h));}
+function parecido(p,x){
+  let pts=0;
+  if(x.type?.id===p.type?.id)pts+=1000;else if((TIPOS_PARECIDOS[p.type?.id]||[]).includes(x.type?.id))pts+=400;
+  if(x.location?.name&&x.location.name===p.location?.name)pts+=600;else{const km=distanciaKm(p,x);pts+=km<1?450:km<2?380:km<3.5?300:km<6?200:km<12?100:km<25?40:0;}
+  const ops=o=>new Set((o.operations||[]).map(op=>op.operation_type));const opsP=ops(p),opsX=ops(x);
+  if([...opsP].some(o=>opsX.has(o)))pts+=700;
+  const precio=(o,tipo)=>{for(const op of o.operations||[])if(!tipo||op.operation_type===tipo)for(const pr of op.prices||[])if(Number(pr.price)>0)return{v:Number(pr.price),m:pr.currency};return null;};
+  const tipoOp=[...opsP].find(o=>opsX.has(o)),a=precio(p,tipoOp),b=precio(x,tipoOp);
+  if(a&&b&&a.m===b.m){const r=Math.min(a.v,b.v)/Math.max(a.v,b.v);pts+=r>=.85?150:r>=.7?100:r>=.5?50:0;}
+  const ratio=(u,v)=>{u=Number(u)||0;v=Number(v)||0;return u&&v?Math.min(u,v)/Math.max(u,v):0;};
+  if([1,9].includes(p.type?.id)){const r=ratio(p.surface||p.total_surface,x.surface||x.total_surface);pts+=r>=.75?100:r>=.5?50:0;}
+  else{const dp=Number(p.suite_amount)||0,dx=Number(x.suite_amount)||0;if(dp&&dx)pts+=dp===dx?60:Math.abs(dp-dx)===1?30:0;const r=ratio(p.roofed_surface,x.roofed_surface);pts+=r>=.75?40:r>=.5?20:0;}
+  const cerrado=o=>/countries|country|b\.?\s*cerrado|cerrado|privado/i.test(o.location?.full_location||'');if(cerrado(p)===cerrado(x))pts+=60;
+  const credito=o=>(o.custom_tags||[]).some(t=>/cr[eé]dito/i.test(t.name||''));if(credito(p)&&credito(x))pts+=20;
+  if(!(x.photos||[]).length)pts-=500;
+  return pts;
+}
+function recomendados(p,todas,cuantos){
+  return todas.filter(x=>x.id!==p.id).map(x=>({x,pts:parecido(p,x)})).sort((a,b)=>b.pts-a.pts||(b.x.is_starred_on_web?1:0)-(a.x.is_starred_on_web?1:0)||b.x.id-a.x.id).slice(0,cuantos).map(o=>o.x);
+}
+
+
 export const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export const ORIGIN=(process.env.SITE_URL||'https://dimartinojuan.github.io/dimartino-web').replace(/\/$/,'');
 const BASE=new URL(ORIGIN).pathname.replace(/\/$/,'')+'/';
@@ -247,7 +280,7 @@ async function main(){
     // Keep all media available, but defer frames until explicitly selected.
     for(const frame of doc.querySelectorAll('#det-video-card iframe,#det-tour-card iframe')){const src=frame.getAttribute('src')||'';const isVideo=!!frame.closest('#det-video-card');const yt=src.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/)?.[1];const button=doc.createElement('button');button.type='button';button.className='media-facade';button.setAttribute('data-src',src);button.setAttribute('data-allow',frame.getAttribute('allow')||'fullscreen');button.setAttribute('aria-label',isVideo?'Reproducir el video de la propiedad':'Abrir el recorrido virtual 360°');if(yt)button.style.backgroundImage=`url("https://i.ytimg.com/vi/${yt}/hqdefault.jpg")`;button.innerHTML=`<span class="media-facade-play" aria-hidden="true">${isVideo?'▶':'360°'}</span><span class="media-facade-text">${isVideo?'Ver video':'Ver recorrido virtual'}</span>`;frame.replaceWith(button);}
     doc.getElementById('det-ref').textContent=p.reference_code?'Cód. '+p.reference_code:'';
-    doc.body.insertAdjacentHTML('beforeend',`<script type="application/json" id="property-data">${json(p)}</script><nav class="mobile-contact" aria-label="Consultar esta propiedad"><a href="${esc(waHref)}" target="_blank" rel="noopener">WhatsApp</a><a href="tel:+542323426040">Llamar</a></nav>`);const score=x=>(x.location.name===p.location.name?2:0)+(x.type.id===p.type.id?1:0);const related=properties.filter(x=>x.id!==p.id&&score(x)>0).sort((a,b)=>score(b)-score(a)).slice(0,3);if(related.length)doc.querySelector('footer').insertAdjacentHTML('beforebegin',`<section class="related"><h2>Otras propiedades que pueden interesarte</h2>${zoneCounts.has(p.location.name)?`<p class="related-zona"><a href="${BASE}zonas/${slug(p.location.name)}/">Ver todas las propiedades en ${esc(p.location.name)}</a></p>`:''}<div class="prop-grid">${related.map(x=>c.renderCard(x)).join('')}</div></section>`);doc.querySelector('footer').insertAdjacentHTML('beforebegin',ownerBand(p.location.name));await write(p.path+'index.html',finish(doc));urls.push({loc:canonical,images:p.photos.slice(0,10).map(ph=>ph.image)});}
+    doc.body.insertAdjacentHTML('beforeend',`<script type="application/json" id="property-data">${json(p)}</script><nav class="mobile-contact" aria-label="Consultar esta propiedad"><a href="${esc(waHref)}" target="_blank" rel="noopener">WhatsApp</a><a href="tel:+542323426040">Llamar</a></nav>`);const related=recomendados(p,properties,6);if(related.length)doc.querySelector('footer').insertAdjacentHTML('beforebegin',`<section class="related"><h2>Otros inmuebles que pueden interesarte</h2>${zoneCounts.has(p.location.name)?`<p class="related-zona"><a href="${BASE}zonas/${slug(p.location.name)}/">Ver todos los inmuebles en ${esc(p.location.name)}</a></p>`:''}<div class="prop-grid">${related.map(x=>c.renderCard(x)).join('')}</div></section>`);doc.querySelector('footer').insertAdjacentHTML('beforebegin',ownerBand(p.location.name));await write(p.path+'index.html',finish(doc));urls.push({loc:canonical,images:p.photos.slice(0,10).map(ph=>ph.image)});}
   for(const d of developments){
     const doc=newDoc('development'),canonical=ORIGIN+'/'+d.path,dc=runtime(doc);
     // Listings of this development: linked in Tokko, or named after it ("La Ferme 3", "Tierras de Villa Odilia A17").
